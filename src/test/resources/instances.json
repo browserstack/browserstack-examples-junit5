@@ -1,0 +1,10 @@
+{
+  "instances": {
+    "public": {
+      "url": "https://bstackdemo.com/"
+    },
+    "private": {
+      "url": "http://localhost:8000/"
+    }
+  }
+}
