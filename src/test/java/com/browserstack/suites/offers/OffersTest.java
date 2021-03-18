@@ -6,11 +6,9 @@ import com.browserstack.utils.ManagedWebDriver;
 import com.browserstack.utils.UserCredentialUtil;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,7 +19,6 @@ import java.util.Map;
 
 import static com.browserstack.utils.Constants.Capabilities.*;
 import static com.browserstack.utils.Constants.ElementLocators.OFFERS_BUTTON_ID;
-import static com.browserstack.utils.Constants.ErrorMessages.LOCAL_TESTING_ENABLED;
 import static com.browserstack.utils.Constants.ErrorMessages.NO_OFFERS_FOUND;
 
 
@@ -35,7 +32,7 @@ public class OffersTest extends NonPageObjectTest {
     @Override
     public void preProcess(DesiredCapabilities desiredCapabilities) {
         applyMask(desiredCapabilities);
-        boolean isMobile = desiredCapabilities.is(CAPABILITY_DEVICE);
+        boolean isMobile = desiredCapabilities.is(CAPABILITY_REAL_MOBILE);
         boolean isLocal = desiredCapabilities.is(CAPABILITY_BS_LOCAL);
         String browser = (String) desiredCapabilities.getCapability(CAPABILITY_BROWSER);
 
@@ -73,11 +70,9 @@ public class OffersTest extends NonPageObjectTest {
         this.desiredCapabilities = desiredCapabilities;
     }
 
-    private void mockDesktopGPS(WebDriver webDriver) {
+    private void mockGPS(WebDriver webDriver) {
         ManagedWebDriver managedWebDriver = (ManagedWebDriver)webDriver;
-        WebDriver rootDriver = managedWebDriver.getWebDriver();
-        JavascriptExecutor jse = (JavascriptExecutor) rootDriver;
-        jse.executeScript("window.navigator.geolocation.getCurrentPosition=function(success){"+
+        managedWebDriver.executeScript("window.navigator.geolocation.getCurrentPosition=function(success){"+
                     "var position = {\"coords\" : {\"latitude\": \"20\",\"longitude\": \"78\"}};"+
                     "success(position);}");
     }
@@ -97,14 +92,10 @@ public class OffersTest extends NonPageObjectTest {
         if (desiredCapabilities==null){
             desiredCapabilities = new DesiredCapabilities();
         }
-        boolean isMobile = desiredCapabilities.is(CAPABILITY_DEVICE);
+        boolean isMobile = desiredCapabilities.is(CAPABILITY_REAL_MOBILE);
         boolean isLocal = desiredCapabilities.is(CAPABILITY_BS_LOCAL);
-        if (isLocal){
-            Assertions.fail(markFail(LOCAL_TESTING_ENABLED));
-            return;
-        }
-        if (!isMobile){
-            mockDesktopGPS(webDriver);
+        if (!isMobile||isLocal){
+            mockGPS(webDriver);
         }
         navigateToHome(webDriver);
         Assertions.assertTrue(checkIfOffersAvailable(webDriver), () -> markFail(NO_OFFERS_FOUND));

@@ -2,12 +2,10 @@ package com.browserstack.utils;
 
 public class Constants {
 
- //   public static final String DEVICE_SET_MOBILE = "mobile";
-    public static final String APPLICATION_END_POINT = "app";
-    public static final String APPLICATION_INSTANCE_PUBLIC = "public";
-    public static final String APPLICATION_INSTANCE_PRIVATE = "private";
-    public static final String APPLICATION_URL_PUBLIC = "https://bstackdemo.com/";
-    public static final String APPLICATION_URL_PRIVATE = "http://localhost:3000/";
+    public static class Instances{
+        public static final String APPLICATION_INSTANCE_PRIVATE = "private";
+        public static final String APPLICATION_INSTANCE_PUBLIC = "public";
+    }
 
     public static class Profiles {
         public static final String PROFILE_ON_PREMISE = "on-premise";
@@ -15,17 +13,7 @@ public class Constants {
         public static final String PROFILE_SINGLE = "single";
         public static final String PROFILE_PARALLEL = "parallel";
         public static final String PROFILE_LOCAL = "local";
-    }
-
-    public static class Environments {
-        public static final String ON_PREMISE = "on-premise";
-        public static final String BROWSERSTACK = "browserstack";
-        public static final String DOCKER = "docker";
-    }
-
-    public static class Defaults {
-        public static final String DEFAULT_INSTANCE = "public";
-        public static final String DEFAULT_PROFILE = "single";
+        public static final String PROFILE_LOCAL_PARALLEL = "local-parallel";
     }
 
     public static class EndPoints {
@@ -76,12 +64,6 @@ public class Constants {
         public static final String SIGN_OUT_BUTTON_ID="logout";
     }
 
-    public static class BrowserStackRESTAPIs{
-        public static final String GET_PLAN = "https://api.browserstack.com/automate/plan.json";
-        public static final String GET_BROWSERS = "https://api.browserstack.com/automate/browsers.json";
-
-    }
-
     public static class BrowserStackRESTStatus {
         public static final String STATUS_PASSED = "passed";
         public static final String STATUS_FAILED = "failed";
@@ -89,7 +71,6 @@ public class Constants {
     }
 
     public static class RuntimeOptions{
-        public static final String PROFILE = "profile";
         public static final String PROJECT = "project";
         public static final String BUILD = "build";
         public static final String NAME = "name";
@@ -102,11 +83,20 @@ public class Constants {
         public static final String CAPABILITY_OS="os";
         public static final String CAPABILITY_BROWSER="browser";
         public static final String CAPABILITY_DEVICE="device";
+        public static final String CAPABILITY_REAL_MOBILE="realMobile";
         public static final String CAPABILITY_BS_LOCAL="browserstack.local";
+        public static final String CAPABILITY_BS_LOCAL_IDENTIFIER = "browserstack.localIdentifier";
         public static final String CAPABILITY_BS_GPS_LOCATION="browserstack.gpsLocation";
+        public static final String LOCAL_OPTION_KEY="key";
+        public static final String LOCAL_OPTION_LOCAL_IDENTIFIER = "localIdentifier";
 
         public static final String CAPABILITY_VALUE_CHROME = "Chrome";
         public static final String CAPABILITY_VALUE_FIREFOX = "Firefox";
         public static final String CAPABILITY_VALUE_GPS_MUMBAI = "20,78";
+    }
+
+    public static class Limits{
+        public static int ON_PREMISE_PARALLEL_LIMIT = 1;
+        public static int BROWSERSTACK_PARALLEL_LIMIT = 5;
     }
 }

@@ -16,7 +16,7 @@ public class DockerWebDriver extends ManagedWebDriver {
 
     private DockerWebDriver(){
         DockerUtil dockerUtil = new DockerUtil();
-        DesiredCapabilities desiredCapabilities = new DesiredCapabilities(new FirefoxOptions());
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities(new ChromeOptions());
         dockerWebDriver = new RemoteWebDriver(dockerUtil.getHubURL(),desiredCapabilities);
         setWebDriver(dockerWebDriver);
     }

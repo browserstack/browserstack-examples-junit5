@@ -1,13 +1,14 @@
 package com.browserstack.utils;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.Set;
 
-public abstract class ManagedWebDriver implements WebDriver {
+public abstract class ManagedWebDriver implements WebDriver, JavascriptExecutor {
 
     private WebDriver webDriver;
     private String status;
@@ -101,4 +102,15 @@ public abstract class ManagedWebDriver implements WebDriver {
     public Options manage() {
         return webDriver.manage();
     }
+
+    @Override
+    public Object executeScript(String script, Object... args) {
+        return ((JavascriptExecutor)webDriver).executeScript(script,args);
+    }
+
+    @Override
+    public Object executeAsyncScript(String script, Object... args) {
+        return ((JavascriptExecutor)webDriver).executeAsyncScript(script,args);
+    }
+
 }

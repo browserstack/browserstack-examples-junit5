@@ -162,9 +162,6 @@
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
-                            <systemPropertyVariables>
-                                <profileId>${profile}</profileId>
-                            </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -184,9 +181,6 @@
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
-                            <systemPropertyVariables>
-                                <profileId>${profile}</profileId>
-                            </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -214,7 +208,7 @@
 
         <profile>
             <properties>
-                <parallel>parallel</parallel>
+                <profile>parallel</profile>
             </properties>
             <id>parallel</id>
             <build>
@@ -224,19 +218,18 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
-                            <groups>${parallel}</groups>
+                            <groups>${profile}</groups>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
 
-        <!--
         <profile>
             <properties>
-                <mobile>mobile</mobile>
+                <profile>local</profile>
             </properties>
-            <id>mobile</id>
+            <id>local</id>
             <build>
                 <plugins>
                     <plugin>
@@ -244,13 +237,32 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
-                            <groups>${mobile}</groups>
+                            <groups>${profile}</groups>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
--->
+
+        <profile>
+            <properties>
+                <profile>local-parallel</profile>
+            </properties>
+            <id>local-parallel</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0-M5</version>
+                        <configuration>
+                            <groups>${profile}</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>

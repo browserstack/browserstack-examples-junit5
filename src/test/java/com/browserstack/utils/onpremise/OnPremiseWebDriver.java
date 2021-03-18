@@ -4,14 +4,19 @@ import com.browserstack.utils.LoggedInNavBarComponent;
 import com.browserstack.utils.ManagedWebDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Semaphore;
+
+import static com.browserstack.utils.Constants.Limits.ON_PREMISE_PARALLEL_LIMIT;
 
 public class OnPremiseWebDriver extends ManagedWebDriver {
 
     private static WebDriver onPremiseWebDriver;
-    private static final Semaphore BINARY_SEMAPHORE = new Semaphore(1);
+    private static final Semaphore BINARY_SEMAPHORE = new Semaphore(ON_PREMISE_PARALLEL_LIMIT);
     private static final Semaphore COUNTING_SEMAPHORE = new Semaphore(Integer.MAX_VALUE);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OnPremiseWebDriver.class);
 
     private OnPremiseWebDriver(WebDriver webDriver){
         onPremiseWebDriver = webDriver;
@@ -33,7 +38,6 @@ public class OnPremiseWebDriver extends ManagedWebDriver {
             return INSTANCE;
         }
 
-
     }
 
     public static OnPremiseWebDriver getDriver() {
@@ -51,6 +55,7 @@ public class OnPremiseWebDriver extends ManagedWebDriver {
     public static void terminate() {
         if (OnPremiseWebDriverHolder.isInitialised()&& COUNTING_SEMAPHORE.availablePermits()==Integer.MAX_VALUE) {
             onPremiseWebDriver.quit();
+            LOGGER.debug("Closed the on-premise driver");
         }
     }
 

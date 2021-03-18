@@ -5,9 +5,11 @@ import java.net.URL;
 
 public class DockerUtil {
 
+    private static final String DOCKER_WD_URL = "http://localhost:4444/wd/hub";
+
     public URL getHubURL(){
         try {
-            return new URL("http://localhost:4444/wd/hub");
+            return new URL(DOCKER_WD_URL);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
