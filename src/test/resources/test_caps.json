@@ -1,0 +1,55 @@
+{
+  "instances": {
+    "public": {
+      "url": "https://bstackdemo.com/"
+    },
+    "private": {
+      "url": "http://localhost:8000/"
+    }
+  },
+  "common-capabilities": {
+    "project": "BrowserStack Demo",
+    "build": "Automate Demo",
+    "browserstack.debug": "true",
+    "browserstack.networkLogs": "true",
+    "browserstack.console": "verbose"
+  },
+  "profile-capabilities": {
+    "single": {
+      "capabilities": {
+        "name": "Single Test: "
+      },
+      "instance": "public"
+    },
+    "local": {
+      "capabilities": {
+        "name": "Local Test: "
+      },
+      "instance": "private",
+      "local-options": {
+        "force": "true",
+        "forceLocal": "true",
+        "verbose": "true",
+        "logFile": "local_test.log"
+      }
+    },
+    "parallel": {
+      "capabilities": {
+        "name": "Parallel Test: "
+      },
+      "instance": "public"
+    },
+    "local-parallel": {
+      "capabilities": {
+        "name": "Local Parallel Test: "
+      },
+      "instance": "private",
+      "local-options": {
+        "force": "true",
+        "forceLocal": "true",
+        "verbose": "true",
+        "logFile": "parallel_local_test.log"
+      }
+    }
+  }
+}
