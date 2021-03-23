@@ -22,8 +22,6 @@ public class Constants {
         public static final String SIGNED_IN_FAVOURITES = "/signin?favourites=true";
         public static final String FAVOURITES = "/favourites";
         public static final String OFFERS = "/offers";
-        public static final String CHECKOUT = "/checkout";
-        public static final String CONFIRMATION = "/confirmation";
     }
 
     public static class ErrorMessages {
