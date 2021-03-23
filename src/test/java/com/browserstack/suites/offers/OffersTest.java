@@ -85,8 +85,6 @@ public class OffersTest extends NonPageObjectTest {
     private void mockGPS(WebDriver webDriver) {
         String locationScript = String.format(LOCATION_SCRIPT_FORMAT, OFFER_LATITUDE, OFFER_LONGITUDE);
         ((JavascriptExecutor) webDriver).executeScript(locationScript);
-        Object ob = ((JavascriptExecutor) webDriver).executeScript("navigator.geolocation.getCurrentPosition(function(position){return position})");
-        System.out.println("Result "+ob);
     }
 
     @Step("Checking if offers are available")
