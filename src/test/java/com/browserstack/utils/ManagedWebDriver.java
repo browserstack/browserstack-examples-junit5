@@ -105,12 +105,12 @@ public abstract class ManagedWebDriver implements WebDriver, JavascriptExecutor 
 
     @Override
     public Object executeScript(String script, Object... args) {
-        return ((JavascriptExecutor)webDriver).executeScript(script,args);
+        return ((JavascriptExecutor) webDriver).executeScript(script, args);
     }
 
     @Override
     public Object executeAsyncScript(String script, Object... args) {
-        return ((JavascriptExecutor)webDriver).executeAsyncScript(script,args);
+        return ((JavascriptExecutor) webDriver).executeAsyncScript(script, args);
     }
 
 }

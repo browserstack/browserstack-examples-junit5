@@ -27,7 +27,7 @@ services:
     deploy:
       replicas: 8
     ports:
-        - "5901:5901"
+      - "5901:5901"
     volumes:
       - /dev/shm:/dev/shm
     depends_on:

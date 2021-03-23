@@ -1,17 +1,16 @@
 package com.browserstack.pages;
 
+import com.browserstack.utils.WebDriverWaitUtil;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static com.browserstack.utils.Constants.EndPoints.CHECKOUT;
 
 public class Bag {
 
     private static final String CHECKOUT_BUTTON_CLASS = "buy-btn";
-    private static final long CHECKOUT_TIME_OUT = 5;
+    private static final String CHECKOUT_ENDPOINT = "/checkout";
 
     private final WebDriver webDriver;
 
@@ -19,11 +18,11 @@ public class Bag {
         this.webDriver = webDriver;
     }
 
+    @Step("Completing checkout")
     public Checkout checkout() {
-        WebElement checkout = webDriver.findElement(new By.ByClassName(CHECKOUT_BUTTON_CLASS));
+        WebElement checkout = webDriver.findElement(By.className(CHECKOUT_BUTTON_CLASS));
         checkout.click();
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, CHECKOUT_TIME_OUT);
-        webDriverWait.until(ExpectedConditions.urlContains(CHECKOUT));
+        WebDriverWaitUtil.getWebDriverWait(webDriver).until(ExpectedConditions.urlContains(CHECKOUT_ENDPOINT));
         return new Checkout(webDriver);
     }
 }

@@ -15,6 +15,14 @@
     "browserstack.console": "verbose"
   },
   "profile-capabilities": {
+    "on-premise": {
+      "capabilities": {},
+      "instance": "public",
+      "drivers": {"webdriver.gecko.driver":"/opt/libs/drivers/geckodriver",
+                  "webdriver.chrome.driver":"/opt/libs/drivers/chromedriver"}
+    },
+    "docker": {"capabilities": {},
+      "instance": "public"},
     "single": {
       "capabilities": {
         "name": "Single Test: "

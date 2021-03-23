@@ -2,8 +2,8 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <groupId>com.browserstack</groupId>
     <artifactId>browserstack-examples-junit5</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -16,9 +16,15 @@
         <junit.jupiter.version>5.7.1</junit.jupiter.version>
         <json.simple.version>1.1</json.simple.version>
         <browserstack.local.version>1.0.6</browserstack.local.version>
-        <apache.commons.version>3.12.0</apache.commons.version>
-        <slf4j.version>1.7.30</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
+        <opencsv.version>5.3</opencsv.version>
+
+        <allure-maven.version>2.10.0</allure-maven.version>
+        <allure-junit5.version>2.13.8</allure-junit5.version>
+        <aspectj.version>1.9.6</aspectj.version>
+
+
+       <!-- <aspectj.version>1.9.6</aspectj.version>
+        <allure-junit5.version>2.13.8</allure-junit5.version>-->
     </properties>
 
     <dependencyManagement>
@@ -57,20 +63,14 @@
                 <version>${browserstack.local.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${apache.commons.version}</version>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-junit5</artifactId>
+                <version>${allure-junit5.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -101,69 +101,77 @@
             <artifactId>browserstack-local-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-                <configuration>
-                    <properties>
-                        <configurationParameters>
-                            junit.jupiter.execution.parallel.enabled = true
-                            junit.jupiter.execution.parallel.mode.default = concurrent
-                            junit.jupiter.execution.parallel.mode.classes.default = concurrent
-                        </configurationParameters>
-                    </properties>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <profiles>
 
-       <profile>
+        <profile>
             <properties>
                 <profile>on-premise</profile>
             </properties>
             <id>on-premise</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.execution.parallel.enabled = true
+                                    junit.jupiter.execution.parallel.mode.default = concurrent
+                                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                </configurationParameters>
+                            </properties>
+
+                            <!-- Allure Configs -->
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <argLine>
+                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            </argLine>
+                            <systemProperties>
+                                <property>
+                                    <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                    <value>true</value>
+                                </property>
+                            </systemProperties>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjweaver</artifactId>
+                            <version>${aspectj.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.10.0</version>
+                        <configuration>
+                            <reportVersion>${allure-junit5.version}</reportVersion>
+                        </configuration></plugin>
                 </plugins>
             </build>
         </profile>
@@ -177,12 +185,54 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.execution.parallel.enabled = true
+                                    junit.jupiter.execution.parallel.mode.default = concurrent
+                                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                </configurationParameters>
+                            </properties>
+
+                            <!-- Allure Configs -->
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <argLine>
+                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            </argLine>
+                            <systemProperties>
+                                <property>
+                                    <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                    <value>true</value>
+                                </property>
+                            </systemProperties>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.aspectj</groupId>
+                                <artifactId>aspectjweaver</artifactId>
+                                <version>${aspectj.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.10.0</version>
+                        <configuration>
+                            <reportVersion>${allure-junit5.version}</reportVersion>
+                        </configuration></plugin>
                 </plugins>
             </build>
         </profile>
@@ -196,12 +246,54 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.execution.parallel.enabled = true
+                                    junit.jupiter.execution.parallel.mode.default = concurrent
+                                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                </configurationParameters>
+                            </properties>
+
+                            <!-- Allure Configs -->
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <argLine>
+                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            </argLine>
+                            <systemProperties>
+                                <property>
+                                    <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                    <value>true</value>
+                                </property>
+                            </systemProperties>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.aspectj</groupId>
+                                <artifactId>aspectjweaver</artifactId>
+                                <version>${aspectj.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.10.0</version>
+                        <configuration>
+                            <reportVersion>${allure-junit5.version}</reportVersion>
+                        </configuration></plugin>
                 </plugins>
             </build>
         </profile>
@@ -215,12 +307,54 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.execution.parallel.enabled = true
+                                    junit.jupiter.execution.parallel.mode.default = concurrent
+                                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                </configurationParameters>
+                            </properties>
+
+                            <!-- Allure Configs -->
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <argLine>
+                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            </argLine>
+                            <systemProperties>
+                                <property>
+                                    <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                    <value>true</value>
+                                </property>
+                            </systemProperties>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.aspectj</groupId>
+                                <artifactId>aspectjweaver</artifactId>
+                                <version>${aspectj.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.10.0</version>
+                        <configuration>
+                            <reportVersion>${allure-junit5.version}</reportVersion>
+                        </configuration></plugin>
                 </plugins>
             </build>
         </profile>
@@ -234,12 +368,54 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.execution.parallel.enabled = true
+                                    junit.jupiter.execution.parallel.mode.default = concurrent
+                                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                </configurationParameters>
+                            </properties>
+
+                            <!-- Allure Configs -->
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <argLine>
+                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            </argLine>
+                            <systemProperties>
+                                <property>
+                                    <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                    <value>true</value>
+                                </property>
+                            </systemProperties>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.aspectj</groupId>
+                                <artifactId>aspectjweaver</artifactId>
+                                <version>${aspectj.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.10.0</version>
+                        <configuration>
+                            <reportVersion>${allure-junit5.version}</reportVersion>
+                        </configuration></plugin>
                 </plugins>
             </build>
         </profile>
@@ -253,15 +429,58 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>3.0.0-M5</version>
                         <configuration>
                             <groups>${profile}</groups>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.execution.parallel.enabled = true
+                                    junit.jupiter.execution.parallel.mode.default = concurrent
+                                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                </configurationParameters>
+                            </properties>
+
+                            <!-- Allure Configs -->
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <argLine>
+                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                            </argLine>
+                            <systemProperties>
+                                <property>
+                                    <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                    <value>true</value>
+                                </property>
+                            </systemProperties>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.aspectj</groupId>
+                                <artifactId>aspectjweaver</artifactId>
+                                <version>${aspectj.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.10.0</version>
+                        <configuration>
+                            <reportVersion>${allure-junit5.version}</reportVersion>
+                        </configuration></plugin>
                 </plugins>
             </build>
         </profile>
+
 
     </profiles>
 

@@ -10,41 +10,37 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import static com.browserstack.utils.Constants.Capabilities.*;
+import static com.browserstack.utils.Constants.Instances.APPLICATION_INSTANCE_PRIVATE;
 import static com.browserstack.utils.Constants.Limits.BROWSERSTACK_PARALLEL_LIMIT;
-import static com.browserstack.utils.Constants.Profiles.PROFILE_LOCAL;
-import static com.browserstack.utils.Constants.Profiles.PROFILE_LOCAL_PARALLEL;
 
 public class BrowserStackWebDriver extends ManagedWebDriver {
 
     private static final int LOCAL_IDENTIFIER_LENGTH = 8;
-
-    private WebDriver bsWebDriver;
-    private Local bsLocal;
     private static final Semaphore REMAINING_PARALLEL_COUNTER = new Semaphore(BROWSERSTACK_PARALLEL_LIMIT);
     private static final String SCRIPT_FORMAT = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"%s\", \"reason\": \"%s\"}}";
 
-    public static BrowserStackWebDriver getDriver(String profile, DesiredCapabilities desiredCapabilities) {
-        return new BrowserStackWebDriver(profile,desiredCapabilities);
-    }
+    private WebDriver bsWebDriver;
+    private Local bsLocal;
 
     private BrowserStackWebDriver(String profile, DesiredCapabilities desiredCapabilities) {
+
         BrowserStackUtil browserStackUtil = new BrowserStackUtil();
-        if (Arrays.asList(PROFILE_LOCAL,PROFILE_LOCAL_PARALLEL).contains(profile)) {
-            desiredCapabilities.setCapability(CAPABILITY_BS_LOCAL,"true");
+        String instance = JsonUtil.getInstanceNameByProfile(profile);
+
+        if (instance.equals(APPLICATION_INSTANCE_PRIVATE)) {
+            desiredCapabilities.setCapability(CAPABILITY_BS_LOCAL, "true");
             String localIdentifier = (String) desiredCapabilities.getCapability(CAPABILITY_BS_LOCAL_IDENTIFIER);
-            if (localIdentifier==null){
+            if (localIdentifier == null) {
                 localIdentifier = RandomStringUtils.randomAlphabetic(LOCAL_IDENTIFIER_LENGTH);
                 desiredCapabilities.setCapability(CAPABILITY_BS_LOCAL_IDENTIFIER, localIdentifier);
             }
             Map<String, String> localOptions = JsonUtil.getLocalOptions();
             localOptions.put(LOCAL_OPTION_LOCAL_IDENTIFIER, localIdentifier);
-            if (!localOptions.containsKey(LOCAL_OPTION_KEY)||localOptions.get(LOCAL_OPTION_KEY)==null){
+            if (!localOptions.containsKey(LOCAL_OPTION_KEY) || localOptions.get(LOCAL_OPTION_KEY) == null) {
                 localOptions.put(LOCAL_OPTION_KEY, browserStackUtil.getBrowserstackAccessKey());
             }
             bsLocal = new Local();
@@ -64,6 +60,10 @@ public class BrowserStackWebDriver extends ManagedWebDriver {
         }
     }
 
+    public static BrowserStackWebDriver getDriver(String profile, DesiredCapabilities desiredCapabilities) {
+        return new BrowserStackWebDriver(profile, desiredCapabilities);
+    }
+
     @Override
     public void close() {
         quit();
@@ -73,17 +73,18 @@ public class BrowserStackWebDriver extends ManagedWebDriver {
     public void quit() {
         try {
             JavascriptExecutor javascriptExecutor = (JavascriptExecutor) bsWebDriver;
-            javascriptExecutor.executeScript(String.format(SCRIPT_FORMAT,getStatus(),getReason()));
-            if (bsLocal!=null){
+            javascriptExecutor.executeScript(String.format(SCRIPT_FORMAT, getStatus(), getReason()));
+            if (bsLocal != null) {
                 bsLocal.stop();
             }
-        }
-        catch (Exception e) {
-                e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bsWebDriver.quit();
+            } finally {
+                REMAINING_PARALLEL_COUNTER.release();
             }
-        finally {
-            bsWebDriver.quit();
-            REMAINING_PARALLEL_COUNTER.release();
         }
     }
 

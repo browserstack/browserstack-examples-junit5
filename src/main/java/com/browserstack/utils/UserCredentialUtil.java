@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class UserCredentialUtil {
 
-    private static final String CREDENTIALS_FILE="src/test/resources/user.csv";
-    private static final Map<String,String> CREDENTIALS_MAP = parseCredentials();
+    private static final String CREDENTIALS_FILE = "src/test/resources/user.csv";
+    private static final Map<String, String> CREDENTIALS_MAP = parseCredentials();
 
-    private static Map<String,String> parseCredentials(){
-        Map<String,String> credentialMap = new HashMap<>();
+    private static Map<String, String> parseCredentials() {
+        Map<String, String> credentialMap = new HashMap<>();
 
         try {
             FileReader credentialsFile = new FileReader(CREDENTIALS_FILE);

@@ -18,15 +18,15 @@ public class BasePage {
     }
 
     public LoggedInNavBarComponent getLoggedInNavBar() {
-        if (!loggedInNavBar.isLoggedIn()){
+        if (!loggedInNavBar.isLoggedIn()) {
             throw new RuntimeException(LOGGED_OUT_ERROR_MESSAGE);
         }
         return loggedInNavBar;
     }
 
     public LoggedOutNavBarComponent getLoggedOutNavBar() {
-        if (loggedInNavBar.isLoggedIn()){
-            throw  new RuntimeException(SIGNED_IN_ERROR_MESSAGE);
+        if (loggedInNavBar.isLoggedIn()) {
+            throw new RuntimeException(SIGNED_IN_ERROR_MESSAGE);
         }
         return loggedOutNavBar;
     }
