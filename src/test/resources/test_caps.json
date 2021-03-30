@@ -4,7 +4,10 @@
       "url": "https://bstackdemo.com/"
     },
     "private": {
-      "url": "http://localhost:3000/"
+      "url": "http://bs-local.com:3000/"
+    },
+    "private1": {
+      "url": "http://bs-local.com:3001/"
     }
   },
   "common-capabilities": {
@@ -16,12 +19,12 @@
   },
   "profile-capabilities": {
     "on-premise": {
-      "capabilities": {},
+      "capabilities": {"browser": "Chrome"},
       "instance": "public",
       "drivers": {"webdriver.gecko.driver":"/opt/libs/drivers/geckodriver",
                   "webdriver.chrome.driver":"/opt/libs/drivers/chromedriver"}
     },
-    "docker": {"capabilities": {},
+    "docker": {"capabilities": {"browser": "Firefox"},
       "instance": "public"},
     "single": {
       "capabilities": {

@@ -16,15 +16,16 @@ import static com.browserstack.utils.Constants.Capabilities.CAPABILITY_VALUE_DEF
 import static com.browserstack.utils.Constants.ElementLocators.*;
 import static com.browserstack.utils.Constants.ErrorMessages.*;
 
-public abstract class NonPageObjectTest extends AbstractTest {
+public abstract class NonPageObjectTest extends ProfiledTest {
 
     private String url;
 
     @BeforeEach
+    @Step("Initialising the test")
     public void init(TestInfo testInfo) {
         String profile = testInfo.getTags().iterator().next();
-        String instance = JsonUtil.getInstanceNameByProfile(profile);
-        url = JsonUtil.getInstanceURLByName(instance);
+        String instance = JsonUtil.getProfileInstance(profile);
+        url = JsonUtil.getInstanceURL(instance);
     }
 
     @Step("Navigating to the home page")
@@ -43,11 +44,11 @@ public abstract class NonPageObjectTest extends AbstractTest {
     public void signIn(WebDriver webDriver, String userName, String password) {
         WebElement signInButton = webDriver.findElement(By.id(SIGN_IN_BUTTON_ID));
         signInButton.click();
-        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.xpath(USER_INPUT_XPATH), SIGNIN_PAGE_NOT_LOADED_ON_TIME);
-        WebElement userElement = webDriver.findElement(By.xpath(USER_INPUT_XPATH));
+        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.id(USER_INPUT_ID), SIGNIN_PAGE_NOT_LOADED_ON_TIME);
+        WebElement userElement = webDriver.findElement(By.id(USER_INPUT_ID));
         userElement.sendKeys(userName);
         userElement.sendKeys(Keys.ENTER);
-        WebElement passwordElement = webDriver.findElement(By.xpath(PASSWORD_INPUT_XPATH));
+        WebElement passwordElement = webDriver.findElement(By.id(PASSWORD_INPUT_ID));
         passwordElement.sendKeys(password);
         passwordElement.sendKeys(Keys.ENTER);
         WebElement logInButton = webDriver.findElement(By.id(LOGIN_BUTTON_ID));

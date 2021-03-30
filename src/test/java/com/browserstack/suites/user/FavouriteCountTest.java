@@ -15,7 +15,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.browserstack.utils.Constants.AllureTags.EPIC_USER;
 import static com.browserstack.utils.Constants.AllureTags.STORY_FAVOURITE_COUNT;
-import static com.browserstack.utils.Constants.Capabilities.CAPABILITY_BROWSER;
 import static com.browserstack.utils.Constants.ElementLocators.*;
 import static com.browserstack.utils.Constants.EndPoints.FAVOURITES;
 import static com.browserstack.utils.Constants.EndPoints.SIGNED_IN;
@@ -55,7 +54,6 @@ public class FavouriteCountTest extends NonPageObjectTest {
             WebDriverWaitUtil.getWebDriverWait(webDriver).until(waitWebDriver -> !waitWebDriver.findElements(By.xpath(FAVOURITE_BUTTON_CLICKED_XPATH)).isEmpty());
         }
         catch (TimeoutException e){
-            webDriver.findElement(By.xpath(FAVOURITE_BUTTON_XPATH)).click();
             ElementLocatorUtil.waitUntilElementAppears(webDriver,this,By.xpath(FAVOURITE_BUTTON_CLICKED_XPATH),FAVOURITES_BUT_NOT_CLICKED_ON_TIME);
         }
         webDriver.findElement(By.id(FAVOURITES_BUTTON_ID)).click();

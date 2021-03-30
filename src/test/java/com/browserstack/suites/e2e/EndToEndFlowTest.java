@@ -1,6 +1,6 @@
 package com.browserstack.suites.e2e;
 
-import com.browserstack.AbstractTest;
+import com.browserstack.ProfiledTest;
 import com.browserstack.pages.*;
 import com.browserstack.utils.ElementLocatorUtil;
 import com.browserstack.utils.JsonUtil;
@@ -25,7 +25,7 @@ import static com.browserstack.utils.Constants.Profiles.PROFILE_LOCAL_PARALLEL;
 
 @Epic(EPIC_END_TO_END)
 @Story(STORY_END_TO_END)
-public class EndToEndFlowTest extends AbstractTest {
+public class EndToEndFlowTest extends ProfiledTest {
 
     private static final String ORDER_PLACED_MESSAGE = "Your Order has been successfully placed.";
     private static final int PRODUCT_COUNT = 3;
@@ -33,15 +33,11 @@ public class EndToEndFlowTest extends AbstractTest {
     private String url;
 
     @BeforeEach
+    @Step("Initialising the test")
     public void init(TestInfo testInfo) {
-        switch (testInfo.getTags().iterator().next()) {
-            case PROFILE_LOCAL:
-            case PROFILE_LOCAL_PARALLEL:
-                url = JsonUtil.getInstanceURLByName(APPLICATION_INSTANCE_PRIVATE);
-                break;
-            default:
-                url = JsonUtil.getInstanceURLByName(APPLICATION_INSTANCE_PUBLIC);
-        }
+        String profile = testInfo.getTags().iterator().next();
+        String instance = JsonUtil.getProfileInstance(profile);
+        url = JsonUtil.getInstanceURL(instance);
     }
 
     @Override
@@ -51,7 +47,7 @@ public class EndToEndFlowTest extends AbstractTest {
         ElementLocatorUtil.waitUntilTitleIs(webDriver, this, HOME_PAGE_TITLE, HOME_PAGE_NOT_LOADED_ON_TIME);
         ElementLocatorUtil.waitUntilElementVanish(webDriver, this, By.xpath(RELOAD_SPINNER_XPATH), SPINNER_NOT_STOPPED_ON_TIME);
         Login login = homePage.getLoggedOutNavBar().clickSignIn();
-        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.xpath(USER_INPUT_XPATH), SIGNIN_PAGE_NOT_LOADED_ON_TIME);
+        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.id(USER_INPUT_ID), SIGNIN_PAGE_NOT_LOADED_ON_TIME);
         login.loginWithFavUser();
         ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.className(USERNAME_LABEL_CLASS), SIGNIN_NOT_COMPLETED_ON_TIME);
         Bag bag = homePage.addItemsToCart(PRODUCT_COUNT);

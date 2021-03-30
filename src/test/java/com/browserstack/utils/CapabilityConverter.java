@@ -1,5 +1,6 @@
 package com.browserstack.utils;
 
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.aggregator.ArgumentsAggregationException;
@@ -11,6 +12,7 @@ public class CapabilityConverter implements ArgumentsAggregator {
     private static final char SEPARATOR_CHARACTER = ':';
 
     @Override
+    @Step("Reading capabilities")
     public DesiredCapabilities aggregateArguments(ArgumentsAccessor arguments, ParameterContext parameterContext) throws ArgumentsAggregationException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         for (int i = 0; i < arguments.size(); i++) {

@@ -1,7 +1,13 @@
 package com.browserstack.utils;
 
+import static com.browserstack.utils.Constants.Capabilities.CAPABILITY_VALUE_CHROME;
+
 public class Constants {
 
+    public static class Defaults{
+        public static final String DEFAULT_ON_PREM_BROWSER = CAPABILITY_VALUE_CHROME;
+        public static final String DEFAULT_DOCKER_BROWSER = CAPABILITY_VALUE_CHROME;
+    }
     public static class Instances {
         public static final String APPLICATION_INSTANCE_PRIVATE = "private";
         public static final String APPLICATION_INSTANCE_PUBLIC = "public";
@@ -9,7 +15,7 @@ public class Constants {
 
     public static class Profiles {
         public static final String PROFILE_ON_PREMISE = "on-premise";
-        public static final String DOCKER = "docker";
+        public static final String PROFILE_DOCKER = "docker";
         public static final String PROFILE_SINGLE = "single";
         public static final String PROFILE_PARALLEL = "parallel";
         public static final String PROFILE_LOCAL = "local";
@@ -42,8 +48,6 @@ public class Constants {
         public static final String PRODUCT_COUNT_MISMATCH = "Product Count Mismatch";
         public static final String PAGE_NOT_LOADED_ON_TIME = "A page is taking too long to load.";
         public static final String PAGE_NOT_RENDERED_CORRECTLY = "Page are not rendered correctly.";
-
-
         public static final String ORDER_BY_FILTER = "After applying lowest to highest sort option the cost should be in ascending order.";
         public static final String APPLY_APPLE_SAMSUNG_FILTER = "No change in product count after applying filter.";
         public static final String CLICK_FAVOURITES = "To see favourites, the user should login.";
@@ -63,8 +67,8 @@ public class Constants {
         public static final String PRODUCT_CARD_CSS = "shelf-item";
         public static final String SIGN_IN_BUTTON_ID = "signin";
         public static final String USERNAME_LABEL_CLASS = "username";
-        public static final String USER_INPUT_XPATH = "//input[@id='react-select-2-input']";
-        public static final String PASSWORD_INPUT_XPATH = "//*[@id=\"react-select-3-input\"]";
+        public static final String USER_INPUT_ID = "react-select-2-input";
+        public static final String PASSWORD_INPUT_ID = "react-select-3-input";
         public static final String LOGIN_BUTTON_ID = "login-btn";
         public static final String ORDER_BY_DROP_DOWN_CSS = "select";
         public static final String LOWEST_TO_HIGHEST_DROP_DOWN_OPTION_BY_XPATH = "//option[text() = 'Lowest to highest']";
@@ -81,9 +85,9 @@ public class Constants {
         public static final String BAG_QUANTITY_LABEL_CLASS = "bag__quantity";
         public static final String FAVOURITE_BUTTON_XPATH = "//div[@class='shelf-stopper']";
         public static final String FAVOURITE_BUTTON_CLICKED_XPATH="//button[@class='MuiButtonBase-root MuiIconButton-root Button clicked ']";
-
         public static final String OFFERS_BUTTON_ID = "offers";
         public static final String SIGN_OUT_BUTTON_ID = "logout";
+        public static final String OFFER_CARD_CLASS = "offer";
     }
 
     public static class BrowserStackRESTStatus {

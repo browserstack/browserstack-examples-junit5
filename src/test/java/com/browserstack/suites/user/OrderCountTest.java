@@ -49,7 +49,8 @@ public class OrderCountTest extends NonPageObjectTest {
     @Step("Checking orders")
     private int checkExistingOrders(WebDriver webDriver) {
         webDriver.findElement(By.className(BUY_BUTTON_CLASS)).click();
-        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.className(BAG_QUANTITY_LABEL_CLASS), CART_NOT_LOADED_ON_TIME);
+        ElementLocatorUtil.waitUntilIntAppears(webDriver, this, By.className(BAG_QUANTITY_LABEL_CLASS), CART_NOT_LOADED_ON_TIME);
+
         WebElement cartValue = webDriver.findElement(By.className(BAG_QUANTITY_LABEL_CLASS));
         return Integer.parseInt(cartValue.getText());
     }

@@ -22,7 +22,7 @@ import static com.browserstack.utils.Constants.ErrorMessages.*;
 @Story(STORY_LOCKED_ACCOUNT)
 public class LockedAccountTest extends NonPageObjectTest {
 
-    private static final String ERROR_MESSAGE = "Your account has been locked.";
+    private static final String ACCOUNT_LOCKED_ERROR_MESSAGE = "Your account has been locked.";
     private static final String LOCKED_ACCOUNT_USER_NAME = "locked_user";
 
     @Override
@@ -50,11 +50,11 @@ public class LockedAccountTest extends NonPageObjectTest {
     private void attemptSignIn(WebDriver webDriver, String userName, String password) {
         WebElement signInButton = webDriver.findElement(By.id(SIGN_IN_BUTTON_ID));
         signInButton.click();
-        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.xpath(USER_INPUT_XPATH), SIGNIN_PAGE_NOT_LOADED_ON_TIME);
-        WebElement userElement = webDriver.findElement(By.xpath(USER_INPUT_XPATH));
+        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.id(USER_INPUT_ID), SIGNIN_PAGE_NOT_LOADED_ON_TIME);
+        WebElement userElement = webDriver.findElement(By.id(USER_INPUT_ID));
         userElement.sendKeys(userName);
         userElement.sendKeys(Keys.ENTER);
-        WebElement passwordElement = webDriver.findElement(By.xpath(PASSWORD_INPUT_XPATH));
+        WebElement passwordElement = webDriver.findElement(By.id(PASSWORD_INPUT_ID));
         passwordElement.sendKeys(password);
         passwordElement.sendKeys(Keys.ENTER);
         WebElement logInButton = webDriver.findElement(By.id(LOGIN_BUTTON_ID));
@@ -64,7 +64,7 @@ public class LockedAccountTest extends NonPageObjectTest {
     @Step("Checking if the API error is displayed")
     private void checkAPIErrorDisplayed(WebDriver webDriver) {
         WebElement apiError = webDriver.findElement(By.className(API_ERROR_CLASS));
-        Assertions.assertEquals(apiError.getText(), ERROR_MESSAGE, () -> markFail(LOCKED_ACCOUNT));
+        Assertions.assertEquals(apiError.getText(), ACCOUNT_LOCKED_ERROR_MESSAGE, () -> markFail(LOCKED_ACCOUNT));
     }
 
 }

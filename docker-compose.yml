@@ -13,7 +13,7 @@ services:
     deploy:
       replicas: 5
     ports:
-      - "5900:5900"
+      - "6900:5900"
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -25,9 +25,9 @@ services:
     image: selenium/node-firefox-debug:3.141.59-yttrium
     container_name: firefox
     deploy:
-      replicas: 8
+      replicas: 5
     ports:
-      - "5901:5901"
+      - "6901:5900"
     volumes:
       - /dev/shm:/dev/shm
     depends_on:

@@ -17,14 +17,8 @@
         <json.simple.version>1.1</json.simple.version>
         <browserstack.local.version>1.0.6</browserstack.local.version>
         <opencsv.version>5.3</opencsv.version>
-
-        <allure-maven.version>2.10.0</allure-maven.version>
         <allure-junit5.version>2.13.8</allure-junit5.version>
         <aspectj.version>1.9.6</aspectj.version>
-
-
-       <!-- <aspectj.version>1.9.6</aspectj.version>
-        <allure-junit5.version>2.13.8</allure-junit5.version>-->
     </properties>
 
     <dependencyManagement>
@@ -47,15 +41,15 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.googlecode.json-simple</groupId>
-                <artifactId>json-simple</artifactId>
-                <version>${json.simple.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
                 <version>${junit.jupiter.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.json-simple</groupId>
+                <artifactId>json-simple</artifactId>
+                <version>${json.simple.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.browserstack</groupId>
@@ -89,12 +83,12 @@
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
         </dependency>
         <dependency>
             <groupId>com.browserstack</groupId>
@@ -111,7 +105,6 @@
     </dependencies>
 
     <profiles>
-
         <profile>
             <properties>
                 <profile>on-premise</profile>
@@ -142,10 +135,10 @@
                                     junit.jupiter.execution.parallel.enabled = true
                                     junit.jupiter.execution.parallel.mode.default = concurrent
                                     junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                    junit.jupiter.execution.parallel.config.strategy = fixed
+                                    junit.jupiter.execution.parallel.config.fixed.parallelism = 1
                                 </configurationParameters>
                             </properties>
-
-                            <!-- Allure Configs -->
                             <testFailureIgnore>false</testFailureIgnore>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -175,7 +168,6 @@
                 </plugins>
             </build>
         </profile>
-
         <profile>
             <properties>
                 <profile>docker</profile>
@@ -205,8 +197,6 @@
                                     junit.jupiter.execution.parallel.mode.classes.default = concurrent
                                 </configurationParameters>
                             </properties>
-
-                            <!-- Allure Configs -->
                             <testFailureIgnore>false</testFailureIgnore>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -236,7 +226,6 @@
                 </plugins>
             </build>
         </profile>
-
         <profile>
             <properties>
                 <profile>single</profile>
@@ -264,10 +253,10 @@
                                     junit.jupiter.execution.parallel.enabled = true
                                     junit.jupiter.execution.parallel.mode.default = concurrent
                                     junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                    junit.jupiter.execution.parallel.config.strategy = fixed
+                                    junit.jupiter.execution.parallel.config.fixed.parallelism = 5
                                 </configurationParameters>
                             </properties>
-
-                            <!-- Allure Configs -->
                             <testFailureIgnore>false</testFailureIgnore>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -297,7 +286,6 @@
                 </plugins>
             </build>
         </profile>
-
         <profile>
             <properties>
                 <profile>parallel</profile>
@@ -325,10 +313,10 @@
                                     junit.jupiter.execution.parallel.enabled = true
                                     junit.jupiter.execution.parallel.mode.default = concurrent
                                     junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                    junit.jupiter.execution.parallel.config.strategy = fixed
+                                    junit.jupiter.execution.parallel.config.fixed.parallelism = 5
                                 </configurationParameters>
                             </properties>
-
-                            <!-- Allure Configs -->
                             <testFailureIgnore>false</testFailureIgnore>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -358,7 +346,6 @@
                 </plugins>
             </build>
         </profile>
-
         <profile>
             <properties>
                 <profile>local</profile>
@@ -386,10 +373,10 @@
                                     junit.jupiter.execution.parallel.enabled = true
                                     junit.jupiter.execution.parallel.mode.default = concurrent
                                     junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                    junit.jupiter.execution.parallel.config.strategy = fixed
+                                    junit.jupiter.execution.parallel.config.fixed.parallelism = 5
                                 </configurationParameters>
                             </properties>
-
-                            <!-- Allure Configs -->
                             <testFailureIgnore>false</testFailureIgnore>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -419,7 +406,6 @@
                 </plugins>
             </build>
         </profile>
-
         <profile>
             <properties>
                 <profile>local-parallel</profile>
@@ -447,10 +433,10 @@
                                     junit.jupiter.execution.parallel.enabled = true
                                     junit.jupiter.execution.parallel.mode.default = concurrent
                                     junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                                    junit.jupiter.execution.parallel.config.strategy = fixed
+                                    junit.jupiter.execution.parallel.config.fixed.parallelism = 5
                                 </configurationParameters>
                             </properties>
-
-                            <!-- Allure Configs -->
                             <testFailureIgnore>false</testFailureIgnore>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -480,8 +466,5 @@
                 </plugins>
             </build>
         </profile>
-
-
     </profiles>
-
 </project>

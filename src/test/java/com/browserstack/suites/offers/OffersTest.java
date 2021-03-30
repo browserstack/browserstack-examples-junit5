@@ -21,6 +21,7 @@ import static com.browserstack.utils.Constants.AllureTags.EPIC_OFFERS;
 import static com.browserstack.utils.Constants.AllureTags.STORY_OFFERS;
 import static com.browserstack.utils.Constants.Capabilities.*;
 import static com.browserstack.utils.Constants.ElementLocators.OFFERS_BUTTON_ID;
+import static com.browserstack.utils.Constants.ElementLocators.OFFER_CARD_CLASS;
 import static com.browserstack.utils.Constants.EndPoints.OFFERS;
 import static com.browserstack.utils.Constants.EndPoints.SIGNED_IN;
 import static com.browserstack.utils.Constants.ErrorMessages.*;
@@ -31,7 +32,6 @@ public class OffersTest extends NonPageObjectTest {
 
     private static final String FAVOURITE_ACCOUNT_USER_NAME = "existing_orders_user";
     private static final String OFFER_MESSAGE = "We've promotional offers in your location.";
-    private static final String OFFER_CLASS = "offer";
     private static final String LOCATION_SCRIPT_FORMAT = "navigator.geolocation.getCurrentPosition = function(success){\n" +
             "    var position = { \"coords\":{\"latitude\":\"%s\",\"longitude\":\"%s\"}};\n" +
             "    success(position);\n" +
@@ -52,7 +52,7 @@ public class OffersTest extends NonPageObjectTest {
         signIntoFavouriteAccount(webDriver);
         mockGPS(webDriver);
         checkIfOfferMessageAvailable(webDriver);
-        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.className(OFFER_CLASS), NO_OFFERS_LOADED);
+        ElementLocatorUtil.waitUntilElementAppears(webDriver, this, By.className(OFFER_CARD_CLASS), NO_OFFERS_LOADED);
     }
 
     @Override
