@@ -9,11 +9,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 /**
- * Created with IntelliJ IDEA.
+ * This {@link TestWatcher} is responsible for the following,
+ * <ul>
+ *     <li>If the {@link WebDriver} supports reporting the test status, i.e. the {@link WebDriver} is a {@link RemoteWebDriver} then the status is marked on the cloud provider.</li>
+ *     <li>After the test is completed the {@link WebDriver} is also quit such that all the instances of the Browser for that WebDriver are closed.</li>
+ * </ul>
+ *
+ * The assumption in this class is that the {@link WebDriver} instances are one per class so that the user can run
+ * parallel tests at a Test Method level.
  *
  * @author Anirudha Khanna
  */
-public class BrowserStackTestReporter implements TestWatcher {
+public class WebDriverTestWatcher implements TestWatcher {
 
     private static final String TEST_STATUS_SCRIPT = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"%s\", \"reason\": \"%s\"}}";
 
@@ -28,7 +35,7 @@ public class BrowserStackTestReporter implements TestWatcher {
      */
     @Override
     public void testDisabled(ExtensionContext context, Optional<String> reason) {
-
+        TestWatcher.super.testDisabled(context, reason);
     }
 
     /**
@@ -41,15 +48,7 @@ public class BrowserStackTestReporter implements TestWatcher {
      */
     @Override
     public void testSuccessful(ExtensionContext context) {
-        String testName = context.getDisplayName();
-        WebDriver webDriver = (WebDriver) context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName);
-        if (webDriver instanceof RemoteWebDriver) {
-            try {
-                ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, "passed", "Test Passed"));
-            } finally {
-                webDriver.quit();
-            }
-        }
+        markAndCloseWebDriver(context, "passed", "Test passed");
     }
 
     /**
@@ -63,15 +62,7 @@ public class BrowserStackTestReporter implements TestWatcher {
      */
     @Override
     public void testAborted(ExtensionContext context, Throwable cause) {
-        String testName = context.getDisplayName();
-        WebDriver webDriver = (WebDriver) context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName);
-        if (webDriver instanceof RemoteWebDriver) {
-            try {
-                ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, "failed", cause.getMessage()));
-            } finally {
-                webDriver.quit();
-            }
-        }
+        markAndCloseWebDriver(context, "failed", cause.getMessage());
     }
 
     /**
@@ -85,14 +76,21 @@ public class BrowserStackTestReporter implements TestWatcher {
      */
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
+        markAndCloseWebDriver(context, "failed", cause.getMessage());
+    }
+
+    private void markAndCloseWebDriver(ExtensionContext context, String status, String reason) {
         String testName = context.getDisplayName();
-        WebDriver webDriver = (WebDriver) context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName);
-        if (webDriver instanceof RemoteWebDriver) {
-            try {
-                ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, "failed", cause.getMessage()));
-            } finally {
+        WebDriver webDriver = context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName, WebDriver.class);
+        try {
+            if (webDriver instanceof RemoteWebDriver) {
+                ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, status, reason));
+            }
+        } finally {
+            if (webDriver != null) {
                 webDriver.quit();
             }
         }
     }
+
 }
