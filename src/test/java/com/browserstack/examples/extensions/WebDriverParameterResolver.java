@@ -4,8 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -90,13 +88,16 @@ public class WebDriverParameterResolver implements ParameterResolver {
                                    ExtensionContext extensionContext) throws ParameterResolutionException {
         String testMethodName = extensionContext.getDisplayName();
         WebDriver webDriver = createWebDriver(testMethodName);
+        if (webDriver == null) {
+            throw new ParameterResolutionException("Unable to create WebDriver for Platform :: "
+                                                     + this.platform.getName() + " method :: " + testMethodName);
+        }
         extensionContext.getStore(STORE_NAMESPACE).put(testMethodName, webDriver);
         return webDriver;
     }
 
 
     private WebDriver createWebDriver(String testMethodName) {
-        List<WebDriver> webDriverList = new ArrayList<>();
         WebDriver webDriver = null;
         try {
             webDriver = this.webDriverFactory.createWebDriverForPlatform(platform, testMethodName);

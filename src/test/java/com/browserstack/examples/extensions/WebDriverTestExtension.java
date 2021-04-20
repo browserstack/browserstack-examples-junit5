@@ -1,6 +1,5 @@
 package com.browserstack.examples.extensions;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +43,7 @@ public class WebDriverTestExtension implements TestTemplateInvocationContextProv
         }
 
         Method testMethod = context.getTestMethod().get();
+        LOGGER.debug("Supports Test Template on Method :: {}", testMethod.getName());
         return AnnotationUtils.isAnnotated(testMethod, WebDriverTest.class);
     }
 
@@ -70,15 +70,11 @@ public class WebDriverTestExtension implements TestTemplateInvocationContextProv
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
         String testMethodName = context.getRequiredTestMethod().getName();
         final List<TestTemplateInvocationContext> webDriverTestInvocationContexts = new ArrayList<>();
-        try {
-            final WebDriverFactory webDriverFactory = WebDriverFactory.getInstance();
-            List<Platform> platforms = webDriverFactory.getPlatforms();
-            platforms.forEach( p -> {
-                webDriverTestInvocationContexts.add(new WebDriverTestInvocationContext(testMethodName, webDriverFactory, p));
-            });
-        } catch (IOException e) {
-            LOGGER.error("Caught exception when getting WebDriverFactory Instance.", e);
-        }
+        final WebDriverFactory webDriverFactory = WebDriverFactory.getInstance();
+        List<Platform> platforms = webDriverFactory.getPlatforms();
+        platforms.forEach( p -> {
+            webDriverTestInvocationContexts.add(new WebDriverTestInvocationContext(testMethodName, webDriverFactory, p));
+        });
 
         return webDriverTestInvocationContexts.stream();
     }

@@ -24,7 +24,9 @@
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <capabilities.config.file>capabilities.yml</capabilities.config.file>
-        <parallel.count>5</parallel.count>
+        <junit.parallel.properties>
+            junit.jupiter.extensions.autodetection.enabled = true
+        </junit.parallel.properties>
     </properties>
 
     <dependencies>
@@ -123,6 +125,11 @@
                     <systemPropertyVariables>
                         <capabilities.config>${capabilities.config.file}</capabilities.config>
                     </systemPropertyVariables>
+                    <properties>
+                        <configurationParameters>
+                            ${junit.parallel.properties}
+                        </configurationParameters>
+                    </properties>
                 </configuration>
             </plugin>
         </plugins>
@@ -137,6 +144,14 @@
             </activation>
             <properties>
                 <capabilities.config.file>capabilities-remotedriver.yml</capabilities.config.file>
+                <junit.parallel.properties>
+                    junit.jupiter.extensions.autodetection.enabled = true
+                    junit.jupiter.execution.parallel.enabled = true
+                    junit.jupiter.execution.parallel.mode.default = concurrent
+                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                    junit.jupiter.execution.parallel.config.strategy = fixed
+                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
+                </junit.parallel.properties>
             </properties>
         </profile>
 
