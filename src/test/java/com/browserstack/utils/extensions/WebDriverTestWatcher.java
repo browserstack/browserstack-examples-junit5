@@ -50,7 +50,6 @@ public class WebDriverTestWatcher implements TestWatcher {
                 ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, status, reason));
                 String sessionURL = String.format("https://automate.browserstack.com/dashboard/v2/sessions/%s",((RemoteWebDriver)webDriver).getSessionId());
                 Allure.link("Browserstack Automate",sessionURL);
-                Allure.parameter("name","sss..ss");
             }
         } finally {
             if (webDriver != null) {
