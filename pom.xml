@@ -12,11 +12,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <lombok.version>1.18.12</lombok.version>
+        <jackson.version>2.12.2</jackson.version>
+
         <selenium-java.version>3.141.59</selenium-java.version>
         <junit.jupiter.version>5.7.1</junit.jupiter.version>
         <json.simple.version>1.1</json.simple.version>
-        <jackson.version>2.12.2</jackson.version>
-        <lombok.version>1.18.12</lombok.version>
+
         <browserstack.local.version>1.0.6</browserstack.local.version>
         <opencsv.version>5.3</opencsv.version>
         <allure-junit5.version>2.13.8</allure-junit5.version>
@@ -35,52 +37,39 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium-java.version}</version>
         </dependency>
-
-        <dependency>
+       <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
+       <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
+       <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.browserstack</groupId>
             <artifactId>browserstack-local-java</artifactId>
             <version>${browserstack.local.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
@@ -91,24 +80,15 @@
             <artifactId>allure-junit5</artifactId>
             <version>${allure-junit5.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-            <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -120,17 +100,30 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <includes>
-                        <include>com/browserstack/examples/**/*.java</include>
+                        <include>com/browserstack/suites/**/*.java</include>
                     </includes>
                     <systemPropertyVariables>
                         <capabilities.config>${capabilities.config.file}</capabilities.config>
+                        <profile.name>${profile.active.name}</profile.name>
+                        <application.endpoint>${profile.active.endpoint}</application.endpoint>
                     </systemPropertyVariables>
                     <properties>
                         <configurationParameters>
                             ${junit.parallel.properties}
                         </configurationParameters>
                     </properties>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -138,12 +131,29 @@
     <profiles>
 
         <profile>
-            <id>remotedriver</id>
+            <id>on-prem</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <capabilities.config.file>capabilities-remotedriver.yml</capabilities.config.file>
+                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <profile.active.name>on-prem</profile.active.name>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <properties>
+                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <profile.active.name>docker</profile.active.name>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>bstack-single</id>
+            <properties>
+                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <profile.active.name>bstack-single</profile.active.name>
                 <junit.parallel.properties>
                     junit.jupiter.extensions.autodetection.enabled = true
                     junit.jupiter.execution.parallel.enabled = true
@@ -156,16 +166,54 @@
         </profile>
 
         <profile>
-            <id>localdriver</id>
+            <id>bstack-parallel</id>
             <properties>
-                <capabilities.config.file>capabilities-localdriver.yml</capabilities.config.file>
+                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <profile.active.name>bstack-parallel</profile.active.name>
+                <junit.parallel.properties>
+                    junit.jupiter.extensions.autodetection.enabled = true
+                    junit.jupiter.execution.parallel.enabled = true
+                    junit.jupiter.execution.parallel.mode.default = concurrent
+                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                    junit.jupiter.execution.parallel.config.strategy = fixed
+                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
+                </junit.parallel.properties>
             </properties>
         </profile>
 
         <profile>
-            <id>remotemobile</id>
+            <id>bstack-local</id>
             <properties>
-                <capabilities.config.file>capabilities-remotemobile.yml</capabilities.config.file>
+                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <profile.active.name>bstack-local</profile.active.name>
+                <profile.active.endpoint>http://bs-local.com:3000/</profile.active.endpoint>
+                <junit.parallel.properties>
+                    junit.jupiter.extensions.autodetection.enabled = true
+                    junit.jupiter.execution.parallel.enabled = true
+                    junit.jupiter.execution.parallel.mode.default = concurrent
+                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                    junit.jupiter.execution.parallel.config.strategy = fixed
+                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
+                </junit.parallel.properties>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>bstack-local-parallel</id>
+            <activation>
+            </activation>
+            <properties>
+                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <profile.active.name>bstack-local-parallel</profile.active.name>
+                <profile.active.endpoint>http://bs-local.com:3000/</profile.active.endpoint>
+                <junit.parallel.properties>
+                    junit.jupiter.extensions.autodetection.enabled = true
+                    junit.jupiter.execution.parallel.enabled = true
+                    junit.jupiter.execution.parallel.mode.default = concurrent
+                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+                    junit.jupiter.execution.parallel.config.strategy = fixed
+                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
+                </junit.parallel.properties>
             </properties>
         </profile>
 

@@ -1,11 +1,12 @@
 package com.browserstack.pages;
 
+import com.browserstack.utils.NavBarComponent;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class HomePage extends BasePage {
+public class HomePage extends NavigablePage {
 
     private static final String ADD_ITEM_BUTTON_CLASS = "shelf-item__buy-btn";
     private static final String CART_CLOSE_BUTTON_CLASS = "float-cart__close-btn";
@@ -16,6 +17,11 @@ public class HomePage extends BasePage {
         super(webDriver);
         this.webDriver = webDriver;
         navigateToHomePage(url,webDriver);
+    }
+
+    public HomePage(NavBarComponent navBarComponent,WebDriver webDriver){
+        super(navBarComponent);
+        this.webDriver = webDriver;
     }
 
     @Step("Navigating to the home page")

@@ -4,7 +4,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class Orders extends BasePage {
+public class Orders extends NavigablePage {
 
     private static final String ORDERS_ID = "orders";
     private static final String PRODUCT_COST_XPATH = "//span[@class='a-size-small a-color-price']";
