@@ -14,16 +14,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.12</lombok.version>
         <jackson.version>2.12.2</jackson.version>
-
         <selenium-java.version>3.141.59</selenium-java.version>
         <junit.jupiter.version>5.7.1</junit.jupiter.version>
-        <json.simple.version>1.1</json.simple.version>
-
         <browserstack.local.version>1.0.6</browserstack.local.version>
         <opencsv.version>5.3</opencsv.version>
         <allure-junit5.version>2.13.8</allure-junit5.version>
         <aspectj.version>1.9.6</aspectj.version>
-        <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <capabilities.config.file>capabilities.yml</capabilities.config.file>
         <junit.parallel.properties>
