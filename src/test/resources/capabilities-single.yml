@@ -1,5 +1,5 @@
 application_endpoint: https://bstackdemo.com
-
+driver_type: OnCloud
 on_cloud_capabilities:
   hub_url: https://hub-cloud.browserstack.com/wd/hub
   user: raveendratudangi5

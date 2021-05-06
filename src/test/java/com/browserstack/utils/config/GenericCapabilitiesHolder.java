@@ -7,7 +7,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.util.Arrays;
 import java.util.List;
 
-public class CloudCapabilitiesHolder {
+public class GenericCapabilitiesHolder {
 
     @JsonProperty("hub_url")
     private String hubUrl;

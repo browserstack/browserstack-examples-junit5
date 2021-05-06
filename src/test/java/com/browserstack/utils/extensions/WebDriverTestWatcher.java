@@ -1,5 +1,7 @@
 package com.browserstack.utils.extensions;
 
+import com.browserstack.utils.config.DriverType;
+import com.browserstack.utils.config.WebDriverFactory;
 import com.browserstack.utils.helpers.CommonSteps;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -45,8 +47,7 @@ public class WebDriverTestWatcher implements TestWatcher {
             CommonSteps.takeScreenshot(webDriver);
         }
         try {
-            String profile = System.getProperty("profile.name");
-            if (!Arrays.asList(ON_PREMISE, ON_DOCKER).contains(profile)) {
+            if (WebDriverFactory.getInstance().getActiveDriver().equals(DriverType.OnCloud)) {
                 ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, status, reason));
                 String sessionURL = String.format("https://automate.browserstack.com/dashboard/v2/sessions/%s", ((RemoteWebDriver) webDriver).getSessionId());
                 Allure.link("Browserstack Automate", sessionURL);

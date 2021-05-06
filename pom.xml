@@ -21,9 +21,17 @@
         <aspectj.version>1.9.6</aspectj.version>
         <logback.version>1.2.3</logback.version>
         <capabilities.config.file>capabilities.yml</capabilities.config.file>
-        <junit.parallel.properties>
+        <single.configuration.properties>
             junit.jupiter.extensions.autodetection.enabled = true
-        </junit.parallel.properties>
+        </single.configuration.properties>
+        <parallel.configuration.properties>
+            junit.jupiter.extensions.autodetection.enabled = true
+            junit.jupiter.execution.parallel.enabled = true
+            junit.jupiter.execution.parallel.mode.default = concurrent
+            junit.jupiter.execution.parallel.mode.classes.default = concurrent
+            junit.jupiter.execution.parallel.config.strategy = fixed
+            junit.jupiter.execution.parallel.config.fixed.parallelism = 5
+        </parallel.configuration.properties>
     </properties>
 
     <dependencies>
@@ -94,12 +102,10 @@
                     </includes>
                     <systemPropertyVariables>
                         <capabilities.config>${capabilities.config.file}</capabilities.config>
-                        <profile.name>${profile.active.name}</profile.name>
-                        <application.endpoint>${profile.active.endpoint}</application.endpoint>
                     </systemPropertyVariables>
                     <properties>
                         <configurationParameters>
-                            ${junit.parallel.properties}
+                            ${junit.configuration.properties}
                         </configurationParameters>
                     </properties>
                     <testFailureIgnore>false</testFailureIgnore>
@@ -122,69 +128,44 @@
 
         <profile>
             <id>on-prem</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
-                <capabilities.config.file>capabilities.yml</capabilities.config.file>
-                <profile.active.name>on-prem</profile.active.name>
+                <capabilities.config.file>capabilities-on-premise.yml</capabilities.config.file>
+                <junit.configuration.properties>${single.configuration.properties}</junit.configuration.properties>
             </properties>
         </profile>
 
         <profile>
             <id>docker</id>
             <properties>
-                <capabilities.config.file>capabilities.yml</capabilities.config.file>
-                <profile.active.name>docker</profile.active.name>
+                <capabilities.config.file>capabilities-docker.yml</capabilities.config.file>
+                <junit.configuration.properties>${parallel.configuration.properties}</junit.configuration.properties>
             </properties>
         </profile>
 
         <profile>
             <id>bstack-single</id>
             <properties>
-                <capabilities.config.file>single-capabilities.yml</capabilities.config.file>
-                <profile.active.name>bstack-single</profile.active.name>
-                <junit.parallel.properties>
-                    junit.jupiter.extensions.autodetection.enabled = true
-                    junit.jupiter.execution.parallel.enabled = true
-                    junit.jupiter.execution.parallel.mode.default = concurrent
-                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
-                    junit.jupiter.execution.parallel.config.strategy = fixed
-                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
-                </junit.parallel.properties>
+                <capabilities.config.file>capabilities-single.yml</capabilities.config.file>
+                <junit.configuration.properties>${parallel.configuration.properties}</junit.configuration.properties>
             </properties>
         </profile>
 
         <profile>
             <id>bstack-parallel</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
-                <capabilities.config.file>parallel-capabilities.yml</capabilities.config.file>
-                <profile.active.name>bstack-parallel</profile.active.name>
-                <junit.parallel.properties>
-                    junit.jupiter.extensions.autodetection.enabled = true
-                    junit.jupiter.execution.parallel.enabled = true
-                    junit.jupiter.execution.parallel.mode.default = concurrent
-                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
-                    junit.jupiter.execution.parallel.config.strategy = fixed
-                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
-                </junit.parallel.properties>
+                <capabilities.config.file>capabilities-parallel.yml</capabilities.config.file>
+                <junit.configuration.properties>${parallel.configuration.properties}</junit.configuration.properties>
             </properties>
         </profile>
 
         <profile>
             <id>bstack-local</id>
             <properties>
-                <capabilities.config.file>capabilities.yml</capabilities.config.file>
-                <profile.active.name>bstack-local</profile.active.name>
-                <profile.active.endpoint>http://bs-local.com:3000/</profile.active.endpoint>
-                <junit.parallel.properties>
-                    junit.jupiter.extensions.autodetection.enabled = true
-                    junit.jupiter.execution.parallel.enabled = true
-                    junit.jupiter.execution.parallel.mode.default = concurrent
-                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
-                    junit.jupiter.execution.parallel.config.strategy = fixed
-                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
-                </junit.parallel.properties>
+                <capabilities.config.file>capabilities-local.yml</capabilities.config.file>
+                <junit.configuration.properties>${parallel.configuration.properties}</junit.configuration.properties>
             </properties>
         </profile>
 
@@ -193,17 +174,8 @@
             <activation>
             </activation>
             <properties>
-                <capabilities.config.file>capabilities.yml</capabilities.config.file>
-                <profile.active.name>bstack-local-parallel</profile.active.name>
-                <profile.active.endpoint>http://bs-local.com:3000/</profile.active.endpoint>
-                <junit.parallel.properties>
-                    junit.jupiter.extensions.autodetection.enabled = true
-                    junit.jupiter.execution.parallel.enabled = true
-                    junit.jupiter.execution.parallel.mode.default = concurrent
-                    junit.jupiter.execution.parallel.mode.classes.default = concurrent
-                    junit.jupiter.execution.parallel.config.strategy = fixed
-                    junit.jupiter.execution.parallel.config.fixed.parallelism = 4
-                </junit.parallel.properties>
+                <capabilities.config.file>capabilities-local-parallel.yml</capabilities.config.file>
+                <junit.configuration.properties>${parallel.configuration.properties}</junit.configuration.properties>
             </properties>
         </profile>
 

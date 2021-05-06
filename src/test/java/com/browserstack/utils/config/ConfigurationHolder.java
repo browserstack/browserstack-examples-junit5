@@ -18,13 +18,13 @@ public class ConfigurationHolder {
     private DriverType driverType;
 
     @JsonProperty("on_premise_capabilities")
-    private OnPremiseCapabilitiesHolder onPremiseCapabilitiesHolder;
+    private GenericCapabilitiesHolder onPremiseCapabilitiesHolder;
 
     @JsonProperty("on_docker_capabilities")
-    private DockerCapabilitiesHolder dockerCapabilitiesHolder;
+    private GenericCapabilitiesHolder dockerCapabilitiesHolder;
 
     @JsonProperty("on_cloud_capabilities")
-    private CloudCapabilitiesHolder cloudCapabilitiesHolder;
+    private GenericCapabilitiesHolder cloudCapabilitiesHolder;
 
     @JsonProperty("specific_capabilities")
     private SpecificCapabilitiesHolder specificCapabilitiesHolder;
@@ -37,35 +37,35 @@ public class ConfigurationHolder {
         this.applicationEndpoint = applicationEndpoint;
     }
 
-    public DriverType getExecutionContext() {
+    public DriverType getDriverType() {
         return driverType;
     }
 
-    public void setExecutionContext(DriverType driverType) {
+    public void setDriverType(DriverType driverType) {
         this.driverType = driverType;
     }
 
-    public OnPremiseCapabilitiesHolder getOnPremiseCapabilitiesHolder() {
+    public GenericCapabilitiesHolder getOnPremiseCapabilitiesHolder() {
         return onPremiseCapabilitiesHolder;
     }
 
-    public void setOnPremiseCapabilitiesHolder(OnPremiseCapabilitiesHolder onPremiseCapabilitiesHolder) {
+    public void setOnPremiseCapabilitiesHolder(GenericCapabilitiesHolder onPremiseCapabilitiesHolder) {
         this.onPremiseCapabilitiesHolder = onPremiseCapabilitiesHolder;
     }
 
-    public DockerCapabilitiesHolder getDockerCapabilitiesHolder() {
+    public GenericCapabilitiesHolder getDockerCapabilitiesHolder() {
         return dockerCapabilitiesHolder;
     }
 
-    public void setDockerCapabilitiesHolder(DockerCapabilitiesHolder dockerCapabilitiesHolder) {
+    public void setDockerCapabilitiesHolder(GenericCapabilitiesHolder dockerCapabilitiesHolder) {
         this.dockerCapabilitiesHolder = dockerCapabilitiesHolder;
     }
 
-    public CloudCapabilitiesHolder getCloudCapabilitiesHolder() {
+    public GenericCapabilitiesHolder getCloudCapabilitiesHolder() {
         return cloudCapabilitiesHolder;
     }
 
-    public void setCloudCapabilitiesHolder(CloudCapabilitiesHolder cloudCapabilitiesHolder) {
+    public void setCloudCapabilitiesHolder(GenericCapabilitiesHolder cloudCapabilitiesHolder) {
         this.cloudCapabilitiesHolder = cloudCapabilitiesHolder;
     }
 

@@ -109,4 +109,9 @@ public class Constants {
         public static final String FEATURE_PRODUCT_IMAGE = "Product Image Feature Tests";
         public static final String FEATURE_PURCHASE = "Product Order Feature Tests";
     }
+
+    public static class AllureParameters{
+        public static final String CAPABILITIES_FILE = "capabilities-file";
+        public static final String CAPABILITIES = "capabilities";
+    }
 }

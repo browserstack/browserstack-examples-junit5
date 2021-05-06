@@ -1,5 +1,5 @@
-application_endpoint: https://bstackdemo.com
-
+application_endpoint: http://bs-local.com:3000/
+driver_type: OnCloud
 on_cloud_capabilities:
   hub_url: https://hub-cloud.browserstack.com/wd/hub
   user: raveendratudangi5
@@ -11,12 +11,15 @@ on_cloud_capabilities:
       browserstack.debug: true
       browserstack.networkLogs: true
       browserstack.console: debug
-  platforms:
+      browserstack.local: true
+    platforms:
     - name: Win10_IE11
       os: Windows
       os_version: '10'
       browser: Internet Explorer
       browser_version: '11.0'
+      capabilities:
+       browserstack.ie.arch: x32
     - name: Win10_Chrome_Latest-1
       os: Windows
       os_version: '10'
@@ -42,6 +45,11 @@ on_cloud_capabilities:
       os_version: '13.0'
       device: iPhone XS
       real_mobile: true
+  local_options:
+    forcelocal: true
+    force: true
+    verbose: true
+    logFile: local_test.log
 specific_capabilities:
   apply_mask:
     - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
