@@ -1,16 +1,12 @@
 package com.browserstack.utils.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Data
-@ToString
 public class CloudCapabilitiesHolder {
 
     @JsonProperty("hub_url")
@@ -24,23 +20,67 @@ public class CloudCapabilitiesHolder {
     @JsonProperty("common_capabilities")
     private CommonCapabilitiesHolder commonCapabilitiesHolder;
 
-    @JsonProperty("default_profile")
-    private String profile;
-
-    @JsonProperty("profile_capabilities")
-    private List<CloudProfileCapabilitiesHolder> profileCapabilities;
+    private List<PlatformHolder> platforms;
 
     @JsonProperty("local_options")
     private LocalConfigurationHolder localOptions;
 
-    public DesiredCapabilities convertToDesiredCapabilities(){
+    public String getHubUrl() {
+        return hubUrl;
+    }
+
+    public void setHubUrl(String hubUrl) {
+        this.hubUrl = hubUrl;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public CommonCapabilitiesHolder getCommonCapabilitiesHolder() {
+        return commonCapabilitiesHolder;
+    }
+
+    public void setCommonCapabilitiesHolder(CommonCapabilitiesHolder commonCapabilitiesHolder) {
+        this.commonCapabilitiesHolder = commonCapabilitiesHolder;
+    }
+
+    public List<PlatformHolder> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<PlatformHolder> platforms) {
+        this.platforms = platforms;
+    }
+
+    public LocalConfigurationHolder getLocalOptions() {
+        return localOptions;
+    }
+
+    public void setLocalOptions(LocalConfigurationHolder localOptions) {
+        this.localOptions = localOptions;
+    }
+
+    public DesiredCapabilities convertToDesiredCapabilities() {
         DesiredCapabilities cloudCapabilities = new DesiredCapabilities();
-        String user=  Arrays.asList(System.getenv("BROWSERSTACK_USERNAME"),this.getUser())
+        String user = Arrays.asList(System.getenv("BROWSERSTACK_USERNAME"), this.getUser())
                 .stream()
                 .filter(StringUtils::isNotEmpty)
                 .findFirst()
                 .get();
-        String accessKey=  Arrays.asList(System.getenv("BROWSERSTACK_ACCESS_KEY"),this.getAccessKey())
+        String accessKey = Arrays.asList(System.getenv("BROWSERSTACK_ACCESS_KEY"), this.getAccessKey())
                 .stream()
                 .filter(StringUtils::isNotEmpty)
                 .findFirst()
@@ -48,17 +88,5 @@ public class CloudCapabilitiesHolder {
         cloudCapabilities.setCapability("browserstack.user", user);
         cloudCapabilities.setCapability("browserstack.key", accessKey);
         return cloudCapabilities;
-    }
-
-    public CloudProfileCapabilitiesHolder getActiveCloudProfile(){
-        return profileCapabilities.stream()
-                .filter(profileCapabilities->profileCapabilities.getName().equals(profile))
-                .findFirst()
-                .get();
-    }
-
-    public List<PlatformHolder> getActivePlatforms() {
-        return getActiveCloudProfile()
-                .getPlatforms();
     }
 }

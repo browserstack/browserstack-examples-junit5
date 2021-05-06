@@ -19,13 +19,21 @@
   },
   "profile-capabilities": {
     "on-premise": {
-      "capabilities": {"browser": "Chrome"},
+      "capabilities": {
+        "browser": "Chrome"
+      },
       "instance": "public",
-      "drivers": {"webdriver.gecko.driver":"/opt/libs/drivers/geckodriver",
-                  "webdriver.chrome.driver":"/opt/libs/drivers/chromedriver"}
+      "drivers": {
+        "webdriver.gecko.driver": "/opt/libs/drivers/geckodriver",
+        "webdriver.chrome.driver": "/opt/libs/drivers/chromedriver"
+      }
     },
-    "docker": {"capabilities": {"browser": "Firefox"},
-      "instance": "public"},
+    "docker": {
+      "capabilities": {
+        "browser": "Firefox"
+      },
+      "instance": "public"
+    },
     "single": {
       "capabilities": {
         "name": "Single Test: "

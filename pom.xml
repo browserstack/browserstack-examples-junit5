@@ -12,7 +12,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <lombok.version>1.18.12</lombok.version>
         <jackson.version>2.12.2</jackson.version>
         <selenium-java.version>3.141.59</selenium-java.version>
         <junit.jupiter.version>5.7.1</junit.jupiter.version>
@@ -29,11 +28,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
@@ -43,19 +37,19 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium-java.version}</version>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.jupiter.version}</version>
@@ -148,7 +142,7 @@
         <profile>
             <id>bstack-single</id>
             <properties>
-                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <capabilities.config.file>single-capabilities.yml</capabilities.config.file>
                 <profile.active.name>bstack-single</profile.active.name>
                 <junit.parallel.properties>
                     junit.jupiter.extensions.autodetection.enabled = true
@@ -164,7 +158,7 @@
         <profile>
             <id>bstack-parallel</id>
             <properties>
-                <capabilities.config.file>capabilities.yml</capabilities.config.file>
+                <capabilities.config.file>parallel-capabilities.yml</capabilities.config.file>
                 <profile.active.name>bstack-parallel</profile.active.name>
                 <junit.parallel.properties>
                     junit.jupiter.extensions.autodetection.enabled = true

@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 
 import static org.apiguardian.api.API.Status.STABLE;
 
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD })
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @API(status = STABLE)
@@ -16,5 +16,6 @@ import static org.apiguardian.api.API.Status.STABLE;
 @ExtendWith(WebDriverTestExtension.class)
 public @interface WebDriverTest {
     String[] specificCapabilities() default {};
+
     int repetitionCount() default 1;
 }

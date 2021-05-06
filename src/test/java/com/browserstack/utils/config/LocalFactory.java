@@ -7,26 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class LocalFactory extends Thread{
+public class LocalFactory extends Thread {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalFactory.class);
-    private final Local LOCAL = new Local();
     private static LocalFactory instance;
-    private final String LOCAL_IDENTIFIER= RandomStringUtils.randomAlphabetic(8);
+    private final Local LOCAL = new Local();
+    private final String LOCAL_IDENTIFIER = RandomStringUtils.randomAlphabetic(8);
 
-    @Override
-    public void run() {
-        try {
-            if (LOCAL.isRunning()){
-                LOCAL.stop();
-                LOGGER.debug("Stopped BrowserStack Local with identifier {}.", LOCAL_IDENTIFIER);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private LocalFactory(Map<String,String> args){
+    private LocalFactory(Map<String, String> args) {
         try {
             args.put("localIdentifier", LOCAL_IDENTIFIER);
             LOCAL.start(args);
@@ -36,11 +24,24 @@ public class LocalFactory extends Thread{
         }
     }
 
-    public static void createInstance(Map<String,String> args) {
+    public static void createInstance(Map<String, String> args) {
         instance = new LocalFactory(args);
         Runtime.getRuntime().addShutdownHook(instance);
     }
 
-    public static String getLocalIdentifier(){return instance.LOCAL_IDENTIFIER;}
+    public static String getLocalIdentifier() {
+        return instance.LOCAL_IDENTIFIER;
+    }
 
+    @Override
+    public void run() {
+        try {
+            if (LOCAL.isRunning()) {
+                LOCAL.stop();
+                LOGGER.debug("Stopped BrowserStack Local with identifier {}.", LOCAL_IDENTIFIER);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

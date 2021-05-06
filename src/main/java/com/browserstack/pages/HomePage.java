@@ -16,16 +16,16 @@ public class HomePage extends NavigablePage {
     public HomePage(String url, WebDriver webDriver) {
         super(webDriver);
         this.webDriver = webDriver;
-        navigateToHomePage(url,webDriver);
+        navigateToHomePage(url, webDriver);
     }
 
-    public HomePage(NavBarComponent navBarComponent,WebDriver webDriver){
+    public HomePage(NavBarComponent navBarComponent, WebDriver webDriver) {
         super(navBarComponent);
         this.webDriver = webDriver;
     }
 
     @Step("Navigating to the home page")
-    private void navigateToHomePage(String url, WebDriver webDriver){
+    private void navigateToHomePage(String url, WebDriver webDriver) {
         webDriver.get(url);
     }
 

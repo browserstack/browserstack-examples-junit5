@@ -26,7 +26,7 @@ public class EndToEndFlowTest {
     @WebDriverTest(specificCapabilities = {"apply_mask"})
     @CsvSource({"fav_user,3"})
     @Description("Testing end to end flow of order placement")
-    public void orderPlacementTest(String user, String productCount, WebDriver webDriver){
+    public void orderPlacementTest(String user, String productCount, WebDriver webDriver) {
         HomePage homePage = new HomePage(WebDriverFactory.getInstance().getTestEndpoint(), webDriver);
         ElementLocatorUtil.waitUntilTitleIs(webDriver, HOME_PAGE_TITLE, HOME_PAGE_NOT_LOADED_ON_TIME);
         ElementLocatorUtil.waitUntilElementVanish(webDriver, By.xpath(RELOAD_SPINNER_XPATH), SPINNER_NOT_STOPPED_ON_TIME);
@@ -41,9 +41,9 @@ public class EndToEndFlowTest {
         String message = confirmation.getConfirmationMessage();
         int count = confirmation.getProductCount();
         Assertions.assertEquals(ORDER_PLACED_MESSAGE, message, CONFIRMATION_FAILED);
-        Assertions.assertEquals(productCountInt, count,PRODUCT_COUNT_MISMATCH);
+        Assertions.assertEquals(productCountInt, count, PRODUCT_COUNT_MISMATCH);
         confirmation.clickOnContinue();
-        HomePage newHomePage = new HomePage(login.getNavBarComponent(),webDriver);
+        HomePage newHomePage = new HomePage(login.getNavBarComponent(), webDriver);
         Orders orders = newHomePage.getNavBarComponent().clickOnOrders();
         count = orders.countOrders();
         Assertions.assertEquals(productCountInt, count, PRODUCT_COUNT_MISMATCH);

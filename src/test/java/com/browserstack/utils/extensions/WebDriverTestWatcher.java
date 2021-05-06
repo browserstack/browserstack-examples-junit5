@@ -41,15 +41,15 @@ public class WebDriverTestWatcher implements TestWatcher {
     private void markAndCloseWebDriver(ExtensionContext context, String status, String reason) {
         String testName = context.getDisplayName();
         WebDriver webDriver = context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName, WebDriver.class);
-        if (status.equals("failed")){
+        if (status.equals("failed")) {
             CommonSteps.takeScreenshot(webDriver);
         }
         try {
             String profile = System.getProperty("profile.name");
-            if (!Arrays.asList(ON_PREMISE,ON_DOCKER).contains(profile)) {
+            if (!Arrays.asList(ON_PREMISE, ON_DOCKER).contains(profile)) {
                 ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, status, reason));
-                String sessionURL = String.format("https://automate.browserstack.com/dashboard/v2/sessions/%s",((RemoteWebDriver)webDriver).getSessionId());
-                Allure.link("Browserstack Automate",sessionURL);
+                String sessionURL = String.format("https://automate.browserstack.com/dashboard/v2/sessions/%s", ((RemoteWebDriver) webDriver).getSessionId());
+                Allure.link("Browserstack Automate", sessionURL);
             }
         } finally {
             if (webDriver != null) {
@@ -57,5 +57,4 @@ public class WebDriverTestWatcher implements TestWatcher {
             }
         }
     }
-
 }

@@ -1,14 +1,17 @@
 package com.browserstack.utils.config;
 
-import lombok.Data;
-import lombok.ToString;
 
 import java.util.List;
 
-@Data
-@ToString
 public class OnPremiseCapabilitiesHolder {
 
     private List<PlatformHolder> platforms;
 
+    public List<PlatformHolder> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<PlatformHolder> platforms) {
+        this.platforms = platforms;
+    }
 }

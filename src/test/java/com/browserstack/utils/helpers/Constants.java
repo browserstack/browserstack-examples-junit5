@@ -55,12 +55,12 @@ public class Constants {
         public static final String BUY_BUTTON_CLASS = "shelf-item__buy-btn";
         public static final String BAG_QUANTITY_LABEL_CLASS = "bag__quantity";
         public static final String FAVOURITE_BUTTON_XPATH = "//div[@class='shelf-stopper']";
-        public static final String FAVOURITE_BUTTON_CLICKED_XPATH="//button[@class='MuiButtonBase-root MuiIconButton-root Button clicked ']";
+        public static final String FAVOURITE_BUTTON_CLICKED_XPATH = "//button[@class='MuiButtonBase-root MuiIconButton-root Button clicked ']";
         public static final String OFFERS_BUTTON_ID = "offers";
         public static final String OFFER_CARD_CLASS = "offer";
     }
 
-    public static class ExecutionContexts{
+    public static class ExecutionContexts {
         public static final String ON_PREMISE = "on-prem";
         public static final String ON_DOCKER = "docker";
     }
@@ -93,20 +93,20 @@ public class Constants {
 
     }
 
-    public static class AllureTags{
+    public static class AllureTags {
         public static final String EPIC_END_TO_END = "End To End Test Suite";
-        public static final String EPIC_LOGIN= "Login Test Suite";
-        public static final String EPIC_OFFERS= "Offers Test Suite";
-        public static final String EPIC_PRODUCT= "Product Test Suite";
-        public static final String EPIC_USER= "User Test Suite";
+        public static final String EPIC_LOGIN = "Login Test Suite";
+        public static final String EPIC_OFFERS = "Offers Test Suite";
+        public static final String EPIC_PRODUCT = "Product Test Suite";
+        public static final String EPIC_USER = "User Test Suite";
         public static final String FEATURE_END_TO_END_FLOW = "End To End flow Tests";
         public static final String FEATURE_LOGIN = "Login Feature Tests";
         public static final String FEATURE_REDIRECTION = "Redirection Feature Tests";
         public static final String FEATURE_OFFERS = "Offers Feature Tests";
         public static final String FEATURE_BRAND = "Brand Feature Tests";
         public static final String FEATURE_PRODUCT_ORDERING = "Product Ordering Feature Tests";
-        public static final String FEATURE_FAVOURITES ="Favourites Feature Tests";
-        public static final String FEATURE_PRODUCT_IMAGE ="Product Image Feature Tests";
-        public static final String FEATURE_PURCHASE ="Product Order Feature Tests";
+        public static final String FEATURE_FAVOURITES = "Favourites Feature Tests";
+        public static final String FEATURE_PRODUCT_IMAGE = "Product Image Feature Tests";
+        public static final String FEATURE_PURCHASE = "Product Order Feature Tests";
     }
 }

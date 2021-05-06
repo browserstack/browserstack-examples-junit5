@@ -1,6 +1,6 @@
 package com.browserstack.utils.config;
 
-public enum ExecutionContext {
+public enum DriverType {
     OnPremise,
     OnDocker,
     OnCloud

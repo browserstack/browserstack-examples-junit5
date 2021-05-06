@@ -1,6 +1,5 @@
 package com.browserstack.utils.helpers;
 
-
 import com.browserstack.utils.WebDriverWaitUtil;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
@@ -18,6 +17,7 @@ public class ElementLocatorUtil {
             Assertions.fail(e.getMessage());
         }
     }
+
     public static void waitUntilElementVanish(WebDriver webDriver, By by, String timeOutMessage) {
         try {
             WebDriverWaitUtil.getWebDriverWait(webDriver).until(waitWebDriver -> waitWebDriver.findElements(by).isEmpty());
@@ -27,6 +27,7 @@ public class ElementLocatorUtil {
             Assertions.fail(e.getMessage());
         }
     }
+
     public static void waitUntilURLContains(WebDriver webDriver, String url, String timeOutMessage) {
         try {
             WebDriverWaitUtil.getWebDriverWait(webDriver).until(ExpectedConditions.urlContains(url));
@@ -36,6 +37,7 @@ public class ElementLocatorUtil {
             Assertions.fail(e.getMessage());
         }
     }
+
     public static void waitUntilElementAppears(WebDriver webDriver, By by, String timeOutMessage) {
         try {
             WebDriverWaitUtil.getWebDriverWait(webDriver).until(waitWebDriver -> !waitWebDriver.findElements(by).isEmpty());
@@ -45,6 +47,7 @@ public class ElementLocatorUtil {
             Assertions.fail(e.getMessage());
         }
     }
+
     public static void waitUntilIntAppears(WebDriver webDriver, By by, String timeOutMessage) {
         try {
             WebDriverWaitUtil.getWebDriverWait(webDriver).until(waitWebDriver -> {
