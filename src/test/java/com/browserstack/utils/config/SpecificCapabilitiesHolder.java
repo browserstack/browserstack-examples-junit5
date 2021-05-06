@@ -1,19 +1,22 @@
 package com.browserstack.utils.config;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import lombok.Data;
-import lombok.ToString;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Data
-@ToString
 public class SpecificCapabilitiesHolder {
 
-
     private Map<String, List<Capabilities>> specificCapabilitiesMap = new LinkedHashMap<>();
+
+    public Map<String, List<Capabilities>> getSpecificCapabilitiesMap() {
+        return specificCapabilitiesMap;
+    }
+
+    public void setSpecificCapabilitiesMap(Map<String, List<Capabilities>> specificCapabilitiesMap) {
+        this.specificCapabilitiesMap = specificCapabilitiesMap;
+    }
 
     @JsonAnySetter
     public void setSpecificCapabilities(String key, List<Capabilities> value) {

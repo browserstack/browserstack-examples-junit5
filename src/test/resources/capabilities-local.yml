@@ -1,0 +1,33 @@
+application_endpoint: http://bs-local.com:3000/
+driver_type: OnCloud
+on_cloud_capabilities:
+  hub_url: https://hub-cloud.browserstack.com/wd/hub
+  user: raveendratudangi5
+  access_key: xBv78saWwrNBEaJBTXwu
+  common_capabilities:
+    project: BrowserStack
+    buildPrefix: browserstack-examples-junit5
+    capabilities:
+      browserstack.debug: true
+      browserstack.networkLogs: true
+      browserstack.console: debug
+      browserstack.local: true
+  platforms:
+    - name: Win10_IE11
+      os: Windows
+      os_version: '10'
+      browser: Internet Explorer
+      browser_version: '11.0'
+      capabilities:
+       browserstack.ie.arch: x32
+  local_options:
+    forcelocal: true
+    force: true
+    verbose: true
+    logFile: local_test.log
+specific_capabilities:
+  apply_mask:
+    - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
+      browserstack.appiumLogs: false
+  time_zone:
+    - timezone: New_York

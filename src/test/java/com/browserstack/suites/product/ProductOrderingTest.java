@@ -2,7 +2,10 @@ package com.browserstack.suites.product;
 
 import com.browserstack.utils.extensions.WebDriverTest;
 import com.browserstack.utils.helpers.CommonSteps;
-import io.qameta.allure.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -41,7 +44,7 @@ public class ProductOrderingTest {
     }
 
     @Step("Verifying current cost [{0}] >= previous cost [{1}]")
-    private void checkCostOrder(int currentCost, int previousCost){
+    private void checkCostOrder(int currentCost, int previousCost) {
         Assertions.assertTrue(currentCost >= previousCost, ORDER_BY_FILTER);
     }
 

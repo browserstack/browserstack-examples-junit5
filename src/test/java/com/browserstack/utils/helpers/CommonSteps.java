@@ -46,7 +46,6 @@ public class CommonSteps {
     @Attachment
     @Step("Taking screenshot")
     public static byte[] takeScreenshot(WebDriver webDriver) {
-        return ((TakesScreenshot)webDriver).getScreenshotAs(OutputType.BYTES);
+        return ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES);
     }
-    
 }

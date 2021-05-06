@@ -7,40 +7,60 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class LocalFactory extends Thread{
+public class LocalFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalFactory.class);
-    private final Local LOCAL = new Local();
+
     private static LocalFactory instance;
-    private final String LOCAL_IDENTIFIER= RandomStringUtils.randomAlphabetic(8);
 
-    @Override
-    public void run() {
-        try {
-            if (LOCAL.isRunning()){
-                LOCAL.stop();
-                LOGGER.debug("Stopped BrowserStack Local with identifier {}.", LOCAL_IDENTIFIER);
+    private final Local local = new Local();
+    private final String localIdentifier = RandomStringUtils.randomAlphabetic(8);
+
+    private static class Closer extends Thread{
+        private final Local LOCAL;
+
+        public Closer(Local local){
+            this.LOCAL = local;
+        }
+        @Override
+        public void run() {
+            try {
+                if (LOCAL.isRunning()) {
+                    LOCAL.stop();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    private LocalFactory(Map<String,String> args){
+    private LocalFactory(Map<String, String> args) {
         try {
-            args.put("localIdentifier", LOCAL_IDENTIFIER);
-            LOCAL.start(args);
-            LOGGER.debug("Started BrowserStack Local with identifier {}.", LOCAL_IDENTIFIER);
+            args.put("localIdentifier", localIdentifier);
+            local.start(args);
+            LOGGER.debug("Started BrowserStack Local with identifier {}.", localIdentifier);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Initialization BrowserStack Local with identifier {} failed.", localIdentifier);
         }
     }
 
-    public static void createInstance(Map<String,String> args) {
-        instance = new LocalFactory(args);
-        Runtime.getRuntime().addShutdownHook(instance);
+    public static LocalFactory createInstance(Map<String, String> args) {
+        if (instance == null) {
+            synchronized (LocalFactory.class) {
+                if (instance == null) {
+                    instance = new LocalFactory(args);
+                    Runtime.getRuntime().addShutdownHook(new Closer(instance.local));
+                }
+            }
+        }
+        return instance;
     }
 
-    public static String getLocalIdentifier(){return instance.LOCAL_IDENTIFIER;}
+    public static LocalFactory getInstance() {
+        return instance;
+    }
 
+    public String getLocalIdentifier() {
+        return instance.localIdentifier;
+    }
 }

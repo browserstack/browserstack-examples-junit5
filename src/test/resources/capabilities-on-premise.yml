@@ -1,0 +1,12 @@
+application_endpoint: https://bstackdemo.com
+driver_type: OnPremise
+on_premise_capabilities:
+  platforms:
+    - name: chrome
+      driver_path: /opt/libs/drivers/chromedriver
+specific_capabilities:
+  apply_mask:
+    - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
+      browserstack.appiumLogs: false
+  time_zone:
+    - timezone: New_York

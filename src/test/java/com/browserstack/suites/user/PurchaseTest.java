@@ -28,7 +28,7 @@ public class PurchaseTest {
     @Step("Signing in with {0}'s credentials")
     private void signIntoAccount(String user, WebDriver webDriver) {
         String password = UserCredentialsParser.getPassword(user);
-        CommonSteps.signIn(user, password,webDriver);
+        CommonSteps.signIn(user, password, webDriver);
         ElementLocatorUtil.waitUntilURLContains(webDriver, SIGNED_IN, SIGNIN_NOT_COMPLETED_ON_TIME);
     }
 
@@ -45,7 +45,7 @@ public class PurchaseTest {
     @Description("Testing purchase confirmation count")
     public void orderCountTest(String user, WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);
-        signIntoAccount(user,webDriver);
+        signIntoAccount(user, webDriver);
         int orders = checkExistingOrders(webDriver);
         Assertions.assertNotEquals(orders, 0, EMPTY_CART);
     }

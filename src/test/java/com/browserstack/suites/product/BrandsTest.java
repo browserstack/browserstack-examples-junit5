@@ -2,7 +2,10 @@ package com.browserstack.suites.product;
 
 import com.browserstack.utils.extensions.WebDriverTest;
 import com.browserstack.utils.helpers.CommonSteps;
-import io.qameta.allure.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
@@ -19,24 +22,24 @@ public class BrandsTest {
 
     @Step("Applying {0} Filter")
     private void applyBrandFilter(String brand, WebDriver webDriver) {
-       String brandXPath = String.format(BRAND_FILTER_XPATH_FORMAT,brand);
+        String brandXPath = String.format(BRAND_FILTER_XPATH_FORMAT, brand);
         WebElement brandFilter = webDriver.findElement(By.xpath(brandXPath));
         brandFilter.click();
         CommonSteps.waitForSpinner(webDriver);
     }
 
     @Step("Comparing counts : expected[{0}] and  actual[{1}]")
-    private void verifyProductCount(int expectedCount,int actualCount) {
-        Assertions.assertEquals(expectedCount,actualCount,"Expected count : "+expectedCount+" but found :"+actualCount);
+    private void verifyProductCount(int expectedCount, int actualCount) {
+        Assertions.assertEquals(expectedCount, actualCount, "Expected count : " + expectedCount + " but found :" + actualCount);
     }
 
     @WebDriverTest
-    @CsvSource({"Apple,9","Samsung,7"})
+    @CsvSource({"Apple,9", "Samsung,7"})
     @Description("Testing brand filter component")
-    public void brandsFilterTest(String brand, String expectedCount, WebDriver webDriver){
+    public void brandsFilterTest(String brand, String expectedCount, WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);
-        applyBrandFilter(brand,webDriver);
+        applyBrandFilter(brand, webDriver);
         int actualCount = CommonSteps.productCount(webDriver);
-        verifyProductCount(Integer.parseInt(expectedCount),actualCount);
+        verifyProductCount(Integer.parseInt(expectedCount), actualCount);
     }
 }

@@ -4,7 +4,10 @@ import com.browserstack.utils.config.UserCredentialsParser;
 import com.browserstack.utils.extensions.WebDriverTest;
 import com.browserstack.utils.helpers.CommonSteps;
 import com.browserstack.utils.helpers.ElementLocatorUtil;
-import io.qameta.allure.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
@@ -25,7 +28,7 @@ public class LoginTest {
 
     @Step("Attempting to sign in with {0}'s credentials")
     private void signIntoLockedAccount(String user, String password, WebDriver webDriver) {
-        attemptSignIn(user, password,webDriver);
+        attemptSignIn(user, password, webDriver);
         ElementLocatorUtil.waitUntilElementAppears(webDriver, By.className(API_ERROR_CLASS), API_ERROR_NOT_LOADED_ON_TIME);
     }
 
@@ -53,10 +56,10 @@ public class LoginTest {
     @WebDriverTest(specificCapabilities = {"apply_mask"})
     @CsvSource({"locked_user"})
     @Description("Testing account lock feature")
-    public void accountAccessibilityTest(String user, WebDriver webDriver){
+    public void accountAccessibilityTest(String user, WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);
         String password = UserCredentialsParser.getPassword(user);
-        signIntoLockedAccount(user,password,webDriver);
+        signIntoLockedAccount(user, password, webDriver);
         checkAPIErrorDisplayed(webDriver);
     }
 }

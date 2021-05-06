@@ -1,0 +1,12 @@
+application_endpoint: https://bstackdemo.com
+driver_type: OnDocker
+on_docker_capabilities:
+  hub_url: "http://localhost:4444/wd/hub"
+  platforms:
+    - name: firefox
+specific_capabilities:
+  apply_mask:
+    - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
+      browserstack.appiumLogs: false
+  time_zone:
+    - timezone: New_York

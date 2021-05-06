@@ -1,17 +1,12 @@
 package com.browserstack.utils.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.qameta.allure.Attachment;
-import lombok.Data;
-import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 
-@Data
-@ToString
 public class ConfigurationHolder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationHolder.class);
@@ -19,25 +14,72 @@ public class ConfigurationHolder {
     @JsonProperty("application_endpoint")
     private String applicationEndpoint;
 
-    @JsonProperty("default_execution_context")
-    private ExecutionContext executionContext;
+    @JsonProperty("driver_type")
+    private DriverType driverType;
 
     @JsonProperty("on_premise_capabilities")
-    private OnPremiseCapabilitiesHolder onPremiseCapabilitiesHolder;
+    private GenericCapabilitiesHolder onPremiseCapabilitiesHolder;
 
     @JsonProperty("on_docker_capabilities")
-    private DockerCapabilitiesHolder dockerCapabilitiesHolder;
+    private GenericCapabilitiesHolder dockerCapabilitiesHolder;
 
     @JsonProperty("on_cloud_capabilities")
-    private CloudCapabilitiesHolder cloudCapabilitiesHolder;
+    private GenericCapabilitiesHolder cloudCapabilitiesHolder;
 
     @JsonProperty("specific_capabilities")
     private SpecificCapabilitiesHolder specificCapabilitiesHolder;
 
-    @Attachment
+    public String getApplicationEndpoint() {
+        return applicationEndpoint;
+    }
+
+    public void setApplicationEndpoint(String applicationEndpoint) {
+        this.applicationEndpoint = applicationEndpoint;
+    }
+
+    public DriverType getDriverType() {
+        return driverType;
+    }
+
+    public void setDriverType(DriverType driverType) {
+        this.driverType = driverType;
+    }
+
+    public GenericCapabilitiesHolder getOnPremiseCapabilitiesHolder() {
+        return onPremiseCapabilitiesHolder;
+    }
+
+    public void setOnPremiseCapabilitiesHolder(GenericCapabilitiesHolder onPremiseCapabilitiesHolder) {
+        this.onPremiseCapabilitiesHolder = onPremiseCapabilitiesHolder;
+    }
+
+    public GenericCapabilitiesHolder getDockerCapabilitiesHolder() {
+        return dockerCapabilitiesHolder;
+    }
+
+    public void setDockerCapabilitiesHolder(GenericCapabilitiesHolder dockerCapabilitiesHolder) {
+        this.dockerCapabilitiesHolder = dockerCapabilitiesHolder;
+    }
+
+    public GenericCapabilitiesHolder getCloudCapabilitiesHolder() {
+        return cloudCapabilitiesHolder;
+    }
+
+    public void setCloudCapabilitiesHolder(GenericCapabilitiesHolder cloudCapabilitiesHolder) {
+        this.cloudCapabilitiesHolder = cloudCapabilitiesHolder;
+    }
+
+    public SpecificCapabilitiesHolder getSpecificCapabilitiesHolder() {
+        return specificCapabilitiesHolder;
+    }
+
+    public void setSpecificCapabilitiesHolder(SpecificCapabilitiesHolder specificCapabilitiesHolder) {
+        this.specificCapabilitiesHolder = specificCapabilitiesHolder;
+    }
+
     public List<PlatformHolder> getActivePlatforms() {
         List<PlatformHolder> activePlatformHolders = Collections.emptyList();
-        switch (executionContext) {
+        switch (driverType) {
             case OnPremise:
                 activePlatformHolders = onPremiseCapabilitiesHolder.getPlatforms();
                 break;
@@ -45,7 +87,7 @@ public class ConfigurationHolder {
                 activePlatformHolders = dockerCapabilitiesHolder.getPlatforms();
                 break;
             case OnCloud:
-                activePlatformHolders = cloudCapabilitiesHolder.getActivePlatforms();
+                activePlatformHolders = cloudCapabilitiesHolder.getPlatforms();
                 break;
         }
         return activePlatformHolders;

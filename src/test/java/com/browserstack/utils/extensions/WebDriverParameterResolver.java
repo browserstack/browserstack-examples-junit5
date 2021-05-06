@@ -10,15 +10,13 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.net.MalformedURLException;
 
 public class WebDriverParameterResolver implements ParameterResolver {
 
     public static final ExtensionContext.Namespace STORE_NAMESPACE =
-      ExtensionContext.Namespace.create("com.browserstack.examples");
+            ExtensionContext.Namespace.create("com.browserstack.examples");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverParameterResolver.class);
 
@@ -44,7 +42,7 @@ public class WebDriverParameterResolver implements ParameterResolver {
         WebDriver webDriver = createWebDriver(testMethod);
         if (webDriver == null) {
             throw new ParameterResolutionException("Unable to create WebDriver for Platform :: "
-                                                     + this.platformHolder.getName() + " method :: " + testMethod.getName());
+                    + this.platformHolder.getName() + " method :: " + testMethod.getName());
         }
         extensionContext.getStore(STORE_NAMESPACE).put(extensionContext.getDisplayName(), webDriver);
         return webDriver;
@@ -60,5 +58,4 @@ public class WebDriverParameterResolver implements ParameterResolver {
         }
         return webDriver;
     }
-
 }

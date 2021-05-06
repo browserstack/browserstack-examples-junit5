@@ -1,0 +1,24 @@
+application_endpoint: https://bstackdemo.com
+driver_type: OnCloud
+on_cloud_capabilities:
+  hub_url: https://hub-cloud.browserstack.com/wd/hub
+  user: raveendratudangi5
+  access_key: xBv78saWwrNBEaJBTXwu
+  common_capabilities:
+    project: BrowserStack
+    buildPrefix: browserstack-examples-junit5
+    capabilities:
+      browserstack.debug: true
+      browserstack.networkLogs: true
+      browserstack.console: debug
+  platforms:
+    - name: Win10_Chrome11
+      os: Windows
+      os_version: '10'
+      browser: Chrome
+specific_capabilities:
+  apply_mask:
+    - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
+      browserstack.appiumLogs: false
+  time_zone:
+    - timezone: New_York

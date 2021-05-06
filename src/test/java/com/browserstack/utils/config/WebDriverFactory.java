@@ -1,9 +1,10 @@
 package com.browserstack.utils.config;
 
 import com.browserstack.utils.extensions.WebDriverTest;
+import com.browserstack.utils.helpers.AllureUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.junit.platform.commons.util.StringUtils;
+import io.qameta.allure.Allure;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -30,8 +31,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.browserstack.utils.helpers.Constants.ExecutionContexts.ON_DOCKER;
-import static com.browserstack.utils.helpers.Constants.ExecutionContexts.ON_PREMISE;
+import static com.browserstack.utils.helpers.Constants.AllureParameters.CAPABILITIES;
+import static com.browserstack.utils.helpers.Constants.AllureParameters.CAPABILITIES_FILE;
 
 public class WebDriverFactory {
 
@@ -39,7 +40,7 @@ public class WebDriverFactory {
     private static final String CAPABILITIES_FILE_PROP = "capabilities.config";
     private static final String DEFAULT_CAPABILITIES_FILE = "capabilities.yml";
     private static final String DEFAULT_BUILD_NAME = "browserstack-examples-junit5";
-    private static final String PROFILE_NAME_KEY = "profile.name";
+    private static final String BROWSER_STACK_TEST_NAME_CAPABILITY="name";
     private static final String BROWSER_STACK_LOCAL_CAPABILITY = "browserstack.local";
     private static final String BROWSER_STACK_LOCAL_IDENTIFIER_CAPABILITY = "browserstack.localIdentifier";
     private static final String BROWSER_STACK_LOCAL_OPTION_KEY = "key";
@@ -50,15 +51,13 @@ public class WebDriverFactory {
 
     private static WebDriverFactory instance;
 
-    private final ConfigurationHolder configurationHolder;
     private final String defaultBuildSuffix;
-    private final DesiredCapabilities profileCapabilities;
+    private final ConfigurationHolder configurationHolder;
     private final boolean isLocal;
 
     private WebDriverFactory() {
         this.defaultBuildSuffix = String.valueOf(System.currentTimeMillis());
         this.configurationHolder = parseWebDriverConfig();
-        this.profileCapabilities = readProfileCapabilities();
         this.isLocal = setupLocal();
         List<PlatformHolder> platformHolders = configurationHolder.getActivePlatforms();
         LOGGER.debug("Running tests on {} active platforms.", platformHolders.size());
@@ -77,31 +76,13 @@ public class WebDriverFactory {
 
     private ConfigurationHolder parseWebDriverConfig() {
         String capabilitiesConfigFile = System.getProperty(CAPABILITIES_FILE_PROP, DEFAULT_CAPABILITIES_FILE);
+        AllureUtil.addParameter(CAPABILITIES_FILE,capabilitiesConfigFile);
         LOGGER.debug("Using capabilities configuration from FILE :: {}", capabilitiesConfigFile);
         URL resourceURL = WebDriverFactory.class.getClassLoader().getResource(capabilitiesConfigFile);
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         ConfigurationHolder configurationHolder;
         try {
             configurationHolder = objectMapper.readValue(resourceURL, ConfigurationHolder.class);
-            String profile = System.getProperty(PROFILE_NAME_KEY);
-            switch (profile) {
-                case ON_PREMISE:
-                    configurationHolder.setExecutionContext(ExecutionContext.OnPremise);
-                    break;
-                case ON_DOCKER:
-                    configurationHolder.setExecutionContext(ExecutionContext.OnDocker);
-                    break;
-                default:
-                    configurationHolder.setExecutionContext(ExecutionContext.OnCloud);
-                    configurationHolder.getCloudCapabilitiesHolder().setProfile(profile);
-            }
-            String endPoint = Arrays.asList(System.getProperty("application.endpoint"),
-                    configurationHolder.getApplicationEndpoint())
-                    .stream()
-                    .filter(StringUtils::isNotBlank)
-                    .findFirst()
-                    .get();
-            configurationHolder.setApplicationEndpoint(endPoint);
         } catch (IOException ioe) {
 
             throw new Error("Unable to parse capabilities file " + capabilitiesConfigFile, ioe);
@@ -109,17 +90,8 @@ public class WebDriverFactory {
         return configurationHolder;
     }
 
-    private DesiredCapabilities readProfileCapabilities() {
-        Capabilities profileCapabilities = configurationHolder
-                .getCloudCapabilitiesHolder()
-                .getActiveCloudProfile()
-                .getProfileSpecificCapabilities();
-        return profileCapabilities != null ?
-                profileCapabilities.convertToDesiredCapabilities() : new DesiredCapabilities();
-    }
-
     private boolean setupLocal() {
-        if (profileCapabilities.getCapability(BROWSER_STACK_LOCAL_CAPABILITY) != null && profileCapabilities.getCapability(BROWSER_STACK_LOCAL_CAPABILITY) != "false") {
+        if (configurationHolder.getDriverType().equals(DriverType.OnCloud)&&configurationHolder.getCloudCapabilitiesHolder().getCommonCapabilitiesHolder().getCapabilities().getCapability(BROWSER_STACK_LOCAL_CAPABILITY) != null && configurationHolder.getCloudCapabilitiesHolder().getCommonCapabilitiesHolder().getCapabilities().getCapability(BROWSER_STACK_LOCAL_CAPABILITY) != "false") {
             LocalConfigurationHolder localConfiguration = configurationHolder.getCloudCapabilitiesHolder().getLocalOptions();
             localConfiguration.getLocalOptions().put(BROWSER_STACK_LOCAL_OPTION_KEY, configurationHolder.getCloudCapabilitiesHolder().getAccessKey());
             LocalFactory.createInstance(localConfiguration.getLocalOptions());
@@ -134,12 +106,12 @@ public class WebDriverFactory {
 
     public WebDriver createWebDriverForPlatform(PlatformHolder platformHolder, Method testMethod) throws MalformedURLException {
         WebDriver webDriver = null;
-        switch (this.configurationHolder.getExecutionContext()) {
+        switch (this.configurationHolder.getDriverType()) {
             case OnPremise:
-                webDriver = createOnPremiseWebDriver(platformHolder);
+                webDriver = createOnPremiseWebDriver(platformHolder,testMethod);
                 break;
             case OnDocker:
-                webDriver = createDockerWebDriver(platformHolder);
+                webDriver = createDockerWebDriver(platformHolder,testMethod);
                 break;
             case OnCloud:
                 webDriver = createRemoteWebDriver(platformHolder, testMethod);
@@ -151,13 +123,137 @@ public class WebDriverFactory {
         return this.configurationHolder.getActivePlatforms();
     }
 
+    public DriverType getActiveDriver(){
+        return configurationHolder.getDriverType();
+    }
+
+    private WebDriver createOnPremiseWebDriver(PlatformHolder platformHolder,Method testMethod) {
+        WebDriver webDriver;
+        DesiredCapabilities otherCapabilities = new DesiredCapabilities();
+        if (platformHolder.getCapabilities() != null) {
+            otherCapabilities = platformHolder.getCapabilities().convertToDesiredCapabilities();
+        }
+        otherCapabilities.merge(getSpecificCapabilities(testMethod));
+        switch (BrowserType.valueOf(platformHolder.getName())) {
+            case chrome:
+                System.setProperty(WEBDRIVER_CHROME_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
+                ChromeOptions chromeOptions = new ChromeOptions()
+                        .merge(otherCapabilities);
+                webDriver = new ChromeDriver(chromeOptions);
+                AllureUtil.addParameter(CAPABILITIES,chromeOptions);
+                break;
+            case edge:
+                System.setProperty(WEBDRIVER_EDGE_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
+                EdgeOptions edgeOptions = new EdgeOptions()
+                        .merge(otherCapabilities);
+                webDriver = new EdgeDriver(edgeOptions);
+                AllureUtil.addParameter(CAPABILITIES,edgeOptions);
+                break;
+            case firefox:
+                System.setProperty(WEBDRIVER_GECKO_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
+                FirefoxOptions firefoxOptions = new FirefoxOptions()
+                        .merge(otherCapabilities);
+                webDriver = new FirefoxDriver(firefoxOptions);
+                AllureUtil.addParameter(CAPABILITIES,firefoxOptions);
+                break;
+            case ie:
+                System.setProperty(WEBDRIVER_IE_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
+                InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions()
+                        .merge(otherCapabilities);
+                webDriver = new InternetExplorerDriver(internetExplorerOptions);
+                AllureUtil.addParameter(CAPABILITIES,internetExplorerOptions);
+                break;
+            case opera:
+                OperaOptions operaOptions = new OperaOptions()
+                        .merge(otherCapabilities);
+                webDriver = new OperaDriver(operaOptions);
+                AllureUtil.addParameter(CAPABILITIES,operaOptions);
+                break;
+            case safari:
+                SafariOptions safariOptions = new SafariOptions()
+                        .merge(otherCapabilities);
+                webDriver = new SafariDriver(safariOptions);
+                AllureUtil.addParameter(CAPABILITIES,safariOptions);
+                break;
+            default:
+                throw new RuntimeException("Unknown platform name : " + platformHolder.getName());
+        }
+        return webDriver;
+    }
+
+    private WebDriver createDockerWebDriver(PlatformHolder platformHolder,Method testMethod) throws MalformedURLException {
+        GenericCapabilitiesHolder dockerCapabilitiesHolder = configurationHolder.getDockerCapabilitiesHolder();
+        WebDriver webDriver;
+        DesiredCapabilities otherCapabilities = new DesiredCapabilities();
+        if (platformHolder.getCapabilities() != null) {
+            otherCapabilities = platformHolder.getCapabilities().convertToDesiredCapabilities();
+        }
+        otherCapabilities.merge(getSpecificCapabilities(testMethod));
+        switch (BrowserType.valueOf(platformHolder.getName())) {
+            case chrome:
+                ChromeOptions chromeOptions = new ChromeOptions()
+                        .merge(otherCapabilities);
+                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()), chromeOptions);
+                AllureUtil.addParameter(CAPABILITIES,chromeOptions);
+                break;
+            case edge:
+                EdgeOptions edgeOptions = new EdgeOptions()
+                        .merge(otherCapabilities);
+                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()), edgeOptions);
+                AllureUtil.addParameter(CAPABILITIES,edgeOptions);
+                break;
+            case firefox:
+                FirefoxOptions firefoxOptions = new FirefoxOptions()
+                        .merge(otherCapabilities);
+                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()), firefoxOptions);
+                AllureUtil.addParameter(CAPABILITIES,firefoxOptions);
+                break;
+            case ie:
+                InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions()
+                        .merge(otherCapabilities);
+                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()), internetExplorerOptions);
+                AllureUtil.addParameter(CAPABILITIES,internetExplorerOptions);
+                break;
+            case opera:
+                OperaOptions operaOptions = new OperaOptions()
+                        .merge(otherCapabilities);
+                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()), operaOptions);
+                AllureUtil.addParameter(CAPABILITIES,operaOptions);
+                break;
+            case safari:
+                SafariOptions safariOptions = new SafariOptions()
+                        .merge(otherCapabilities);
+                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()), safariOptions);
+                AllureUtil.addParameter(CAPABILITIES,safariOptions);
+                break;
+            default:
+                throw new RuntimeException("Unknown platform name : " + platformHolder.getName());
+        }
+        return webDriver;
+    }
+
     private WebDriver createRemoteWebDriver(PlatformHolder platformHolder, Method testMethod) throws MalformedURLException {
-        CloudCapabilitiesHolder cloudCapabilitiesHolder = this.configurationHolder.getCloudCapabilitiesHolder();
+        GenericCapabilitiesHolder cloudCapabilitiesHolder = this.configurationHolder.getCloudCapabilitiesHolder();
         CommonCapabilitiesHolder commonCapabilitiesHolder = cloudCapabilitiesHolder.getCommonCapabilitiesHolder();
         DesiredCapabilities cloudCapabilities = cloudCapabilitiesHolder.convertToDesiredCapabilities();
         DesiredCapabilities commonCapabilities = commonCapabilitiesHolder.convertToDesiredCapabilities(DEFAULT_BUILD_NAME, defaultBuildSuffix);
         DesiredCapabilities platformCapabilities = platformHolder.convertToDesiredCapabilities();
-        platformCapabilities.setCapability("name", org.apache.commons.lang3.StringUtils.capitalize(String.format("%s [%s]", testMethod.getName(), platformCapabilities.getCapability("name"))));
+        platformCapabilities.setCapability(BROWSER_STACK_TEST_NAME_CAPABILITY, org.apache.commons.lang3.StringUtils.capitalize(String.format("%s [%s]", testMethod.getName(), platformCapabilities.getCapability(BROWSER_STACK_TEST_NAME_CAPABILITY))));
+        DesiredCapabilities specificCapabilities = getSpecificCapabilities(testMethod);
+        DesiredCapabilities mergedCapabilities = new DesiredCapabilities()
+                .merge(commonCapabilities)
+                .merge(platformCapabilities)
+                .merge(cloudCapabilities)
+                .merge(specificCapabilities);
+        if (isLocal) {
+            mergedCapabilities.setCapability(BROWSER_STACK_LOCAL_IDENTIFIER_CAPABILITY, LocalFactory.getInstance().getLocalIdentifier());
+        }
+
+        AllureUtil.addParameter(CAPABILITIES, mergedCapabilities);
+        return new RemoteWebDriver(new URL(cloudCapabilitiesHolder.getHubUrl()), mergedCapabilities);
+    }
+
+    private DesiredCapabilities getSpecificCapabilities(Method testMethod){
         DesiredCapabilities specificCapabilities = new DesiredCapabilities();
         WebDriverTest webDriverTest = testMethod.getAnnotation(WebDriverTest.class);
         if (webDriverTest != null) {
@@ -171,106 +267,6 @@ public class WebDriverFactory {
                             .forEach(caps -> specificCapabilities
                                     .merge(caps.convertToDesiredCapabilities())));
         }
-        DesiredCapabilities mergedCapabilities = new DesiredCapabilities()
-                .merge(commonCapabilities)
-                .merge(platformCapabilities)
-                .merge(cloudCapabilities)
-                .merge(profileCapabilities)
-                .merge(specificCapabilities);
-        if (isLocal) {
-            mergedCapabilities.setCapability(BROWSER_STACK_LOCAL_IDENTIFIER_CAPABILITY, LocalFactory.getLocalIdentifier());
-        }
-        return new RemoteWebDriver(new URL(cloudCapabilitiesHolder.getHubUrl()), mergedCapabilities);
-    }
-
-    private WebDriver createOnPremiseWebDriver(PlatformHolder platformHolder) {
-        WebDriver webDriver = null;
-        DesiredCapabilities otherCapabilities = new DesiredCapabilities();
-        if (platformHolder.getCapabilities() != null) {
-            otherCapabilities = platformHolder.getCapabilities().convertToDesiredCapabilities();
-        }
-        switch (BrowserType.valueOf(platformHolder.getName())) {
-            case chrome:
-                System.setProperty(WEBDRIVER_CHROME_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
-                ChromeOptions chromeOptions = new ChromeOptions()
-                        .merge(otherCapabilities);
-                webDriver = new ChromeDriver(chromeOptions);
-                break;
-            case edge:
-                System.setProperty(WEBDRIVER_EDGE_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
-                EdgeOptions edgeOptions = new EdgeOptions()
-                        .merge(otherCapabilities);
-                webDriver = new EdgeDriver(edgeOptions);
-                break;
-            case firefox:
-                System.setProperty(WEBDRIVER_GECKO_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
-                FirefoxOptions firefoxOptions = new FirefoxOptions()
-                        .merge(otherCapabilities);
-                webDriver = new FirefoxDriver(firefoxOptions);
-                break;
-            case ie:
-                System.setProperty(WEBDRIVER_IE_DRIVER, Paths.get(platformHolder.getDriverPath()).toString());
-                InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions()
-                        .merge(otherCapabilities);
-                webDriver = new InternetExplorerDriver(internetExplorerOptions);
-                break;
-            case opera:
-                OperaOptions operaOptions = new OperaOptions()
-                        .merge(otherCapabilities);
-                webDriver = new OperaDriver(operaOptions);
-                break;
-            case safari:
-                SafariOptions safariOptions = new SafariOptions()
-                        .merge(otherCapabilities);
-                webDriver = new SafariDriver(safariOptions);
-                break;
-            default:
-                throw new RuntimeException("Unknown platform name : " + platformHolder.getName());
-        }
-        return webDriver;
-    }
-
-    private WebDriver createDockerWebDriver(PlatformHolder platformHolder) throws MalformedURLException {
-        DockerCapabilitiesHolder dockerCapabilitiesHolder = configurationHolder.getDockerCapabilitiesHolder();
-        WebDriver webDriver = null;
-        DesiredCapabilities otherCapabilities = new DesiredCapabilities();
-        if (platformHolder.getCapabilities() != null) {
-            otherCapabilities = platformHolder.getCapabilities().convertToDesiredCapabilities();
-        }
-        switch (BrowserType.valueOf(platformHolder.getName())) {
-            case chrome:
-                ChromeOptions chromeOptions = new ChromeOptions()
-                        .merge(otherCapabilities);
-                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()),chromeOptions);
-                break;
-            case edge:
-                EdgeOptions edgeOptions = new EdgeOptions()
-                        .merge(otherCapabilities);
-                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()),edgeOptions);
-                break;
-            case firefox:
-                FirefoxOptions firefoxOptions = new FirefoxOptions()
-                        .merge(otherCapabilities);
-                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()),firefoxOptions);
-                break;
-            case ie:
-                InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions()
-                        .merge(otherCapabilities);
-                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()),internetExplorerOptions);
-                break;
-            case opera:
-                OperaOptions operaOptions = new OperaOptions()
-                        .merge(otherCapabilities);
-                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()),operaOptions);
-                break;
-            case safari:
-                SafariOptions safariOptions = new SafariOptions()
-                        .merge(otherCapabilities);
-                webDriver = new RemoteWebDriver(new URL(dockerCapabilitiesHolder.getHubUrl()),safariOptions);
-                break;
-            default:
-                throw new RuntimeException("Unknown platform name : " + platformHolder.getName());
-        }
-        return webDriver;
+        return specificCapabilities;
     }
 }
