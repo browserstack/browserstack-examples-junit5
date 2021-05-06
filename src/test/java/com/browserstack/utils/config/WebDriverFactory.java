@@ -3,6 +3,7 @@ package com.browserstack.utils.config;
 import com.browserstack.utils.extensions.WebDriverTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import io.qameta.allure.Allure;
 import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -180,6 +181,8 @@ public class WebDriverFactory {
         if (isLocal) {
             mergedCapabilities.setCapability(BROWSER_STACK_LOCAL_IDENTIFIER_CAPABILITY, LocalFactory.getLocalIdentifier());
         }
+        Allure.parameter("capabilities",mergedCapabilities);
+        Allure.parameter("profile",configurationHolder.getCloudCapabilitiesHolder().getProfile());
         return new RemoteWebDriver(new URL(cloudCapabilitiesHolder.getHubUrl()), mergedCapabilities);
     }
 
@@ -227,6 +230,8 @@ public class WebDriverFactory {
             default:
                 throw new RuntimeException("Unknown platform name : " + platformHolder.getName());
         }
+        Allure.parameter("capabilities",platformHolder);
+        Allure.parameter("profile",ON_PREMISE);
         return webDriver;
     }
 
@@ -271,6 +276,8 @@ public class WebDriverFactory {
             default:
                 throw new RuntimeException("Unknown platform name : " + platformHolder.getName());
         }
+        Allure.parameter("capabilities",platformHolder);
+        Allure.parameter("profile",ON_DOCKER);
         return webDriver;
     }
 }
