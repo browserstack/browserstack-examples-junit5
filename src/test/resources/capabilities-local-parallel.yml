@@ -1,4 +1,4 @@
-testEndpoint: https://bstackdemo.com
+testEndpoint: http://bs-local.com:3000/
 
 driverType: cloudDriver
 
@@ -7,7 +7,12 @@ cloudDriver:
   user: BROWSERSTACK_USERNAME
   accessKey: BROWSERSTACK_ACCESSKEY
   localTunnel:
-    enable: false
+    enable: true
+    local_options:
+      forcelocal: true
+      force: true
+      verbose: true
+      logFile: local_test.log
   common_capabilities:
     project: BrowserStack Demo Repository
     buildPrefix: browserstack-examples-junit5

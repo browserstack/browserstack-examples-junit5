@@ -139,6 +139,12 @@
                 <capabilities.config.file>capabilities-local.yml</capabilities.config.file>
             </properties>
         </profile>
+        <profile>
+            <id>bstack-local-parallel</id>
+            <properties>
+                <capabilities.config.file>capabilities-local-parallel.yml</capabilities.config.file>
+            </properties>
+        </profile>
     </profiles>
 
 </project>

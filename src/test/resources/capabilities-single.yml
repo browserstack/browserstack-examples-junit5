@@ -8,7 +8,6 @@ cloudDriver:
   accessKey: BROWSERSTACK_ACCESSKEY
   localTunnel:
     enable: false
-    forceLocal: false
   common_capabilities:
     project: BrowserStack Demo Repository
     buildPrefix: browserstack-examples-junit5
