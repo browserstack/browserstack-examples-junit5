@@ -2,7 +2,7 @@ package com.browserstack.examples.config;
 
 import java.util.List;
 
-public class LocalDriverConfig {
+public class OnPremDriverConfig {
 
     private List<Platform> platforms;
 

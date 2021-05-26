@@ -1,10 +1,17 @@
 package com.browserstack.examples.config;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class LocalTunnelConfig {
 
     private Boolean enable;
 
-    private Boolean forceLocal;
+    @JsonProperty("local_options")
+    private Map<String, String> localOptions = new LinkedHashMap<>();
 
     public Boolean getEnable() {
         return enable;
@@ -14,11 +21,13 @@ public class LocalTunnelConfig {
         this.enable = enable;
     }
 
-    public Boolean getForceLocal() {
-        return forceLocal;
+    public Map<String, String> getLocalOptions() {
+        return localOptions;
     }
 
-    public void setForceLocal(Boolean forceLocal) {
-        this.forceLocal = forceLocal;
+    @JsonAnySetter
+    public void setLocalOption(String key, String value) {
+        this.localOptions.put(key, value);
     }
+
 }

@@ -15,20 +15,20 @@ public class WebDriverConfiguration {
 
     private DriverType driverType;
 
-    @JsonProperty("localDriver")
-    private LocalDriverConfig localDriverConfig;
+    @JsonProperty("onPremDriver")
+    private OnPremDriverConfig onPremDriverConfig;
 
-    @JsonProperty("remoteDriver")
-    private RemoteDriverConfig remoteDriverConfig;
+    @JsonProperty("cloudDriver")
+    private RemoteDriverConfig cloudDriverConfig;
 
     public List<Platform> getActivePlatforms() {
         List<Platform> activePlatforms = Collections.emptyList();
         switch (driverType) {
-            case remoteDriver:
-                activePlatforms = remoteDriverConfig.getPlatforms();
+            case cloudDriver:
+                activePlatforms = cloudDriverConfig.getPlatforms();
                 break;
-            case localDriver:
-                activePlatforms = localDriverConfig.getPlatforms();
+            case onPremDriver:
+                activePlatforms = onPremDriverConfig.getPlatforms();
                 break;
         }
 
@@ -51,19 +51,19 @@ public class WebDriverConfiguration {
         this.driverType = driverType;
     }
 
-    public LocalDriverConfig getLocalDriverConfig() {
-        return localDriverConfig;
+    public OnPremDriverConfig getOnPremDriverConfig() {
+        return onPremDriverConfig;
     }
 
-    public void setLocalDriverConfig(LocalDriverConfig localDriverConfig) {
-        this.localDriverConfig = localDriverConfig;
+    public void setOnPremDriverConfig(OnPremDriverConfig onPremDriverConfig) {
+        this.onPremDriverConfig = onPremDriverConfig;
     }
 
-    public RemoteDriverConfig getRemoteDriverConfig() {
-        return remoteDriverConfig;
+    public RemoteDriverConfig getCloudDriverConfig() {
+        return cloudDriverConfig;
     }
 
-    public void setRemoteDriverConfig(RemoteDriverConfig remoteDriverConfig) {
-        this.remoteDriverConfig = remoteDriverConfig;
+    public void setCloudDriverConfig(RemoteDriverConfig cloudDriverConfig) {
+        this.cloudDriverConfig = cloudDriverConfig;
     }
 }

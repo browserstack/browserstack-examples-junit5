@@ -6,6 +6,7 @@ package com.browserstack.examples.config;
  * @author Anirudha Khanna
  */
 public enum DriverType {
-    remoteDriver,
-    localDriver;
+    cloudDriver,
+    onPremGridDriver,
+    onPremDriver;
 }

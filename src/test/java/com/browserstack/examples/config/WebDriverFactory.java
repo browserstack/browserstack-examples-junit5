@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Factory class that is responsible for parsing the capability configuration and creating {@link WebDriver} instances.
@@ -50,6 +52,7 @@ public class WebDriverFactory {
 
     private final WebDriverConfiguration webDriverConfiguration;
     private final String defaultBuildSuffix;
+    private final boolean isLocal;
 
     public static WebDriverFactory getInstance() {
         if (instance == null) {
@@ -66,6 +69,16 @@ public class WebDriverFactory {
         this.defaultBuildSuffix = String.valueOf(System.currentTimeMillis());
         this.webDriverConfiguration = parseWebDriverConfig();
         List<Platform> platforms = webDriverConfiguration.getActivePlatforms();
+        isLocal = webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getEnable();
+        if (isLocal){
+            Map<String,String> localOptions = webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions();
+            String accessKey = webDriverConfiguration.getCloudDriverConfig().getAccessKey();
+            if (StringUtils.isNoneEmpty(System.getenv(BROWSERSTACK_ACCESS_KEY))) {
+                accessKey = System.getenv(BROWSERSTACK_ACCESS_KEY);
+            }
+            localOptions.put("key",accessKey);
+            LocalFactory.createInstance(webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions());
+        }
         LOGGER.debug("Running tests on {} active platforms.", platforms.size());
     }
 
@@ -87,10 +100,10 @@ public class WebDriverFactory {
     public WebDriver createWebDriverForPlatform(Platform platform, String testName) throws MalformedURLException {
         WebDriver webDriver = null;
         switch (this.webDriverConfiguration.getDriverType()) {
-            case localDriver:
-                webDriver = createLocalWebDriver(platform);
+            case onPremDriver:
+                webDriver = createOnPremWebDriver(platform);
                 break;
-            case remoteDriver:
+            case cloudDriver:
                 webDriver = createRemoteWebDriver(platform, testName);
         }
         return webDriver;
@@ -101,7 +114,7 @@ public class WebDriverFactory {
     }
 
     private WebDriver createRemoteWebDriver(Platform platform, String testName) throws MalformedURLException {
-        RemoteDriverConfig remoteDriverConfig = this.webDriverConfiguration.getRemoteDriverConfig();
+        RemoteDriverConfig remoteDriverConfig = this.webDriverConfiguration.getCloudDriverConfig();
         CommonCapabilities commonCapabilities = remoteDriverConfig.getCommonCapabilities();
         DesiredCapabilities platformCapabilities = new DesiredCapabilities();
         if (StringUtils.isNotEmpty(platform.getDevice())) {
@@ -132,13 +145,18 @@ public class WebDriverFactory {
         }
         platformCapabilities.setCapability("browserstack.user", user);
         platformCapabilities.setCapability("browserstack.key", accessKey);
+
+        if (isLocal){
+            platformCapabilities.setCapability("browserstack.localIdentifier",LocalFactory.getInstance().getLocalIdentifier());
+        }
+
         return new RemoteWebDriver(new URL(remoteDriverConfig.getHubUrl()), platformCapabilities);
     }
 
     /**
      * Instantiates Local Driver for different browser types
      */
-    private WebDriver createLocalWebDriver(Platform platform) {
+    private WebDriver createOnPremWebDriver(Platform platform) {
         WebDriver webDriver = null;
         switch (BrowserType.valueOf(platform.getName())) {
             case chrome:
