@@ -1,19 +1,11 @@
 package com.browserstack.examples.config;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import lombok.Data;
-import lombok.ToString;
 
-/**
- * Created with IntelliJ IDEA.
- *
- * @author Anirudha Khanna
- */
-@Data
-@ToString
 public class Capabilities {
 
     private Map<String, Object> capabilityMap = new LinkedHashMap<>();
@@ -25,6 +17,10 @@ public class Capabilities {
 
     public Object capability(String key) {
         return this.capabilityMap.get(key);
+    }
+
+    public Map<String, Object> getCapabilityMap() {
+        return capabilityMap;
     }
 }
 

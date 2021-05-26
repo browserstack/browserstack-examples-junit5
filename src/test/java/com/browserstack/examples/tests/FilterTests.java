@@ -1,10 +1,7 @@
 package com.browserstack.examples.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
-import java.util.List;
-
+import com.browserstack.examples.config.WebDriverFactory;
+import com.browserstack.examples.extensions.WebDriverTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,8 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.browserstack.examples.config.WebDriverFactory;
-import com.browserstack.examples.extensions.WebDriverTest;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.

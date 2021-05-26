@@ -1,4 +1,4 @@
-package com.browserstack.examples.helper;
+package com.browserstack.examples.helpers;
 public class Constants {
 
     public static class EndPoints {

@@ -1,12 +1,7 @@
 package com.browserstack.examples.extensions;
 
-import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
+import com.browserstack.examples.config.Platform;
+import com.browserstack.examples.config.WebDriverFactory;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
@@ -14,28 +9,17 @@ import org.junit.platform.commons.util.AnnotationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.browserstack.examples.config.Platform;
-import com.browserstack.examples.config.WebDriverFactory;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
-/**
- * Created with IntelliJ IDEA.
- *
- * @author Anirudha Khanna
- */
 public class WebDriverTestExtension implements TestTemplateInvocationContextProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverTestExtension.class);
 
-    /**
-     * Determine if this provider supports providing invocation contexts for the
-     * test template method represented by the supplied {@code context}.
-     *
-     * @param context the extension context for the test template method about
-     *                to be invoked; never {@code null}
-     * @return {@code true} if this provider can provide invocation contexts
-     * @see #provideTestTemplateInvocationContexts
-     * @see ExtensionContext
-     */
     @Override
     public boolean supportsTestTemplate(ExtensionContext context) {
         if (!context.getTestMethod().isPresent()) {

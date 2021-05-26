@@ -14,9 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <selenium-java.version>3.141.59</selenium-java.version>
         <junit.jupiter.version>5.7.1</junit.jupiter.version>
-        <json.simple.version>1.1</json.simple.version>
         <jackson.version>2.12.2</jackson.version>
-        <lombok.version>1.18.12</lombok.version>
         <browserstack.local.version>1.0.6</browserstack.local.version>
         <opencsv.version>5.3</opencsv.version>
         <allure-junit5.version>2.13.8</allure-junit5.version>
@@ -30,12 +28,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
