@@ -65,3 +65,4 @@ out/
 
 # Allure
 allure*
+/local_test.log
