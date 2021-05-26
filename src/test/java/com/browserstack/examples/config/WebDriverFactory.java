@@ -3,6 +3,7 @@ package com.browserstack.examples.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,6 +104,9 @@ public class WebDriverFactory {
             case onPremDriver:
                 webDriver = createOnPremWebDriver(platform);
                 break;
+            case onPremGridDriver:
+                webDriver = createOnPremGridWebDriver(platform);
+                break;
             case cloudDriver:
                 webDriver = createRemoteWebDriver(platform, testName);
         }
@@ -152,6 +155,25 @@ public class WebDriverFactory {
         }
 
         return new RemoteWebDriver(new URL(remoteDriverConfig.getHubUrl()), platformCapabilities);
+    }
+
+    private WebDriver createOnPremGridWebDriver(Platform platform) throws MalformedURLException {
+        DesiredCapabilities capabilities;
+        switch (BrowserType.valueOf(platform.getName())){
+            case chrome:
+                capabilities = new DesiredCapabilities(new ChromeOptions());
+                break;
+            case firefox:
+                capabilities = new DesiredCapabilities(new FirefoxOptions());
+                break;
+            default:
+                throw new RuntimeException("Unsupported Browser : "+platform.getBrowser());
+        }
+
+        if (platform.getCapabilities()!=null){
+            platform.getCapabilities().getCapabilityMap().forEach(capabilities::setCapability);
+        }
+        return new RemoteWebDriver(new URL(this.webDriverConfiguration.getOnPremGridDriverConfig().getHubUrl()),capabilities);
     }
 
     /**

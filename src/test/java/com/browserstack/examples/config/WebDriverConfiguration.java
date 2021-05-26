@@ -18,20 +18,25 @@ public class WebDriverConfiguration {
     @JsonProperty("onPremDriver")
     private OnPremDriverConfig onPremDriverConfig;
 
+    @JsonProperty("onPremGridDriver")
+    private RemoteDriverConfig onPremGridDriverConfig;
+
     @JsonProperty("cloudDriver")
     private RemoteDriverConfig cloudDriverConfig;
 
     public List<Platform> getActivePlatforms() {
         List<Platform> activePlatforms = Collections.emptyList();
         switch (driverType) {
-            case cloudDriver:
-                activePlatforms = cloudDriverConfig.getPlatforms();
-                break;
             case onPremDriver:
                 activePlatforms = onPremDriverConfig.getPlatforms();
                 break;
+            case onPremGridDriver:
+                activePlatforms = onPremGridDriverConfig.getPlatforms();
+                break;
+            case cloudDriver:
+                activePlatforms = cloudDriverConfig.getPlatforms();
+                break;
         }
-
         return activePlatforms;
     }
 
@@ -57,6 +62,14 @@ public class WebDriverConfiguration {
 
     public void setOnPremDriverConfig(OnPremDriverConfig onPremDriverConfig) {
         this.onPremDriverConfig = onPremDriverConfig;
+    }
+
+    public RemoteDriverConfig getOnPremGridDriverConfig() {
+        return onPremGridDriverConfig;
+    }
+
+    public void setOnPremGridDriverConfig(RemoteDriverConfig onPremGridDriverConfig) {
+        this.onPremGridDriverConfig = onPremGridDriverConfig;
     }
 
     public RemoteDriverConfig getCloudDriverConfig() {

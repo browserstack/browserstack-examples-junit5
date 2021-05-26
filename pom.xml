@@ -129,6 +129,12 @@
             </properties>
         </profile>
         <profile>
+            <id>docker</id>
+            <properties>
+                <capabilities.config.file>capabilities-docker.yml</capabilities.config.file>
+            </properties>
+        </profile>
+        <profile>
             <id>bstack-single</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
