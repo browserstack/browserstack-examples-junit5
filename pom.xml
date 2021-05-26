@@ -129,9 +129,6 @@
         </profile>
         <profile>
             <id>bstack-parallel</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <capabilities.config.file>capabilities-parallel.yml</capabilities.config.file>
             </properties>
