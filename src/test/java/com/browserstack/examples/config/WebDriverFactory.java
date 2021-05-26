@@ -69,7 +69,8 @@ public class WebDriverFactory {
         this.defaultBuildSuffix = String.valueOf(System.currentTimeMillis());
         this.webDriverConfiguration = parseWebDriverConfig();
         List<Platform> platforms = webDriverConfiguration.getActivePlatforms();
-        isLocal = webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getEnable();
+        isLocal = webDriverConfiguration.getCloudDriverConfig()!=null &&
+                webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getEnable();
         if (isLocal){
             Map<String,String> localOptions = webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions();
             String accessKey = webDriverConfiguration.getCloudDriverConfig().getAccessKey();
@@ -211,6 +212,10 @@ public class WebDriverFactory {
 
     public List<Platform> getPlatforms() {
         return this.webDriverConfiguration.getActivePlatforms();
+    }
+
+    public DriverType getCurrentDriverType(){
+        return webDriverConfiguration.getDriverType();
     }
 
     private String createBuildName(String buildPrefix) {

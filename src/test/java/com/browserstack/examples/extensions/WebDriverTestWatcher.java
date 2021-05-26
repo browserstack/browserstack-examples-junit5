@@ -1,5 +1,6 @@
 package com.browserstack.examples.extensions;
 
+import com.browserstack.examples.config.DriverType;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,8 +36,9 @@ public class WebDriverTestWatcher implements TestWatcher {
     private void markAndCloseWebDriver(ExtensionContext context, String status, String reason) {
         String testName = context.getDisplayName();
         WebDriver webDriver = context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName, WebDriver.class);
+        DriverType driverType = context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName+"-driverType", DriverType.class);
         try {
-            if (webDriver instanceof RemoteWebDriver) {
+            if (driverType.equals(DriverType.cloudDriver)) {
                 ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, status, reason));
             }
         } finally {

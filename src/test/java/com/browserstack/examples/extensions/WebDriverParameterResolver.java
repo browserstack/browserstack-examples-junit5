@@ -46,6 +46,7 @@ public class WebDriverParameterResolver implements ParameterResolver {
                                                      + this.platform.getName() + " method :: " + testMethodName);
         }
         extensionContext.getStore(STORE_NAMESPACE).put(testMethodName, webDriver);
+        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+"-driverType",webDriverFactory.getCurrentDriverType());
         return webDriver;
     }
 

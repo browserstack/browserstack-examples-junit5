@@ -40,7 +40,7 @@ public class LocalFactory {
         try {
             args.put("localIdentifier", localIdentifier);
             local.start(args);
-            LOGGER.debug("Started BrowserStack Local with identifier {}.", localIdentifier);
+            LOGGER.info("Started BrowserStack Local with identifier {}.", localIdentifier);
         } catch (Exception e) {
             LOGGER.error("Initialization BrowserStack Local with identifier {} failed.", localIdentifier);
         }
