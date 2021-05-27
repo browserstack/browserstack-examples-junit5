@@ -19,12 +19,10 @@ public class WebDriverParameterResolver implements ParameterResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverParameterResolver.class);
 
-    private final String testMethod;
     private final WebDriverFactory webDriverFactory;
     private final Platform platform;
 
-    public WebDriverParameterResolver(String testMethod, WebDriverFactory webDriverFactory, Platform platform) {
-        this.testMethod = testMethod;
+    public WebDriverParameterResolver(WebDriverFactory webDriverFactory, Platform platform) {
         this.webDriverFactory = webDriverFactory;
         this.platform = platform;
     }
@@ -55,7 +53,7 @@ public class WebDriverParameterResolver implements ParameterResolver {
     }
 
     private WebDriver createWebDriver(String testMethodName, String[] specificCapabilities) {
-        WebDriver webDriver = null;
+        WebDriver webDriver;
         try {
             webDriver = this.webDriverFactory.createWebDriverForPlatform(platform, testMethodName,specificCapabilities);
         } catch (MalformedURLException malformedURLException) {

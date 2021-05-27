@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static com.browserstack.examples.helpers.CommonSteps.*;
 import static com.browserstack.examples.helpers.Constants.AllureTags.EPIC_PRODUCT;
@@ -55,7 +56,7 @@ public class BrandFilterTest {
     @Step("Verifying the product counts for brand : {0}")
     private void verifyCount(String brand, int totalCount, int brandCount) {
         int expectedTotalCount = ProductUtil.getAllProducts().size();
-        int expectedBrandCount = ProductUtil.getProductsByBrands(Arrays.asList(brand)).size();
+        int expectedBrandCount = ProductUtil.getProductsByBrands(Collections.singletonList(brand)).size();
         Assertions.assertEquals(expectedTotalCount, totalCount, PRODUCT_COUNT_MISMATCH);
         Assertions.assertEquals(expectedBrandCount, brandCount, PRODUCT_COUNT_MISMATCH);
         Assertions.assertTrue(totalCount > brandCount, APPLY_BRAND_FILTER);

@@ -29,12 +29,12 @@ public class ImageTest {
 
     private static final String IMAGE_NOT_LOADING_ACCOUNT_USER_NAME = "image_not_loading_user";
 
-    @WebDriverTest
+    @WebDriverTest(capabilities = {"apply_command_mask"})
     public void imageLoadingTest(WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);
         signIntoImageNotLoadingAccount(webDriver);
         List<WebElement> images = webDriver.findElements(By.tagName(PRODUCT_IMAGE_TAG));
-        images.stream().forEach(image ->
+        images.forEach(image ->
                 Assertions.assertTrue(image.getAttribute(PRODUCT_IMAGE_SOURCE_ATTRIBUTE).isEmpty(), IMAGE_NOT_LOADING));
     }
 

@@ -11,7 +11,7 @@ public class LocalTunnelConfig {
     private Boolean enable;
 
     @JsonProperty("local_options")
-    private Map<String, String> localOptions = new LinkedHashMap<>();
+    private final Map<String, String> localOptions = new LinkedHashMap<>();
 
     public Boolean getEnable() {
         return enable;

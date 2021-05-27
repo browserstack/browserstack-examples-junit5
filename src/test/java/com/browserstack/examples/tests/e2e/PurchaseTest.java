@@ -24,7 +24,7 @@ public class PurchaseTest {
     private static final String USER = "fav_user";
     private static final int PRODUCT_COUNT = 3;
 
-    @WebDriverTest(capabilities = {"apply_mask"})
+    @WebDriverTest(capabilities = {"apply_command_mask"})
     public void orderPlacementTest(WebDriver webDriver) {
         HomePage homePage = new HomePage(WebDriverFactory.getInstance().getTestEndpoint(), webDriver);
         ElementLocatorUtil.waitUntilTitleIs(webDriver, HOME_PAGE_TITLE, HOME_PAGE_NOT_LOADED_ON_TIME);

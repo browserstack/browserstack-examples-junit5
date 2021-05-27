@@ -28,7 +28,7 @@ public class WebDriverTestInvocationContext implements TestTemplateInvocationCon
     @Override
     public List<Extension> getAdditionalExtensions() {
         List<Extension> additionalExtensions = new ArrayList<>();
-        additionalExtensions.add(new WebDriverParameterResolver(this.methodName, this.webDriverFactory, this.platform));
+        additionalExtensions.add(new WebDriverParameterResolver(this.webDriverFactory, this.platform));
         additionalExtensions.add(new WebDriverTestWatcher());
         return additionalExtensions;
     }

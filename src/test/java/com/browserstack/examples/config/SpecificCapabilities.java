@@ -8,15 +8,7 @@ import java.util.Map;
 
 public class SpecificCapabilities {
 
-    private Map<String, List<Capabilities>> specificCapabilitiesMap = new LinkedHashMap<>();
-
-    public Map<String, List<Capabilities>> getSpecificCapabilitiesMap() {
-        return specificCapabilitiesMap;
-    }
-
-    public void setSpecificCapabilitiesMap(Map<String, List<Capabilities>> specificCapabilitiesMap) {
-        this.specificCapabilitiesMap = specificCapabilitiesMap;
-    }
+    private final Map<String, List<Capabilities>> specificCapabilitiesMap = new LinkedHashMap<>();
 
     @JsonAnySetter
     public void setSpecificCapabilities(String key, List<Capabilities> value) {

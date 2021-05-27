@@ -26,8 +26,8 @@ public class FavouritesTest {
 
     private static final String EXISTING_ORDERS_ACCOUNT_USER_NAME = "existing_orders_user";
 
-    @WebDriverTest
-    public void testFavouritesCount(WebDriver webDriver) {
+    @WebDriverTest(capabilities = {"apply_command_mask"})
+    public void favouritesCountTest(WebDriver webDriver) {
         navigateToHome(webDriver);
         signIntoExistingOrdersAccount(webDriver);
         int favourites = testFavourites(webDriver);

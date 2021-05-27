@@ -26,7 +26,7 @@ public class LocalFactory {
         }
     }
 
-    public static LocalFactory createInstance(Map<String, String> args) {
+    public static void createInstance(Map<String, String> args) {
         if (instance == null) {
             synchronized (LocalFactory.class) {
                 if (instance == null) {
@@ -35,7 +35,6 @@ public class LocalFactory {
                 }
             }
         }
-        return instance;
     }
 
     public static LocalFactory getInstance() {

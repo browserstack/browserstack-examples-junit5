@@ -22,8 +22,13 @@ cloudDriver:
       browser: Chrome
 
 specific_capabilities:
-  apply_mask:
+  apply_auth_mask:
+    - browserstack.maskBasicAuth: true
+  apply_command_mask:
     - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
-      browserstack.appiumLogs: false
-  time_zone:
-    - timezone: New_York
+  debug_test:
+    - browserstack.debug: true
+      browserstack.console: verbose
+      browserstack.networkLogs: true
+      browserstack.video: true
+      browserstack.seleniumLogs: true

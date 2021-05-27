@@ -23,7 +23,7 @@ import static com.browserstack.examples.helpers.Constants.ErrorMessages.SIGNIN_P
 @Story(STORY_REDIRECTION)
 public class RedirectionTest {
 
-    @WebDriverTest
+    @WebDriverTest(capabilities = {"apply_command_mask"})
     public void favouritesRedirectsLoginTest(WebDriver webDriver) {
         navigateToHome(webDriver);
         clickOnFavourite(webDriver);

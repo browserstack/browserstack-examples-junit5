@@ -25,7 +25,7 @@ public class AccountLockTest {
     private static final String ACCOUNT_LOCKED_ERROR_MESSAGE = "Your account has been locked.";
     private static final String LOCKED_ACCOUNT_USER_NAME = "locked_user";
 
-    @WebDriverTest
+    @WebDriverTest(capabilities = {"apply_command_mask"})
     public void lockMessageTest(WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);
         signIntoLockedAccount(webDriver);

@@ -26,12 +26,12 @@ public class OrderTest {
 
     private static final String EXISTING_ORDERS_ACCOUNT_USER_NAME = "existing_orders_user";
 
-    @WebDriverTest
+    @WebDriverTest(capabilities = {"apply_command_mask"})
     public void existingOrdersTest(WebDriver webDriver) {
         navigateToHome(webDriver);
         signIntoExistingOrdersAccount(webDriver);
         int orders = checkExistingOrders(webDriver);
-        Assertions.assertNotEquals(orders, 0, () -> EMPTY_CART);
+        Assertions.assertNotEquals(orders, 0, EMPTY_CART);
     }
 
     @Step("Checking orders")

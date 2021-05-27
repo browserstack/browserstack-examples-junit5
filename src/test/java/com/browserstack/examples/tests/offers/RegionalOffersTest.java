@@ -35,7 +35,7 @@ public class RegionalOffersTest {
     private static final String OFFER_LONGITUDE = "70";
 
 
-    @WebDriverTest
+    @WebDriverTest(capabilities = {"apply_command_mask"})
     public void offersLoadedTest(WebDriver webDriver) {
         navigateToHome(webDriver);
         signIntoFavouriteAccount(webDriver);

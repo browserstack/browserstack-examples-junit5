@@ -88,7 +88,7 @@ public class WebDriverFactory {
         URL resourceURL = WebDriverFactory.class.getClassLoader().getResource(capabilitiesConfigFile);
 
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        WebDriverConfiguration webDriverConfiguration = null;
+        WebDriverConfiguration webDriverConfiguration;
         try {
             webDriverConfiguration = objectMapper.readValue(resourceURL, WebDriverConfiguration.class);
         } catch (IOException ioe) {
@@ -99,22 +99,23 @@ public class WebDriverFactory {
 
     public WebDriver createWebDriverForPlatform(Platform platform, String testName, String[] specificCapabilitiesKeys) throws MalformedURLException {
         WebDriver webDriver = null;
-        Map<String,Object> specificCapabilitiesMap = new LinkedHashMap<>();
-        Arrays.stream(specificCapabilitiesKeys).forEach(specificCapabilityKey->{
-            List<Capabilities> specificCapabilitiesList = webDriverConfiguration
-                    .getSpecificCapabilities()
-                    .getSpecificCapabilities(specificCapabilityKey);
-            specificCapabilitiesList.forEach(caps->caps.getCapabilityMap().forEach((key,value)->specificCapabilitiesMap.put(key,value)));
-        });
+        Map<String, Object> specificCapabilitiesMap = new LinkedHashMap<>();
+        if (webDriverConfiguration.getSpecificCapabilities() != null && specificCapabilitiesKeys.length>0) {
+            Arrays.stream(specificCapabilitiesKeys)
+                    .forEach(specificCapabilityKey -> webDriverConfiguration
+                            .getSpecificCapabilities()
+                            .getSpecificCapabilities(specificCapabilityKey)
+                            .forEach(caps -> caps.getCapabilityMap().forEach(specificCapabilitiesMap::put)));
+        }
         switch (this.webDriverConfiguration.getDriverType()) {
             case onPremDriver:
-                webDriver = createOnPremWebDriver(platform);
+                webDriver = createOnPremWebDriver(platform, specificCapabilitiesMap);
                 break;
             case onPremGridDriver:
-                webDriver = createOnPremGridWebDriver(platform);
+                webDriver = createOnPremGridWebDriver(platform, specificCapabilitiesMap);
                 break;
             case cloudDriver:
-                webDriver = createRemoteWebDriver(platform, testName,specificCapabilitiesMap);
+                webDriver = createRemoteWebDriver(platform, testName, specificCapabilitiesMap);
         }
         return webDriver;
     }
@@ -131,7 +132,7 @@ public class WebDriverFactory {
         return this.webDriverConfiguration.getActivePlatforms();
     }
 
-    private WebDriver createRemoteWebDriver(Platform platform, String testName,Map<String,Object> specificCapabilitiesMap) throws MalformedURLException {
+    private WebDriver createRemoteWebDriver(Platform platform, String testName, Map<String, Object> specificCapabilitiesMap) throws MalformedURLException {
         RemoteDriverConfig remoteDriverConfig = this.webDriverConfiguration.getCloudDriverConfig();
         CommonCapabilities commonCapabilities = remoteDriverConfig.getCommonCapabilities();
         DesiredCapabilities platformCapabilities = new DesiredCapabilities();
@@ -168,11 +169,11 @@ public class WebDriverFactory {
             platformCapabilities.setCapability("browserstack.localIdentifier", LocalFactory.getInstance().getLocalIdentifier());
         }
 
-        specificCapabilitiesMap.forEach((key,value)->platformCapabilities.setCapability(key,value));
+        specificCapabilitiesMap.forEach(platformCapabilities::setCapability);
         return new RemoteWebDriver(new URL(remoteDriverConfig.getHubUrl()), platformCapabilities);
     }
 
-    private WebDriver createOnPremGridWebDriver(Platform platform) throws MalformedURLException {
+    private WebDriver createOnPremGridWebDriver(Platform platform, Map<String, Object> specificCapabilitiesMap) throws MalformedURLException {
         DesiredCapabilities capabilities;
         switch (BrowserType.valueOf(platform.getName())) {
             case chrome:
@@ -184,14 +185,14 @@ public class WebDriverFactory {
             default:
                 throw new RuntimeException("Unsupported Browser : " + platform.getBrowser());
         }
-
         if (platform.getCapabilities() != null) {
             platform.getCapabilities().getCapabilityMap().forEach(capabilities::setCapability);
         }
+        specificCapabilitiesMap.forEach(capabilities::setCapability);
         return new RemoteWebDriver(new URL(this.webDriverConfiguration.getOnPremGridDriverConfig().getHubUrl()), capabilities);
     }
 
-    private WebDriver createOnPremWebDriver(Platform platform) {
+    private WebDriver createOnPremWebDriver(Platform platform, Map<String, Object> specificCapabilitiesMap) {
         WebDriver webDriver = null;
         switch (BrowserType.valueOf(platform.getName())) {
             case chrome:
@@ -200,6 +201,7 @@ public class WebDriverFactory {
                 if (platform.getCapabilities() != null) {
                     platform.getCapabilities().getCapabilityMap().forEach(chromeOptions::setCapability);
                 }
+                specificCapabilitiesMap.forEach(chromeOptions::setCapability);
                 webDriver = new ChromeDriver(chromeOptions);
                 break;
             case firefox:
@@ -208,6 +210,7 @@ public class WebDriverFactory {
                 if (platform.getCapabilities() != null) {
                     platform.getCapabilities().getCapabilityMap().forEach(firefoxOptions::setCapability);
                 }
+                specificCapabilitiesMap.forEach(firefoxOptions::setCapability);
                 webDriver = new FirefoxDriver(firefoxOptions);
                 break;
             case ie:
@@ -216,6 +219,7 @@ public class WebDriverFactory {
                 if (platform.getCapabilities() != null) {
                     platform.getCapabilities().getCapabilityMap().forEach(internetExplorerOptions::setCapability);
                 }
+                specificCapabilitiesMap.forEach(internetExplorerOptions::setCapability);
                 webDriver = new InternetExplorerDriver(internetExplorerOptions);
                 break;
             case edge:
@@ -224,6 +228,7 @@ public class WebDriverFactory {
                 if (platform.getCapabilities() != null) {
                     platform.getCapabilities().getCapabilityMap().forEach(edgeOptions::setCapability);
                 }
+                specificCapabilitiesMap.forEach(edgeOptions::setCapability);
                 webDriver = new EdgeDriver(edgeOptions);
                 break;
             case safari:
@@ -231,6 +236,7 @@ public class WebDriverFactory {
                 if (platform.getCapabilities() != null) {
                     platform.getCapabilities().getCapabilityMap().forEach(safariOptions::setCapability);
                 }
+                specificCapabilitiesMap.forEach(safariOptions::setCapability);
                 webDriver = new SafariDriver(safariOptions);
                 break;
             case opera:
@@ -238,6 +244,7 @@ public class WebDriverFactory {
                 if (platform.getCapabilities() != null) {
                     platform.getCapabilities().getCapabilityMap().forEach(operaOptions::setCapability);
                 }
+                specificCapabilitiesMap.forEach(operaOptions::setCapability);
                 webDriver = new OperaDriver(operaOptions);
                 break;
         }
