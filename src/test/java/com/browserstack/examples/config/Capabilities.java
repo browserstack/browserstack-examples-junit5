@@ -23,4 +23,3 @@ public class Capabilities {
         return capabilityMap;
     }
 }
-

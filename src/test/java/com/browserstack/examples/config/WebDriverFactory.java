@@ -3,7 +3,6 @@ package com.browserstack.examples.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -29,9 +28,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Factory class that is responsible for parsing the capability configuration and creating {@link WebDriver} instances.
- */
 public class WebDriverFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverFactory.class);
@@ -46,7 +42,6 @@ public class WebDriverFactory {
     private static final String WEBDRIVER_GECKO_DRIVER = "webdriver.gecko.driver";
     private static final String WEBDRIVER_IE_DRIVER = "webdriver.ie.driver";
     private static final String WEBDRIVER_EDGE_DRIVER = "webdriver.edge.driver";
-
 
     private static WebDriverFactory instance;
 
@@ -123,6 +118,10 @@ public class WebDriverFactory {
         return toMark;
     }
 
+    public List<Platform> getPlatforms() {
+        return this.webDriverConfiguration.getActivePlatforms();
+    }
+
     private WebDriver createRemoteWebDriver(Platform platform, String testName) throws MalformedURLException {
         RemoteDriverConfig remoteDriverConfig = this.webDriverConfiguration.getCloudDriverConfig();
         CommonCapabilities commonCapabilities = remoteDriverConfig.getCommonCapabilities();
@@ -182,9 +181,6 @@ public class WebDriverFactory {
         return new RemoteWebDriver(new URL(this.webDriverConfiguration.getOnPremGridDriverConfig().getHubUrl()),capabilities);
     }
 
-    /**
-     * Instantiates Local Driver for different browser types
-     */
     private WebDriver createOnPremWebDriver(Platform platform) {
         WebDriver webDriver = null;
         switch (BrowserType.valueOf(platform.getName())) {
@@ -236,14 +232,6 @@ public class WebDriverFactory {
                 break;
         }
         return webDriver;
-    }
-
-    public List<Platform> getPlatforms() {
-        return this.webDriverConfiguration.getActivePlatforms();
-    }
-
-    public DriverType getCurrentDriverType(){
-        return webDriverConfiguration.getDriverType();
     }
 
     private String createBuildName(String buildPrefix) {

@@ -1,6 +1,5 @@
 package com.browserstack.examples.extensions;
 
-import com.browserstack.examples.config.DriverType;
 import com.browserstack.examples.config.Platform;
 import com.browserstack.examples.config.WebDriverFactory;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
-import java.util.Arrays;
 
 public class WebDriverParameterResolver implements ParameterResolver {
 
@@ -24,7 +22,6 @@ public class WebDriverParameterResolver implements ParameterResolver {
     private final String testMethod;
     private final WebDriverFactory webDriverFactory;
     private final Platform platform;
-
 
     public WebDriverParameterResolver(String testMethod, WebDriverFactory webDriverFactory, Platform platform) {
         this.testMethod = testMethod;
@@ -51,7 +48,6 @@ public class WebDriverParameterResolver implements ParameterResolver {
         extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+".toMark",webDriverFactory.isToMark());
         return webDriver;
     }
-
 
     private WebDriver createWebDriver(String testMethodName) {
         WebDriver webDriver = null;

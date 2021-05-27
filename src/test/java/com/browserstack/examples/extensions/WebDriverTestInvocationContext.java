@@ -20,12 +20,10 @@ public class WebDriverTestInvocationContext implements TestTemplateInvocationCon
         this.platform = platform;
     }
 
-
     @Override
     public String getDisplayName(int invocationIndex) {
         return methodName + "[" + invocationIndex + "]";
     }
-
 
     @Override
     public List<Extension> getAdditionalExtensions() {

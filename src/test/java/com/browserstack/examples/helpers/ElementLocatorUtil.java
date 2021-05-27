@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ElementLocatorUtil {
+
     public static void waitUntilTitleIs(WebDriver webDriver, String title, String timeOutMessage) {
         try {
             WebDriverWaitUtil.getWebDriverWait(webDriver).until(ExpectedConditions.titleIs(title));

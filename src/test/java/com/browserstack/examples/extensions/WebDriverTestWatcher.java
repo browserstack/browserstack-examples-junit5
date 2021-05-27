@@ -1,11 +1,9 @@
 package com.browserstack.examples.extensions;
 
-import com.browserstack.examples.config.DriverType;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.Optional;
 
@@ -47,5 +45,4 @@ public class WebDriverTestWatcher implements TestWatcher {
             }
         }
     }
-
 }
