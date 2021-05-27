@@ -39,7 +39,12 @@ public class WebDriverParameterResolver implements ParameterResolver {
     public Object resolveParameter(ParameterContext parameterContext,
                                    ExtensionContext extensionContext) throws ParameterResolutionException {
         String testMethodName = extensionContext.getDisplayName();
-        WebDriver webDriver = createWebDriver(testMethodName);
+        String[] specificCapabilities = new String[0];
+        WebDriverTest webDriverTest = extensionContext.getTestMethod().get().getAnnotation(WebDriverTest.class);
+        if (webDriverTest!=null){
+            specificCapabilities = webDriverTest.capabilities();
+        }
+        WebDriver webDriver = createWebDriver(testMethodName,specificCapabilities);
         if (webDriver == null) {
             throw new ParameterResolutionException("Unable to create WebDriver for Platform :: "
                     + this.platform.getName() + " method :: " + testMethodName);
@@ -49,10 +54,10 @@ public class WebDriverParameterResolver implements ParameterResolver {
         return webDriver;
     }
 
-    private WebDriver createWebDriver(String testMethodName) {
+    private WebDriver createWebDriver(String testMethodName, String[] specificCapabilities) {
         WebDriver webDriver = null;
         try {
-            webDriver = this.webDriverFactory.createWebDriverForPlatform(platform, testMethodName);
+            webDriver = this.webDriverFactory.createWebDriverForPlatform(platform, testMethodName,specificCapabilities);
         } catch (MalformedURLException malformedURLException) {
             LOGGER.error("Caught exception when creating WebDriver for Platform :: {}", platform, malformedURLException);
             throw new ParameterResolutionException(platform.toString(), malformedURLException);

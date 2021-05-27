@@ -15,4 +15,5 @@ import static org.apiguardian.api.API.Status.STABLE;
 @TestTemplate
 @ExtendWith(WebDriverTestExtension.class)
 public @interface WebDriverTest {
+    String[] capabilities() default {};
 }

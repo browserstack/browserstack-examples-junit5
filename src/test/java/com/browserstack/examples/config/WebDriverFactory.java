@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,8 +97,15 @@ public class WebDriverFactory {
         return webDriverConfiguration;
     }
 
-    public WebDriver createWebDriverForPlatform(Platform platform, String testName) throws MalformedURLException {
+    public WebDriver createWebDriverForPlatform(Platform platform, String testName, String[] specificCapabilitiesKeys) throws MalformedURLException {
         WebDriver webDriver = null;
+        Map<String,Object> specificCapabilitiesMap = new LinkedHashMap<>();
+        Arrays.stream(specificCapabilitiesKeys).forEach(specificCapabilityKey->{
+            List<Capabilities> specificCapabilitiesList = webDriverConfiguration
+                    .getSpecificCapabilities()
+                    .getSpecificCapabilities(specificCapabilityKey);
+            specificCapabilitiesList.forEach(caps->caps.getCapabilityMap().forEach((key,value)->specificCapabilitiesMap.put(key,value)));
+        });
         switch (this.webDriverConfiguration.getDriverType()) {
             case onPremDriver:
                 webDriver = createOnPremWebDriver(platform);
@@ -105,7 +114,7 @@ public class WebDriverFactory {
                 webDriver = createOnPremGridWebDriver(platform);
                 break;
             case cloudDriver:
-                webDriver = createRemoteWebDriver(platform, testName);
+                webDriver = createRemoteWebDriver(platform, testName,specificCapabilitiesMap);
         }
         return webDriver;
     }
@@ -122,7 +131,7 @@ public class WebDriverFactory {
         return this.webDriverConfiguration.getActivePlatforms();
     }
 
-    private WebDriver createRemoteWebDriver(Platform platform, String testName) throws MalformedURLException {
+    private WebDriver createRemoteWebDriver(Platform platform, String testName,Map<String,Object> specificCapabilitiesMap) throws MalformedURLException {
         RemoteDriverConfig remoteDriverConfig = this.webDriverConfiguration.getCloudDriverConfig();
         CommonCapabilities commonCapabilities = remoteDriverConfig.getCommonCapabilities();
         DesiredCapabilities platformCapabilities = new DesiredCapabilities();
@@ -159,6 +168,7 @@ public class WebDriverFactory {
             platformCapabilities.setCapability("browserstack.localIdentifier", LocalFactory.getInstance().getLocalIdentifier());
         }
 
+        specificCapabilitiesMap.forEach((key,value)->platformCapabilities.setCapability(key,value));
         return new RemoteWebDriver(new URL(remoteDriverConfig.getHubUrl()), platformCapabilities);
     }
 

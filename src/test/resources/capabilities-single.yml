@@ -20,3 +20,10 @@ cloudDriver:
       os: Windows
       os_version: '10'
       browser: Chrome
+
+specific_capabilities:
+  apply_mask:
+    - browserstack.maskCommands: setValues, getValues, setCookies, getCookies
+      browserstack.appiumLogs: false
+  time_zone:
+    - timezone: New_York
