@@ -14,6 +14,10 @@ public class Constants {
         public static final String SPINNER_NOT_STOPPED_ON_TIME = "Spinner is taking too long to stop.";
         public static final String SIGNIN_PAGE_NOT_LOADED_ON_TIME = "Sign In page is taking too long to load.";
         public static final String SIGNIN_NOT_COMPLETED_ON_TIME = "Sign In is taking too long to complete.";
+        public static final String ORDER_BY_FILTER = "After applying lowest to highest sort option the cost should be in ascending order.";
+        public static final String PRODUCT_COUNT_MISMATCH = "Product Count Mismatch";
+        public static final String APPLY_APPLE_SAMSUNG_FILTER = "No change in product count after applying filter.";
+
         public static final String API_ERROR_NOT_LOADED_ON_TIME = "Error Message is taking too long to load.";
         public static final String CART_NOT_LOADED_ON_TIME = "Cart is taking too long to load.";
         public static final String FAVOURITES_BUT_NOT_CLICKED_ON_TIME = "Favourites button is taking too long to click.";
@@ -23,11 +27,11 @@ public class Constants {
         public static final String OFFER_MESSAGES_NOT_FOUND = "No offer messages found.";
         public static final String NO_OFFERS_LOADED = "No Offers loaded.";
         public static final String CONFIRMATION_FAILED = "Confirmation Failed";
-        public static final String PRODUCT_COUNT_MISMATCH = "Product Count Mismatch";
+
         public static final String PAGE_NOT_LOADED_ON_TIME = "A page is taking too long to load.";
         public static final String PAGE_NOT_RENDERED_CORRECTLY = "Page are not rendered correctly.";
-        public static final String ORDER_BY_FILTER = "After applying lowest to highest sort option the cost should be in ascending order.";
-        public static final String APPLY_APPLE_SAMSUNG_FILTER = "No change in product count after applying filter.";
+
+
         public static final String CLICK_FAVOURITES = "To see favourites, the user should login.";
         public static final String LOCKED_ACCOUNT = "User should not be able to login with locked account.";
         public static final String IMAGE_NOT_LOADING = "Images should not be loaded for this user.";
@@ -65,24 +69,20 @@ public class Constants {
         public static final String OFFER_CARD_CLASS = "offer";
     }
 
-    public static class RuntimeOptions {
-        public static final String PROJECT = "project";
-        public static final String BUILD = "build";
-        public static final String NAME = "name";
-    }
-
     public static class AllureTags{
+        public static final String EPIC_PRODUCT= "Product Test Suite";
+
+        public static final String STORY_ORDER_BY_FILTER = "Order By Filter Test";
+        public static final String STORY_APPLY_BRAND_FILTER = "Apply Brand Filter Test";
+
         public static final String EPIC_END_TO_END = "End To End Test Suite";
         public static final String EPIC_LOGIN= "Login Test Suite";
         public static final String EPIC_OFFERS= "Offers Test Suite";
-        public static final String EPIC_PRODUCT= "Product Test Suite";
         public static final String EPIC_USER= "User Test Suite";
         public static final String STORY_END_TO_END = "End To End Test";
         public static final String STORY_FAVOURITES_REDIRECTS_LOGIN = "Favourites Redirects Login Test";
         public static final String STORY_LOCKED_ACCOUNT = "Locked Account Test";
         public static final String STORY_OFFERS = "Offers Test";
-        public static final String STORY_APPLY_APPLE_AND_SAMSUNG_FILTER = "Apply Apple And Samsung Filter Test";
-        public static final String STORY_ORDER_BY_FILTER = "Order By Filter Test";
         public static final String STORY_FAVOURITE_COUNT="FavouriteCountTest";
         public static final String STORY_IMAGE_LOADING ="ImageLoadingTest";
         public static final String STORY_ORDER_COUNT ="OrderCountTest";
