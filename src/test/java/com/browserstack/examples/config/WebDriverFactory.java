@@ -52,6 +52,7 @@ public class WebDriverFactory {
 
     private final WebDriverConfiguration webDriverConfiguration;
     private final String defaultBuildSuffix;
+    private final boolean toMark;
     private final boolean isLocal;
 
     public static WebDriverFactory getInstance() {
@@ -68,6 +69,7 @@ public class WebDriverFactory {
     private WebDriverFactory() {
         this.defaultBuildSuffix = String.valueOf(System.currentTimeMillis());
         this.webDriverConfiguration = parseWebDriverConfig();
+        toMark = webDriverConfiguration.getDriverType().equals(DriverType.cloudDriver);
         List<Platform> platforms = webDriverConfiguration.getActivePlatforms();
         isLocal = webDriverConfiguration.getCloudDriverConfig()!=null &&
                 webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getEnable();
@@ -115,6 +117,10 @@ public class WebDriverFactory {
 
     public String getTestEndpoint() {
         return this.webDriverConfiguration.getTestEndpoint();
+    }
+
+    public boolean isToMark() {
+        return toMark;
     }
 
     private WebDriver createRemoteWebDriver(Platform platform, String testName) throws MalformedURLException {

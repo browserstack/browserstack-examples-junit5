@@ -1,4 +1,4 @@
-package com.browserstack.examples.tests;
+package com.browserstack.examples.tests.product;
 
 import com.browserstack.examples.extensions.WebDriverTest;
 import io.qameta.allure.Epic;

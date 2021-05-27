@@ -1,5 +1,6 @@
 package com.browserstack.examples.extensions;
 
+import com.browserstack.examples.config.DriverType;
 import com.browserstack.examples.config.Platform;
 import com.browserstack.examples.config.WebDriverFactory;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
+import java.util.Arrays;
 
 public class WebDriverParameterResolver implements ParameterResolver {
 
@@ -45,8 +47,8 @@ public class WebDriverParameterResolver implements ParameterResolver {
             throw new ParameterResolutionException("Unable to create WebDriver for Platform :: "
                                                      + this.platform.getName() + " method :: " + testMethodName);
         }
-        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName, webDriver);
-        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+"-driverType",webDriverFactory.getCurrentDriverType());
+        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+".webDriver", webDriver);
+        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+".toMark",webDriverFactory.isToMark());
         return webDriver;
     }
 
