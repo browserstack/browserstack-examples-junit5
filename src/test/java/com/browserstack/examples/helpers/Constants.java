@@ -18,8 +18,9 @@ public class Constants {
         public static final String PRODUCT_COUNT_MISMATCH = "Product Count Mismatch";
         public static final String APPLY_BRAND_FILTER = "No change in product count after applying filter.";
         public static final String CLICK_FAVOURITES = "To see favourites, the user should login.";
-
         public static final String API_ERROR_NOT_LOADED_ON_TIME = "Error Message is taking too long to load.";
+        public static final String LOCKED_ACCOUNT = "User should not be able to login with locked account.";
+
         public static final String CART_NOT_LOADED_ON_TIME = "Cart is taking too long to load.";
         public static final String FAVOURITES_BUT_NOT_CLICKED_ON_TIME = "Favourites button is taking too long to click.";
         public static final String FAVOURITES_PAGE_NOT_LOADED_ON_TIME = "Favourites page is taking too long to load.";
@@ -34,7 +35,7 @@ public class Constants {
 
 
 
-        public static final String LOCKED_ACCOUNT = "User should not be able to login with locked account.";
+
         public static final String IMAGE_NOT_LOADING = "Images should not be loaded for this user.";
         public static final String EMPTY_CART = "Cart should not be empty after adding items into it.";
         public static final String FAVOURITES_COUNT = "Favourites should not be empty after marking items favourite.";
@@ -73,20 +74,22 @@ public class Constants {
     public static class AllureTags{
         public static final String EPIC_PRODUCT= "Product Test Suite";
         public static final String EPIC_LOGIN= "Login Test Suite";
+        public static final String EPIC_USER= "User Test Suite";
 
         public static final String STORY_ORDER_BY_FILTER = "Order By Filter Test";
         public static final String STORY_APPLY_BRAND_FILTER = "Apply Brand Filter Test";
         public static final String STORY_REDIRECTION = "Redirection Test";
+        public static final String STORY_ACCOUNT_LOCK = "Account Lock Test";
+        public static final String STORY_IMAGE ="ImageTest";
 
         public static final String EPIC_END_TO_END = "End To End Test Suite";
         public static final String EPIC_OFFERS= "Offers Test Suite";
-        public static final String EPIC_USER= "User Test Suite";
         public static final String STORY_END_TO_END = "End To End Test";
 
-        public static final String STORY_LOCKED_ACCOUNT = "Locked Account Test";
+
         public static final String STORY_OFFERS = "Offers Test";
         public static final String STORY_FAVOURITE_COUNT="FavouriteCountTest";
-        public static final String STORY_IMAGE_LOADING ="ImageLoadingTest";
+
         public static final String STORY_ORDER_COUNT ="OrderCountTest";
 
     }
