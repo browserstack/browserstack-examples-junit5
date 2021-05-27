@@ -16,7 +16,7 @@ public class Constants {
         public static final String SIGNIN_NOT_COMPLETED_ON_TIME = "Sign In is taking too long to complete.";
         public static final String ORDER_BY_FILTER = "After applying lowest to highest sort option the cost should be in ascending order.";
         public static final String PRODUCT_COUNT_MISMATCH = "Product Count Mismatch";
-        public static final String APPLY_APPLE_SAMSUNG_FILTER = "No change in product count after applying filter.";
+        public static final String APPLY_BRAND_FILTER = "No change in product count after applying filter.";
 
         public static final String API_ERROR_NOT_LOADED_ON_TIME = "Error Message is taking too long to load.";
         public static final String CART_NOT_LOADED_ON_TIME = "Cart is taking too long to load.";

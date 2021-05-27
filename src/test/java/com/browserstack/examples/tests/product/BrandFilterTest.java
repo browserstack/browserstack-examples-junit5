@@ -17,7 +17,7 @@ import static com.browserstack.examples.helpers.Constants.AllureTags.EPIC_PRODUC
 import static com.browserstack.examples.helpers.Constants.AllureTags.STORY_APPLY_BRAND_FILTER;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.APPLE_FILTER_XPATH;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.SAMSUNG_FILTER_XPATH;
-import static com.browserstack.examples.helpers.Constants.ErrorMessages.APPLY_APPLE_SAMSUNG_FILTER;
+import static com.browserstack.examples.helpers.Constants.ErrorMessages.APPLY_BRAND_FILTER;
 import static com.browserstack.examples.helpers.Constants.ErrorMessages.PRODUCT_COUNT_MISMATCH;
 
 @Epic(EPIC_PRODUCT)
@@ -58,6 +58,6 @@ public class BrandFilterTest {
         int expectedBrandCount = ProductUtil.getProductsByBrands(Arrays.asList(brand)).size();
         Assertions.assertEquals(expectedTotalCount, totalCount, PRODUCT_COUNT_MISMATCH);
         Assertions.assertEquals(expectedBrandCount, brandCount, PRODUCT_COUNT_MISMATCH);
-        Assertions.assertTrue(totalCount > brandCount, APPLY_APPLE_SAMSUNG_FILTER);
+        Assertions.assertTrue(totalCount > brandCount, APPLY_BRAND_FILTER);
     }
 }
