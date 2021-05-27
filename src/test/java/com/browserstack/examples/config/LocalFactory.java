@@ -16,24 +16,6 @@ public class LocalFactory {
     private final Local local = new Local();
     private final String localIdentifier = RandomStringUtils.randomAlphabetic(8);
 
-    private static class Closer extends Thread{
-        private final Local LOCAL;
-
-        public Closer(Local local){
-            this.LOCAL = local;
-        }
-        @Override
-        public void run() {
-            try {
-                if (LOCAL.isRunning()) {
-                    LOCAL.stop();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private LocalFactory(Map<String, String> args) {
         try {
             args.put("localIdentifier", localIdentifier);
@@ -62,5 +44,24 @@ public class LocalFactory {
 
     public String getLocalIdentifier() {
         return instance.localIdentifier;
+    }
+
+    private static class Closer extends Thread {
+        private final Local LOCAL;
+
+        public Closer(Local local) {
+            this.LOCAL = local;
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (LOCAL.isRunning()) {
+                    LOCAL.stop();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

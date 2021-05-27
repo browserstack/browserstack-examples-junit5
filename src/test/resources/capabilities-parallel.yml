@@ -22,7 +22,7 @@ cloudDriver:
       browser: Internet Explorer
       browser_version: '11.0'
       capabilities:
-       browserstack.ie.arch: x32
+        browserstack.ie.arch: x32
     - name: Win10_Chrome_Latest-1
       os: Windows
       os_version: '10'

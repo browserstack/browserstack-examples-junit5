@@ -35,7 +35,7 @@ public class WebDriverTestExtension implements TestTemplateInvocationContextProv
         final List<TestTemplateInvocationContext> webDriverTestInvocationContexts = new ArrayList<>();
         final WebDriverFactory webDriverFactory = WebDriverFactory.getInstance();
         List<Platform> platforms = webDriverFactory.getPlatforms();
-        platforms.forEach( p -> {
+        platforms.forEach(p -> {
             webDriverTestInvocationContexts.add(new WebDriverTestInvocationContext(testMethodName, webDriverFactory, p));
         });
 

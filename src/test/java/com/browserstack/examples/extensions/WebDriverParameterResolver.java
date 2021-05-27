@@ -15,7 +15,7 @@ import java.net.MalformedURLException;
 public class WebDriverParameterResolver implements ParameterResolver {
 
     public static final ExtensionContext.Namespace STORE_NAMESPACE =
-      ExtensionContext.Namespace.create("com.browserstack.examples");
+            ExtensionContext.Namespace.create("com.browserstack.examples");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverParameterResolver.class);
 
@@ -42,10 +42,10 @@ public class WebDriverParameterResolver implements ParameterResolver {
         WebDriver webDriver = createWebDriver(testMethodName);
         if (webDriver == null) {
             throw new ParameterResolutionException("Unable to create WebDriver for Platform :: "
-                                                     + this.platform.getName() + " method :: " + testMethodName);
+                    + this.platform.getName() + " method :: " + testMethodName);
         }
-        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+".webDriver", webDriver);
-        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName+".toMark",webDriverFactory.isToMark());
+        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName + ".webDriver", webDriver);
+        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName + ".toMark", webDriverFactory.isToMark());
         return webDriver;
     }
 

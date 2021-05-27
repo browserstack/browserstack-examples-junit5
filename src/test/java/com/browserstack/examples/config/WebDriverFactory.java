@@ -50,6 +50,25 @@ public class WebDriverFactory {
     private final boolean toMark;
     private final boolean isLocal;
 
+    private WebDriverFactory() {
+        this.defaultBuildSuffix = String.valueOf(System.currentTimeMillis());
+        this.webDriverConfiguration = parseWebDriverConfig();
+        toMark = webDriverConfiguration.getDriverType().equals(DriverType.cloudDriver);
+        List<Platform> platforms = webDriverConfiguration.getActivePlatforms();
+        isLocal = webDriverConfiguration.getCloudDriverConfig() != null &&
+                webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getEnable();
+        if (isLocal) {
+            Map<String, String> localOptions = webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions();
+            String accessKey = webDriverConfiguration.getCloudDriverConfig().getAccessKey();
+            if (StringUtils.isNoneEmpty(System.getenv(BROWSERSTACK_ACCESS_KEY))) {
+                accessKey = System.getenv(BROWSERSTACK_ACCESS_KEY);
+            }
+            localOptions.put("key", accessKey);
+            LocalFactory.createInstance(webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions());
+        }
+        LOGGER.debug("Running tests on {} active platforms.", platforms.size());
+    }
+
     public static WebDriverFactory getInstance() {
         if (instance == null) {
             synchronized (WebDriverFactory.class) {
@@ -59,25 +78,6 @@ public class WebDriverFactory {
             }
         }
         return instance;
-    }
-
-    private WebDriverFactory() {
-        this.defaultBuildSuffix = String.valueOf(System.currentTimeMillis());
-        this.webDriverConfiguration = parseWebDriverConfig();
-        toMark = webDriverConfiguration.getDriverType().equals(DriverType.cloudDriver);
-        List<Platform> platforms = webDriverConfiguration.getActivePlatforms();
-        isLocal = webDriverConfiguration.getCloudDriverConfig()!=null &&
-                webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getEnable();
-        if (isLocal){
-            Map<String,String> localOptions = webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions();
-            String accessKey = webDriverConfiguration.getCloudDriverConfig().getAccessKey();
-            if (StringUtils.isNoneEmpty(System.getenv(BROWSERSTACK_ACCESS_KEY))) {
-                accessKey = System.getenv(BROWSERSTACK_ACCESS_KEY);
-            }
-            localOptions.put("key",accessKey);
-            LocalFactory.createInstance(webDriverConfiguration.getCloudDriverConfig().getLocalTunnel().getLocalOptions());
-        }
-        LOGGER.debug("Running tests on {} active platforms.", platforms.size());
     }
 
     private WebDriverConfiguration parseWebDriverConfig() {
@@ -155,8 +155,8 @@ public class WebDriverFactory {
         platformCapabilities.setCapability("browserstack.user", user);
         platformCapabilities.setCapability("browserstack.key", accessKey);
 
-        if (isLocal){
-            platformCapabilities.setCapability("browserstack.localIdentifier",LocalFactory.getInstance().getLocalIdentifier());
+        if (isLocal) {
+            platformCapabilities.setCapability("browserstack.localIdentifier", LocalFactory.getInstance().getLocalIdentifier());
         }
 
         return new RemoteWebDriver(new URL(remoteDriverConfig.getHubUrl()), platformCapabilities);
@@ -164,7 +164,7 @@ public class WebDriverFactory {
 
     private WebDriver createOnPremGridWebDriver(Platform platform) throws MalformedURLException {
         DesiredCapabilities capabilities;
-        switch (BrowserType.valueOf(platform.getName())){
+        switch (BrowserType.valueOf(platform.getName())) {
             case chrome:
                 capabilities = new DesiredCapabilities(new ChromeOptions());
                 break;
@@ -172,13 +172,13 @@ public class WebDriverFactory {
                 capabilities = new DesiredCapabilities(new FirefoxOptions());
                 break;
             default:
-                throw new RuntimeException("Unsupported Browser : "+platform.getBrowser());
+                throw new RuntimeException("Unsupported Browser : " + platform.getBrowser());
         }
 
-        if (platform.getCapabilities()!=null){
+        if (platform.getCapabilities() != null) {
             platform.getCapabilities().getCapabilityMap().forEach(capabilities::setCapability);
         }
-        return new RemoteWebDriver(new URL(this.webDriverConfiguration.getOnPremGridDriverConfig().getHubUrl()),capabilities);
+        return new RemoteWebDriver(new URL(this.webDriverConfiguration.getOnPremGridDriverConfig().getHubUrl()), capabilities);
     }
 
     private WebDriver createOnPremWebDriver(Platform platform) {

@@ -9,10 +9,10 @@ cloudDriver:
   localTunnel:
     enable: true
     local_options:
-     forcelocal: true
-     force: true
-     verbose: true
-     logFile: local_test.log
+      forcelocal: true
+      force: true
+      verbose: true
+      logFile: local_test.log
   common_capabilities:
     project: BrowserStack Demo Repository
     buildPrefix: browserstack-examples-junit5

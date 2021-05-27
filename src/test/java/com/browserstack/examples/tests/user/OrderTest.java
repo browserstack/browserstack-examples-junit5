@@ -37,15 +37,15 @@ public class OrderTest {
     @Step("Checking orders")
     private int checkExistingOrders(WebDriver webDriver) {
         webDriver.findElement(By.id(ORDERS_BUTTON_ID)).click();
-        ElementLocatorUtil.waitUntilURLContains(webDriver,ORDERS,ORDERS_PAGE_NOT_LOADED_ON_TIME);
-        ElementLocatorUtil.waitUntilElementAppears(webDriver,By.xpath(PRODUCT_COST_XPATH),ORDERS_NOT_LOADED_ON_TIME);
+        ElementLocatorUtil.waitUntilURLContains(webDriver, ORDERS, ORDERS_PAGE_NOT_LOADED_ON_TIME);
+        ElementLocatorUtil.waitUntilElementAppears(webDriver, By.xpath(PRODUCT_COST_XPATH), ORDERS_NOT_LOADED_ON_TIME);
         return webDriver.findElements(By.xpath(PRODUCT_COST_XPATH)).size();
     }
 
     @Step("Signing in with existing_orders credentials")
     private void signIntoExistingOrdersAccount(WebDriver webDriver) {
         String password = UserCredentialUtil.getPassword(EXISTING_ORDERS_ACCOUNT_USER_NAME);
-        signIn(EXISTING_ORDERS_ACCOUNT_USER_NAME, password,webDriver);
+        signIn(EXISTING_ORDERS_ACCOUNT_USER_NAME, password, webDriver);
         ElementLocatorUtil.waitUntilURLContains(webDriver, SIGNED_IN, SIGNIN_NOT_COMPLETED_ON_TIME);
     }
 }

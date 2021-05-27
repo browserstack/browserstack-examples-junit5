@@ -1,5 +1,6 @@
 package com.browserstack.pages;
 
+import com.browserstack.utils.LoggedInNavBarComponent;
 import com.browserstack.utils.UserCredentialUtil;
 import com.browserstack.utils.WebDriverWaitUtil;
 import io.qameta.allure.Step;
@@ -10,17 +11,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
-public class Login {
+public class Login extends NavigablePage {
 
     private static final String USER_INPUT_XPATH = "//input[@id='react-select-2-input']";
     private static final String PASSWORD_INPUT_XPATH = "//*[@id=\"react-select-3-input\"]";
     private static final String LOGIN_BUTTON_ID = "login-btn";
     private static final String USERNAME_LABEL_CLASS = "username";
-    private static final String FAV_USER_NAME = "fav_user";
 
     private final WebDriver webDriver;
 
     public Login(WebDriver webDriver) {
+        super(webDriver);
         this.webDriver = webDriver;
     }
 
@@ -35,12 +36,13 @@ public class Login {
         WebElement logInButton = webDriver.findElement(By.id(LOGIN_BUTTON_ID));
         logInButton.click();
         WebDriverWaitUtil.getWebDriverWait(webDriver).until(ExpectedConditions.visibilityOfElementLocated(By.className(USERNAME_LABEL_CLASS)));
-
+        setNavBarComponent(new LoggedInNavBarComponent(webDriver));
     }
 
-    @Step("Signing in with fav_account credentials")
-    public void loginWithFavUser() {
-        login(FAV_USER_NAME, UserCredentialUtil.getPassword(FAV_USER_NAME));
+    @Step("Signing in with {0}'s credentials")
+    public void loginWithFavUser(String user) {
+        String password = UserCredentialUtil.getPassword(user);
+        login(user, password);
     }
 
 }

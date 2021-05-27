@@ -32,8 +32,8 @@ public class FilterTests {
 
         /* =================== Execute ================= */
         wait.until(ExpectedConditions
-                     .visibilityOfElementLocated(By
-                                                   .cssSelector(".filters-available-size:nth-child(2) .checkmark"))).click();
+                .visibilityOfElementLocated(By
+                        .cssSelector(".filters-available-size:nth-child(2) .checkmark"))).click();
         wait.until(waitWebDriver -> waitWebDriver.findElements(By.cssSelector(".spinner")).isEmpty());
         List<WebElement> appleDeviceName = webDriver.findElements(By.cssSelector(".shelf-item__title"));
 
@@ -50,8 +50,8 @@ public class FilterTests {
 
         /* =================== Execute ================= */
         wait.until(ExpectedConditions
-                     .visibilityOfElementLocated(By
-                                                   .cssSelector(".filters-available-size:nth-child(3) .checkmark"))).click();
+                .visibilityOfElementLocated(By
+                        .cssSelector(".filters-available-size:nth-child(3) .checkmark"))).click();
         wait.until(waitWebDriver -> waitWebDriver.findElements(By.cssSelector(".spinner")).isEmpty());
         List<WebElement> samsungDeviceName = webDriver.findElements(By.cssSelector(".shelf-item__title"));
 

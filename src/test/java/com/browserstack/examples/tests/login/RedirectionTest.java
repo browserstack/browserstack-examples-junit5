@@ -10,8 +10,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static com.browserstack.examples.helpers.CommonSteps.*;
-import static com.browserstack.examples.helpers.Constants.AllureTags.*;
+import static com.browserstack.examples.helpers.CommonSteps.navigateToHome;
+import static com.browserstack.examples.helpers.Constants.AllureTags.EPIC_LOGIN;
+import static com.browserstack.examples.helpers.Constants.AllureTags.STORY_REDIRECTION;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.FAVOURITES_BUTTON_ID;
 import static com.browserstack.examples.helpers.Constants.EndPoints.SIGNED_IN_FAVOURITES;
 import static com.browserstack.examples.helpers.Constants.EndPoints.SIGN_IN;

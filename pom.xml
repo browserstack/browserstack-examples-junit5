@@ -123,8 +123,8 @@
             <properties>
                 <capabilities.config.file>capabilities-on-prem.yml</capabilities.config.file>
                 <junit.parallel.properties>
-                junit.jupiter.extensions.autodetection.enabled = true
-                junit.jupiter.execution.parallel.enabled = false
+                    junit.jupiter.extensions.autodetection.enabled = true
+                    junit.jupiter.execution.parallel.enabled = false
                 </junit.parallel.properties>
             </properties>
         </profile>

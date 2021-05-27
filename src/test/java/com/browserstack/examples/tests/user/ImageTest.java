@@ -41,7 +41,7 @@ public class ImageTest {
     @Step("Signing in with image_not_loading credentials")
     private void signIntoImageNotLoadingAccount(WebDriver webDriver) {
         String password = UserCredentialUtil.getPassword(IMAGE_NOT_LOADING_ACCOUNT_USER_NAME);
-        signIn(IMAGE_NOT_LOADING_ACCOUNT_USER_NAME, password,webDriver);
+        signIn(IMAGE_NOT_LOADING_ACCOUNT_USER_NAME, password, webDriver);
         ElementLocatorUtil.waitUntilURLContains(webDriver, SIGNED_IN, SIGNIN_NOT_COMPLETED_ON_TIME);
     }
 }

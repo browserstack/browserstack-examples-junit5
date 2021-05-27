@@ -1,4 +1,5 @@
 package com.browserstack.examples.helpers;
+
 public class Constants {
 
     public static class EndPoints {
@@ -6,7 +7,6 @@ public class Constants {
         public static final String SIGNED_IN_FAVOURITES = "/signin?favourites=true";
         public static final String SIGNED_IN = "/?signin=true";
         public static final String ORDERS = "/orders";
-
         public static final String FAVOURITES = "/favourites";
         public static final String OFFERS = "/offers";
     }
@@ -26,26 +26,14 @@ public class Constants {
         public static final String EMPTY_CART = "Cart should not be empty after adding items into it.";
         public static final String ORDERS_PAGE_NOT_LOADED_ON_TIME = "Orders page is taking too long to load.";
         public static final String ORDERS_NOT_LOADED_ON_TIME = "Orders are empty or taking too long to load.";
-
-
-        public static final String CART_NOT_LOADED_ON_TIME = "Cart is taking too long to load.";
         public static final String FAVOURITES_BUT_NOT_CLICKED_ON_TIME = "Favourites button is taking too long to click.";
         public static final String FAVOURITES_PAGE_NOT_LOADED_ON_TIME = "Favourites page is taking too long to load.";
         public static final String FAVOURITES_ITEMS_NOT_LOADED_ON_TIME = "Favourites items are taking too long to load.";
+        public static final String FAVOURITES_COUNT = "Favourites should not be empty after marking items favourite.";
         public static final String OFFERS_PAGE_NOT_LOADED_ON_TIME = "Offers page is taking too long to load.";
         public static final String OFFER_MESSAGES_NOT_FOUND = "No offer messages found.";
         public static final String NO_OFFERS_LOADED = "No Offers loaded.";
         public static final String CONFIRMATION_FAILED = "Confirmation Failed";
-
-        public static final String PAGE_NOT_LOADED_ON_TIME = "A page is taking too long to load.";
-        public static final String PAGE_NOT_RENDERED_CORRECTLY = "Page are not rendered correctly.";
-
-
-
-
-
-        public static final String FAVOURITES_COUNT = "Favourites should not be empty after marking items favourite.";
-        public static final String CHECKOUT_FAILED = "Checkout Failed";
     }
 
     public static class ElementLocators {
@@ -70,37 +58,26 @@ public class Constants {
         public static final String PRODUCT_IMAGE_SOURCE_ATTRIBUTE = "src";
         public static final String ORDERS_BUTTON_ID = "orders";
         public static final String PRODUCT_COST_XPATH = "//span[@class='a-size-small a-color-price']";
-
-        public static final String BUY_BUTTON_CLASS = "shelf-item__buy-btn";
-        public static final String BAG_QUANTITY_LABEL_CLASS = "bag__quantity";
         public static final String FAVOURITE_BUTTON_XPATH = "//div[@class='shelf-stopper']";
-        public static final String FAVOURITE_BUTTON_CLICKED_XPATH="//button[@class='MuiButtonBase-root MuiIconButton-root Button clicked ']";
+        public static final String FAVOURITE_BUTTON_CLICKED_XPATH = "//button[@class='MuiButtonBase-root MuiIconButton-root Button clicked ']";
         public static final String OFFERS_BUTTON_ID = "offers";
-        public static final String SIGN_OUT_BUTTON_ID = "logout";
         public static final String OFFER_CARD_CLASS = "offer";
     }
 
-    public static class AllureTags{
-        public static final String EPIC_PRODUCT= "Product Test Suite";
-        public static final String EPIC_LOGIN= "Login Test Suite";
-        public static final String EPIC_USER= "User Test Suite";
-
+    public static class AllureTags {
+        public static final String EPIC_PRODUCT = "Product Test Suite";
+        public static final String EPIC_LOGIN = "Login Test Suite";
+        public static final String EPIC_USER = "User Test Suite";
+        public static final String EPIC_END_TO_END = "End To End Test Suite";
+        public static final String EPIC_OFFERS = "Offers Test Suite";
         public static final String STORY_ORDER_BY_FILTER = "Order By Filter Test";
         public static final String STORY_APPLY_BRAND_FILTER = "Apply Brand Filter Test";
         public static final String STORY_REDIRECTION = "Redirection Test";
         public static final String STORY_ACCOUNT_LOCK = "Account Lock Test";
-        public static final String STORY_IMAGE ="ImageTest";
-        public static final String STORY_ORDER ="OrderTest";
-
-        public static final String EPIC_END_TO_END = "End To End Test Suite";
-        public static final String EPIC_OFFERS= "Offers Test Suite";
-        public static final String STORY_END_TO_END = "End To End Test";
-
-
-        public static final String STORY_OFFERS = "Offers Test";
-        public static final String STORY_FAVOURITE_COUNT="FavouriteCountTest";
-
-
-
+        public static final String STORY_IMAGE = "Image Test";
+        public static final String STORY_ORDER = "Order Test";
+        public static final String STORY_FAVOURITES = "Favourites Test";
+        public static final String STORY_PURCHASE = "Purchase Test";
+        public static final String STORY_REGIONAL_OFFERS = "Regional Offers Test";
     }
 }

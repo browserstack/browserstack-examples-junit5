@@ -34,4 +34,3 @@ public class Confirmation {
         WebDriverWaitUtil.getWebDriverWait(webDriver).until(webDriver -> !webDriver.getCurrentUrl().contains(CONFIRMATION_ENDPOINT));
     }
 }
-

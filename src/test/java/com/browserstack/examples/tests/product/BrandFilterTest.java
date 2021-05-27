@@ -31,29 +31,29 @@ public class BrandFilterTest {
     public void appleFilterTest(WebDriver webDriver) {
         navigateToHome(webDriver);
         int totalCount = productCount(webDriver);
-        applyBrandFilter(APPLE_FILTER_XPATH,webDriver);
+        applyBrandFilter(APPLE_FILTER_XPATH, webDriver);
         int brandCount = productCount(webDriver);
-        verifyCount(BRAND_APPLE, totalCount,brandCount);
+        verifyCount(BRAND_APPLE, totalCount, brandCount);
     }
 
     @WebDriverTest
     public void samsungFilterTest(WebDriver webDriver) {
         navigateToHome(webDriver);
         int totalCount = productCount(webDriver);
-        applyBrandFilter(SAMSUNG_FILTER_XPATH,webDriver);
+        applyBrandFilter(SAMSUNG_FILTER_XPATH, webDriver);
         int brandCount = productCount(webDriver);
-        verifyCount(BRAND_SAMSUNG, totalCount,brandCount);
+        verifyCount(BRAND_SAMSUNG, totalCount, brandCount);
     }
 
     @Step("Applying brand filter")
-    private void applyBrandFilter(String brandXPath,WebDriver webDriver) {
+    private void applyBrandFilter(String brandXPath, WebDriver webDriver) {
         WebElement brandFilter = webDriver.findElement(By.xpath(brandXPath));
         brandFilter.click();
         waitForSpinner(webDriver);
     }
 
     @Step("Verifying the product counts for brand : {0}")
-    private void verifyCount(String brand,int totalCount, int brandCount) {
+    private void verifyCount(String brand, int totalCount, int brandCount) {
         int expectedTotalCount = ProductUtil.getAllProducts().size();
         int expectedBrandCount = ProductUtil.getProductsByBrands(Arrays.asList(brand)).size();
         Assertions.assertEquals(expectedTotalCount, totalCount, PRODUCT_COUNT_MISMATCH);

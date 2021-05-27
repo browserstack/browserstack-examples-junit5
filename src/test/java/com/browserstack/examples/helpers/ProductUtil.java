@@ -16,30 +16,29 @@ public final class ProductUtil {
 
     public static List<Product> parseProducts() {
         List<Product> products = new ArrayList<>();
-        try{
+        try {
             FileReader productsFile = new FileReader(PRODUCTS_FILE);
             CSVReader productsReader = new CSVReader(productsFile);
             productsReader.skip(1);
-            productsReader.readAll().forEach(row->{
+            productsReader.readAll().forEach(row -> {
                 String id = row[0];
                 String brand = row[1];
                 String device = row[2];
                 int price = Integer.parseInt(row[3]);
-                products.add(new Product(id,brand,device,price));
+                products.add(new Product(id, brand, device, price));
             });
-        }
-        catch (IOException | CsvException e){
+        } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
 
         return products;
     }
 
-    public static List<Product> getAllProducts(){
+    public static List<Product> getAllProducts() {
         return PRODUCTS;
     }
 
-    public static List<Product> getProductsByBrands(List<String> brands){
+    public static List<Product> getProductsByBrands(List<String> brands) {
         return PRODUCTS.stream()
                 .filter(product -> brands.contains(product.getBrand()))
                 .collect(Collectors.toList());
