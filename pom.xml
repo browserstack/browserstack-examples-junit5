@@ -128,7 +128,7 @@
             <id>on-prem</id>
             <properties>
                 <capabilities.config.file>capabilities-on-prem.yml</capabilities.config.file>
-                <junit.parallel.properties> ${junit.sequential.properties}</junit.parallel.properties>
+                <junit.parallel.properties>${junit.sequential.properties}</junit.parallel.properties>
                 <tests.suite>${tests.single}</tests.suite>
             </properties>
         </profile>

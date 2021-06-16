@@ -1,11 +1,11 @@
 package com.browserstack.examples.tests.e2e;
 
+import com.browsersatck.examples.pages.*;
+import com.browsersatck.examples.utils.LoggedInNavBarComponent;
 import com.browserstack.examples.config.WebDriverFactory;
 import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.Constants;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
-import com.browsersatck.examples.utils.LoggedInNavBarComponent;
-import com.browsersatck.examples.pages.*;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Assertions;

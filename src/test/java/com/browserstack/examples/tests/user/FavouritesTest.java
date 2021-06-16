@@ -1,9 +1,9 @@
 package com.browserstack.examples.tests.user;
 
-import com.browserstack.examples.extensions.WebDriverTest;
-import com.browserstack.examples.helpers.ElementLocatorUtil;
 import com.browsersatck.examples.utils.UserCredentialUtil;
 import com.browsersatck.examples.utils.WebDriverWaitUtil;
+import com.browserstack.examples.extensions.WebDriverTest;
+import com.browserstack.examples.helpers.ElementLocatorUtil;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;

@@ -14,7 +14,7 @@ public final class ProductUtil {
     private static final String PRODUCTS_FILE = "src/test/resources/product.csv";
     private static final List<Product> PRODUCTS = parseProducts();
 
-    public static List<Product> parseProducts() {
+    private static List<Product> parseProducts() {
         List<Product> products = new ArrayList<>();
         try {
             FileReader productsFile = new FileReader(PRODUCTS_FILE);
