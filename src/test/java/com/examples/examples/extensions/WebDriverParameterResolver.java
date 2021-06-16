@@ -47,7 +47,7 @@ public class WebDriverParameterResolver implements ParameterResolver {
             throw new ParameterResolutionException("Unable to create WebDriver for Platform :: "
                     + this.platform.getName() + " method :: " + testMethodName);
         }
-        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName + ".webDriver", webDriver);
+        extensionContext.getStore(STORE_NAMESPACE).put(testMethodName, webDriver);
         return webDriver;
     }
 

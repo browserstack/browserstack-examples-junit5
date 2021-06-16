@@ -35,7 +35,7 @@ public class WebDriverTestWatcher implements TestWatcher {
 
     private void markAndCloseWebDriver(ExtensionContext context, String status, String reason) {
         String testName = context.getDisplayName();
-        WebDriver webDriver = context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName + ".webDriver", WebDriver.class);
+        WebDriver webDriver = context.getStore(WebDriverParameterResolver.STORE_NAMESPACE).get(testName, WebDriver.class);
         try {
             if (WebDriverFactory.getInstance().getDriverType().equals(DriverType.cloudDriver)) {
                 ((JavascriptExecutor) webDriver).executeScript(String.format(TEST_STATUS_SCRIPT, status, reason));
