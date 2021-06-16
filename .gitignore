@@ -1,0 +1,6 @@
+/.idea/
+/browserstack-examples-junit5.iml
+/target/
+/allure-results/
+.DS_Store
+local_test.log
