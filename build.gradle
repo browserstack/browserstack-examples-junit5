@@ -98,5 +98,5 @@ task 'bstack-parallel'(type: Test){
 }
 
 task 'bstack-parallel-browsers'(type: Test){
-    configure("bstack-parallel-browsers",parallel,'capabilities-parallel.yml',allTests)
+    configure('bstack-parallel-browsers',parallel,'capabilities-parallel.yml',allTests)
 }
