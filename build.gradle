@@ -33,7 +33,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-ext.parallels = ['junit.jupiter.extensions.autodetection.enabled':true,
+ext.parallel = ['junit.jupiter.extensions.autodetection.enabled':true,
              'junit.jupiter.execution.parallel.enabled':true,
              'junit.jupiter.execution.parallel.mode.default':'concurrent',
              'junit.jupiter.execution.parallel.mode.classes.default':'concurrent',
@@ -47,89 +47,56 @@ ext.sequential =['capabilities.config':'capabilities-on-prem.yml',
 ext.singleTest='com/browserstack/examples/tests/**/PurchaseTest.class'
 ext.allTests='com/browserstack/examples/tests/**/*.class'
 
-ext.configure = {taskName,testLogging,outputs,parallelProperty,configFile,includeTest->
-    task = project.tasks.findByPath(taskName)
+ext.configure = {taskName,parallelProperty,configFile,includeTest->
+    def task = project.tasks.findByPath(taskName)
     task.useJUnitPlatform()
-    testLogging.setDisplayGranularity(-1)
-    testLogging.setShowCauses(true)
-    testLogging.setShowExceptions(true)
-    testLogging.setShowStackTraces(true)
-    testLogging.setShowStandardStreams(true)
-    outputs.upToDateWhen({false})
-    project.tasks.findByPath(task).systemProperties = parallelProperty
-    project.tasks.findByPath(task).systemProperties 'capabilities.config': configFile
-    project.tasks.findByPath(task).include includeTest
+    task.testLogging.setDisplayGranularity(-1)
+    task.testLogging.setShowCauses(true)
+    task.testLogging.setShowExceptions(true)
+    task.testLogging.setShowStackTraces(true)
+    task.testLogging.setShowStandardStreams(true)
+    task.outputs.upToDateWhen({false})
+    task.systemProperties = parallelProperty
+    task.systemProperties 'capabilities.config': configFile
+    task.include includeTest
 }
 
-task "on-prem"(type: Test){
-    configure("on-prem",testLogging,outputs,
-            systemProperties,sequential,
-            'capabilities-on-prem.yml',singleTest)
-    //systemProperties = sequential
-    //systemProperties 'capabilities.config':'capabilities-on-prem.yml'
-    //include singleTest
+task 'on-prem'(type: Test){
+    configure('on-prem',sequential,'capabilities-on-prem.yml',singleTest)
 }
 
-/*
-task "on-prem-suite"(type: Test){
-    configure("on-prem-suite",testLogging,outputs)
-    systemProperties = sequential
-    systemProperties 'capabilities.config':'capabilities-on-prem.yml'
-    include allTests
+task 'on-prem-suite'(type: Test){
+    configure('on-prem-suite',sequential,'capabilities-on-prem.yml',allTests)
 }
 
-task "docker"(type: Test){
-    configure("docker",testLogging,outputs)
-    systemProperties = sequential
-    systemProperties 'capabilities.config':'capabilities-docker.yml'
-    include singleTest
+task 'docker'(type: Test){
+    configure('docker',sequential,'capabilities-docker.yml',singleTest)
 }
 
-task "docker-parallel"(type: Test){
-    configure("docker-parallel",testLogging,outputs)
-    systemProperties = parallels
-    systemProperties 'capabilities.config':'capabilities-docker.yml'
-    include allTests
+task 'docker-parallel'(type: Test){
+    configure('docker-parallel',parallel,'capabilities-docker.yml',allTests)
 }
 
-task "bstack-single"(type: Test){
-    configure("bstack-single",testLogging,outputs)
-    systemProperties = sequential
-    systemProperties 'capabilities.config':'capabilities-single.yml'
-    include singleTest
+task 'bstack-single'(type: Test){
+    configure('bstack-single',sequential,'capabilities-single.yml',singleTest)
 }
 
-task "bstack-local"(type: Test){
-    configure("bstack-local",testLogging,outputs)
-    systemProperties = sequential
-    systemProperties 'capabilities.config':'capabilities-local.yml'
-    include singleTest
+task 'bstack-local'(type: Test){
+    configure('bstack-local',sequential,'capabilities-local.yml',singleTest)
 }
 
-task "bstack-local-parallel"(type: Test){
-    configure(project.tasks.findByPath("bstack-local-parallel"),testLogging,outputs)
-    systemProperties = parallels
-    systemProperties 'capabilities.config':'capabilities-local.yml'
-    include allTests
+task 'bstack-local-parallel'(type: Test){
+    configure('bstack-local-parallel',parallel,'capabilities-local.yml',allTests)
 }
 
-task "bstack-local-parallel-browsers"(type: Test){
-    configure(project.tasks.findByPath("bstack-local-parallel-browsers"),testLogging,outputs)
-    systemProperties = parallels
-    systemProperties 'capabilities.config':'capabilities-local-parallel.yml'
-    include allTests
+task 'bstack-local-parallel-browsers'(type: Test){
+    configure('bstack-local-parallel-browsers',parallel,'capabilities-local-parallel.yml',allTests)
 }
 
-task "bstack-parallel"(type: Test){
-    configure(project.tasks.findByPath("bstack-parallel"),testLogging,outputs)
-    systemProperties = parallels
-    systemProperties 'capabilities.config':'capabilities-single.yml'
-    include allTests
+task 'bstack-parallel'(type: Test){
+    configure('bstack-parallel',parallel,'capabilities-single.yml',allTests)
 }
 
-task "bstack-parallel-browsers"(type: Test){
-    configure(project.tasks.findByPath("bstack-parallel-browsers"),testLogging,outputs)
-    systemProperties = parallels
-    systemProperties 'capabilities.config':'capabilities-parallel.yml'
-    include allTests
-}*/
+task 'bstack-parallel-browsers'(type: Test){
+    configure("bstack-parallel-browsers",parallel,'capabilities-parallel.yml',allTests)
+}
