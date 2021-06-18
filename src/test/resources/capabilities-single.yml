@@ -20,7 +20,6 @@ cloudDriver:
       os: Windows
       os_version: '10'
       browser: Chrome
-
 specific_capabilities:
   apply_auth_mask:
     - browserstack.maskBasicAuth: true
