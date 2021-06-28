@@ -1,24 +1,23 @@
 package com.browserstack.examples.tests.product;
 
 import com.browserstack.examples.extensions.WebDriverTest;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static com.browserstack.examples.helpers.CommonSteps.*;
-import static com.browserstack.examples.helpers.Constants.AllureTags.EPIC_PRODUCT;
+import static com.browserstack.examples.helpers.Constants.AllureTags.FEATURE_PRODUCT;
 import static com.browserstack.examples.helpers.Constants.AllureTags.STORY_ORDER_BY_FILTER;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.*;
 import static com.browserstack.examples.helpers.Constants.ErrorMessages.ORDER_BY_FILTER;
 
-@Epic(EPIC_PRODUCT)
+@Feature(FEATURE_PRODUCT)
 @Story(STORY_ORDER_BY_FILTER)
 public class OrderByFilterTest {
 
+    @Severity(SeverityLevel.TRIVIAL)
     @WebDriverTest
     public void lowestToHighestFilterTest(WebDriver webDriver) {
         navigateToHome(webDriver);

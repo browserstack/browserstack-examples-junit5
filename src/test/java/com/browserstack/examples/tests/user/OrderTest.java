@@ -5,19 +5,18 @@ import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.CommonSteps;
 import com.browserstack.examples.helpers.Constants;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-@Epic(Constants.AllureTags.EPIC_USER)
+@Feature(Constants.AllureTags.FEATURE_USER)
 @Story(Constants.AllureTags.STORY_ORDER)
 public class OrderTest {
 
     private static final String EXISTING_ORDERS_ACCOUNT_USER_NAME = "existing_orders_user";
 
+    @Severity(SeverityLevel.BLOCKER)
     @WebDriverTest(capabilities = {"apply_command_mask"})
     public void existingOrdersTest(WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);

@@ -65,11 +65,11 @@ public class Constants {
     }
 
     public static class AllureTags {
-        public static final String EPIC_PRODUCT = "Product Test Suite";
-        public static final String EPIC_LOGIN = "Login Test Suite";
-        public static final String EPIC_USER = "User Test Suite";
-        public static final String EPIC_END_TO_END = "End To End Test Suite";
-        public static final String EPIC_OFFERS = "Offers Test Suite";
+        public static final String FEATURE_PRODUCT = "Product Feature";
+        public static final String FEATURE_LOGIN = "Login Feature";
+        public static final String FEATURE_USER = "User Feature";
+        public static final String FEATURE_END_TO_END = "End To End Feature";
+        public static final String FEATURE_OFFERS = "Offers Feature";
         public static final String STORY_ORDER_BY_FILTER = "Order By Filter Test";
         public static final String STORY_APPLY_BRAND_FILTER = "Apply Brand Filter Test";
         public static final String STORY_REDIRECTION = "Redirection Test";

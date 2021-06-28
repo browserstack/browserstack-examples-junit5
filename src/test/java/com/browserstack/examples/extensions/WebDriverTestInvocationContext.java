@@ -57,6 +57,7 @@ public class WebDriverTestInvocationContext implements TestTemplateInvocationCon
         List<Extension> additionalExtensions = new ArrayList<>();
         additionalExtensions.add(new WebDriverParameterResolver(this.webDriverFactory, this.platform));
         additionalExtensions.add(new WebDriverTestWatcher());
+        additionalExtensions.add(new AllureListener(platform));
         return additionalExtensions;
     }
 }

@@ -9,3 +9,4 @@ local_test.log
 /gradle/
 /.gradle/
 /build/
+/allure-report/

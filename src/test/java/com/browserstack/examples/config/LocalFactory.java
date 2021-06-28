@@ -22,7 +22,8 @@ public class LocalFactory {
             local.start(args);
             LOGGER.info("Started BrowserStack Local with identifier {}.", localIdentifier);
         } catch (Exception e) {
-            LOGGER.error("Initialization BrowserStack Local with identifier {} failed.", localIdentifier);
+            LOGGER.error("Initialization of BrowserStack Local with identifier {} failed.", localIdentifier);
+            throw new RuntimeException("Initialization of BrowserStack Local failed.", e);
         }
     }
 

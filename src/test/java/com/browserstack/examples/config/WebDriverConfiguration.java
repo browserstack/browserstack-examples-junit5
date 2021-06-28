@@ -11,6 +11,8 @@ public class WebDriverConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverConfiguration.class);
 
+    private String name;
+
     private String testEndpoint;
 
     private DriverType driverType;
@@ -41,6 +43,14 @@ public class WebDriverConfiguration {
                 break;
         }
         return activePlatforms;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTestEndpoint() {

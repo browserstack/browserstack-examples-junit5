@@ -1,4 +1,4 @@
-name : Docker
+name : DockerParallel
 
 testEndpoint: https://bstackdemo.com
 

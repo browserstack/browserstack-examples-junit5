@@ -6,20 +6,23 @@ import com.browserstack.examples.config.WebDriverFactory;
 import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.Constants;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
-import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-@Epic(Constants.AllureTags.EPIC_END_TO_END)
-@Story(Constants.AllureTags.STORY_PURCHASE)
+@Feature(Constants.AllureTags.FEATURE_END_TO_END)
 public class PurchaseTest {
 
     private static final String ORDER_PLACED_MESSAGE = "Your Order has been successfully placed.";
     private static final String USER = "fav_user";
     private static final int PRODUCT_COUNT = 3;
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Story(Constants.AllureTags.STORY_PURCHASE)
     @WebDriverTest(capabilities = {"apply_command_mask"})
     public void orderPlacementTest(WebDriver webDriver) {
         HomePage homePage = new HomePage(WebDriverFactory.getInstance().getTestEndpoint(), webDriver);

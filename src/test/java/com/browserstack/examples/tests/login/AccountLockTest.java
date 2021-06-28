@@ -4,27 +4,26 @@ import com.browsersatck.examples.utils.UserCredentialUtil;
 import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.CommonSteps;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static com.browserstack.examples.helpers.Constants.AllureTags.EPIC_LOGIN;
+import static com.browserstack.examples.helpers.Constants.AllureTags.FEATURE_LOGIN;
 import static com.browserstack.examples.helpers.Constants.AllureTags.STORY_ACCOUNT_LOCK;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.*;
 import static com.browserstack.examples.helpers.Constants.ErrorMessages.*;
 
-@Epic(EPIC_LOGIN)
+@Feature(FEATURE_LOGIN)
 @Story(STORY_ACCOUNT_LOCK)
 public class AccountLockTest {
 
     private static final String ACCOUNT_LOCKED_ERROR_MESSAGE = "Your account has been locked.";
     private static final String LOCKED_ACCOUNT_USER_NAME = "locked_user";
 
+    @Severity(SeverityLevel.BLOCKER)
     @WebDriverTest(capabilities = {"apply_command_mask"})
     public void lockMessageTest(WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);

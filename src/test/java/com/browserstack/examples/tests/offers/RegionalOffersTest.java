@@ -3,9 +3,7 @@ package com.browserstack.examples.tests.offers;
 import com.browsersatck.examples.utils.UserCredentialUtil;
 import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 
 import static com.browserstack.examples.helpers.CommonSteps.navigateToHome;
 import static com.browserstack.examples.helpers.CommonSteps.signIn;
-import static com.browserstack.examples.helpers.Constants.AllureTags.EPIC_OFFERS;
+import static com.browserstack.examples.helpers.Constants.AllureTags.FEATURE_OFFERS;
 import static com.browserstack.examples.helpers.Constants.AllureTags.STORY_REGIONAL_OFFERS;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.OFFERS_BUTTON_ID;
 import static com.browserstack.examples.helpers.Constants.ElementLocators.OFFER_CARD_CLASS;
@@ -21,7 +19,7 @@ import static com.browserstack.examples.helpers.Constants.EndPoints.OFFERS;
 import static com.browserstack.examples.helpers.Constants.EndPoints.SIGNED_IN;
 import static com.browserstack.examples.helpers.Constants.ErrorMessages.*;
 
-@Epic(EPIC_OFFERS)
+@Feature(FEATURE_OFFERS)
 @Story(STORY_REGIONAL_OFFERS)
 public class RegionalOffersTest {
 
@@ -34,7 +32,7 @@ public class RegionalOffersTest {
     private static final String OFFER_LATITUDE = "20";
     private static final String OFFER_LONGITUDE = "70";
 
-
+    @Severity(SeverityLevel.CRITICAL)
     @WebDriverTest(capabilities = {"apply_command_mask"})
     public void offersLoadedTest(WebDriver webDriver) {
         navigateToHome(webDriver);

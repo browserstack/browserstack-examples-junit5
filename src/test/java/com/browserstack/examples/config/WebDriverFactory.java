@@ -84,7 +84,6 @@ public class WebDriverFactory {
         String capabilitiesConfigFile = System.getProperty(CAPABILITIES_FILE_PROP, DEFAULT_CAPABILITIES_FILE);
         LOGGER.debug("Using capabilities configuration from FILE :: {}", capabilitiesConfigFile);
         URL resourceURL = WebDriverFactory.class.getClassLoader().getResource(capabilitiesConfigFile);
-
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         WebDriverConfiguration webDriverConfiguration;
         try {
@@ -144,11 +143,9 @@ public class WebDriverFactory {
         platformCapabilities.setCapability("name", testName);
         platformCapabilities.setCapability("project", commonCapabilities.getProject());
         platformCapabilities.setCapability("build", createBuildName(commonCapabilities.getBuildPrefix()));
-
         if (commonCapabilities.getCapabilities() != null) {
             commonCapabilities.getCapabilities().getCapabilityMap().forEach(platformCapabilities::setCapability);
         }
-
         if (platform.getCapabilities() != null) {
             platform.getCapabilities().getCapabilityMap().forEach(platformCapabilities::setCapability);
         }
@@ -162,18 +159,17 @@ public class WebDriverFactory {
         }
         platformCapabilities.setCapability("browserstack.user", user);
         platformCapabilities.setCapability("browserstack.key", accessKey);
-
         if (isLocal) {
             platformCapabilities.setCapability("browserstack.localIdentifier", LocalFactory.getInstance().getLocalIdentifier());
         }
-
         specificCapabilitiesMap.forEach(platformCapabilities::setCapability);
+        LOGGER.debug("Initialising RemoteWebDriver with capabilities : {}",platformCapabilities);
         return new RemoteWebDriver(new URL(remoteDriverConfig.getHubUrl()), platformCapabilities);
     }
 
     private WebDriver createOnPremGridWebDriver(Platform platform, Map<String, Object> specificCapabilitiesMap) throws MalformedURLException {
         DesiredCapabilities capabilities;
-        switch (BrowserType.valueOf(platform.getName())) {
+        switch (BrowserType.valueOf(platform.getBrowser())) {
             case chrome:
                 capabilities = new DesiredCapabilities(new ChromeOptions());
                 break;
@@ -187,12 +183,13 @@ public class WebDriverFactory {
             platform.getCapabilities().getCapabilityMap().forEach(capabilities::setCapability);
         }
         specificCapabilitiesMap.forEach(capabilities::setCapability);
+        LOGGER.debug("Initialising OnPremGridWebDriver with capabilities : {}",capabilities);
         return new RemoteWebDriver(new URL(this.webDriverConfiguration.getOnPremGridDriverConfig().getHubUrl()), capabilities);
     }
 
     private WebDriver createOnPremWebDriver(Platform platform, Map<String, Object> specificCapabilitiesMap) {
         WebDriver webDriver = null;
-        switch (BrowserType.valueOf(platform.getName())) {
+        switch (BrowserType.valueOf(platform.getBrowser())) {
             case chrome:
                 System.setProperty(WEBDRIVER_CHROME_DRIVER, Paths.get(platform.getDriverPath()).toString());
                 ChromeOptions chromeOptions = new ChromeOptions();
@@ -200,6 +197,7 @@ public class WebDriverFactory {
                     platform.getCapabilities().getCapabilityMap().forEach(chromeOptions::setCapability);
                 }
                 specificCapabilitiesMap.forEach(chromeOptions::setCapability);
+                LOGGER.debug("Initialising ChromeDriver with capabilities : {}",chromeOptions);
                 webDriver = new ChromeDriver(chromeOptions);
                 break;
             case firefox:
@@ -209,6 +207,7 @@ public class WebDriverFactory {
                     platform.getCapabilities().getCapabilityMap().forEach(firefoxOptions::setCapability);
                 }
                 specificCapabilitiesMap.forEach(firefoxOptions::setCapability);
+                LOGGER.debug("Initialising FirefoxDriver with capabilities : {}",firefoxOptions);
                 webDriver = new FirefoxDriver(firefoxOptions);
                 break;
             case ie:
@@ -218,6 +217,7 @@ public class WebDriverFactory {
                     platform.getCapabilities().getCapabilityMap().forEach(internetExplorerOptions::setCapability);
                 }
                 specificCapabilitiesMap.forEach(internetExplorerOptions::setCapability);
+                LOGGER.debug("Initialising InternetExplorerDriver with capabilities : {}",internetExplorerOptions);
                 webDriver = new InternetExplorerDriver(internetExplorerOptions);
                 break;
             case edge:
@@ -227,6 +227,7 @@ public class WebDriverFactory {
                     platform.getCapabilities().getCapabilityMap().forEach(edgeOptions::setCapability);
                 }
                 specificCapabilitiesMap.forEach(edgeOptions::setCapability);
+                LOGGER.debug("Initialising EdgeDriver with capabilities : {}",edgeOptions);
                 webDriver = new EdgeDriver(edgeOptions);
                 break;
             case safari:
@@ -235,6 +236,7 @@ public class WebDriverFactory {
                     platform.getCapabilities().getCapabilityMap().forEach(safariOptions::setCapability);
                 }
                 specificCapabilitiesMap.forEach(safariOptions::setCapability);
+                LOGGER.debug("Initialising SafariDriver with capabilities : {}",safariOptions);
                 webDriver = new SafariDriver(safariOptions);
                 break;
             case opera:
@@ -243,6 +245,7 @@ public class WebDriverFactory {
                     platform.getCapabilities().getCapabilityMap().forEach(operaOptions::setCapability);
                 }
                 specificCapabilitiesMap.forEach(operaOptions::setCapability);
+                LOGGER.debug("Initialising OperaDriver with capabilities : {}",operaOptions);
                 webDriver = new OperaDriver(operaOptions);
                 break;
         }
@@ -260,6 +263,10 @@ public class WebDriverFactory {
             buildSuffix = System.getenv(BUILD_ID);
         }
         return buildName + "-" + buildSuffix;
+    }
+
+    public String getSuiteName(){
+        return webDriverConfiguration.getName();
     }
 
 }

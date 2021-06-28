@@ -5,9 +5,7 @@ import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.CommonSteps;
 import com.browserstack.examples.helpers.Constants;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Step;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,12 +13,13 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-@Epic(Constants.AllureTags.EPIC_USER)
+@Feature(Constants.AllureTags.FEATURE_USER)
 @Story(Constants.AllureTags.STORY_IMAGE)
 public class ImageTest {
 
     private static final String IMAGE_NOT_LOADING_ACCOUNT_USER_NAME = "image_not_loading_user";
 
+    @Severity(SeverityLevel.MINOR)
     @WebDriverTest(capabilities = {"apply_command_mask"})
     public void imageLoadingTest(WebDriver webDriver) {
         CommonSteps.navigateToHome(webDriver);

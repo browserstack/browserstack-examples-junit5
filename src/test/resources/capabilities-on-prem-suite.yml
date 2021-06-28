@@ -1,4 +1,4 @@
-name: OnPrem
+name: OnPremSuite
 
 testEndpoint: https://bstackdemo.com
 
