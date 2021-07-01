@@ -6,7 +6,6 @@ import com.browserstack.examples.extensions.WebDriverTest;
 import com.browserstack.examples.helpers.ElementLocatorUtil;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.rules.ExpectedException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -38,8 +37,6 @@ public class FavouritesTest {
     private int testFavourites(WebDriver webDriver) {
         webDriver.findElement(By.xpath(FAVOURITE_BUTTON_XPATH)).click();
         WebDriverWaitUtil.getWebDriverWait(webDriver).until(waitWebDriver -> !waitWebDriver.findElements(By.xpath(FAVOURITE_BUTTON_CLICKED_XPATH)).isEmpty());
-        ExpectedException thrown = ExpectedException.none();
-
         try {
 
         } catch (TimeoutException e) {
