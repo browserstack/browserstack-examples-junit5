@@ -37,6 +37,7 @@
         </junit.sequential.properties>
         <tests.single>**/PurchaseTest.java</tests.single>
         <tests.all>**/**Test.java</tests.all>
+        <allure.executable>allure-generate.sh</allure.executable>
     </properties>
 
     <dependencies>
@@ -138,7 +139,7 @@
                 </execution>
             </executions>
             <configuration>
-                <executable>allure-generate.sh</executable>
+                <executable>${allure.executable}</executable>
             </configuration>
         </plugin>
         </plugins>
