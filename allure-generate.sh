@@ -1,7 +1,7 @@
 #copy from allure report to allure result
 
 
-if [ $CI ]
+if [ !($CI) ]
 echo 'Generating Allure Reports'
 mkdir -p allure-results/history
 cp allure-report/history/* allure-results/history
