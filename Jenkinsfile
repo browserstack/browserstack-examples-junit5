@@ -16,11 +16,13 @@ node {
               ],
               description: 'Select the test you would like to run',
               name: 'TEST_TYPE'
-          )
+          ),
+          string(defaultValue: '5', description: 'Enter the number of parallels to run', name: 'PARALLELISM', trim: true),
+          choice(choices: ['Maven', 'Gradle'], description: 'Select the build tool', name: 'BUILD_TOOL')
        ])
      ])
 
-        stage('Pull from Github') {
+        stage('Pull code from Github') {
           dir('test') {
             git branch: 'develop', changelog: false, poll: false, url: 'https://github.com/browserstack/browserstack-examples-junit5'
           }
@@ -42,23 +44,24 @@ node {
         }
 
         stage('Run Test') {
-          browserstack(credentialsId: "${params.BROWSERSTACK_USERNAME}", localConfig: [localOptions: '', localPath: '']) {
+          browserstack(credentialsId: "${params.BROWSERSTACK_USERNAME}") {
             def user = "${env.BROWSERSTACK_USERNAME}"
-            def test_type = "${params.TEST_TYPE}"
             if (user.contains('-')) {
               user = user.substring(0, user.lastIndexOf('-'))
             }
             withEnv(['BROWSERSTACK_USERNAME=' + user]) {
               sh label: '', returnStatus: true, script:'''#!/bin/bash -l
               cd test
-              echo 'mvn clean test - P '+p
-              mvn clean test'''
+              mvn -Dparallel.count=${PARALLELISM}  clean test -P ${TEST_TYPE} '''
             }
           }
         }
 
         stage('Generate Report'){
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+            if("${params.TEST_TYPE}".contains('bstack')){
+                browserStackReportPublisher 'automate'
+            }
+            allure includeProperties: false, jdk: '', results: [[path: 'test/allure-results']]
         }
       }
       catch (e) {
