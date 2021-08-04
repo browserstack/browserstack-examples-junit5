@@ -1,0 +1,12 @@
+name: OnPremSuite
+
+testEndpoint: https://bstackdemo.com
+
+driverType: onPremDriver
+
+onPremDriver:
+  platforms:
+    - name: chrome
+      browser: chrome
+      driverPath: /opt/libs/drivers/chromedriver
+      capabilities:

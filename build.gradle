@@ -1,0 +1,117 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'io.qameta.allure' version '2.8.1'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+    maven {
+        url =uri('https://plugins.gradle.org/m2/')
+    }
+}
+dependencies {
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'com.browserstack:browserstack-local-java:1.0.6'
+    implementation 'com.opencsv:opencsv:5.3'
+    implementation 'io.qameta.allure:allure-junit5:2.13.8'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.1'
+    testImplementation 'io.qameta.allure:allure-gradle:2.8.1'
+}
+
+group = 'com.browserstack'
+version = '1.0-SNAPSHOT'
+description = 'browserstack-examples-junit5'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+allure.version '2.8.1'
+allure.configuration 'testImplementation'
+allure.autoconfigure true
+allure.reportDir  file('allure-report')
+allure.resultsDir file('allure-results')
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+ext.parallel = ['junit.jupiter.extensions.autodetection.enabled':true,
+             'junit.jupiter.execution.parallel.enabled':true,
+             'junit.jupiter.execution.parallel.mode.default':'concurrent',
+             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent',
+             'junit.jupiter.execution.parallel.config.strategy':'fixed',
+             'junit.jupiter.execution.parallel.config.fixed.parallelism':5]
+
+ext.sequential =['capabilities.config':'capabilities-on-prem.yml',
+                             'junit.jupiter.extensions.autodetection.enabled':true,
+                             'junit.jupiter.execution.parallel.enabled':false]
+
+ext.singleTest='com/browserstack/examples/tests/**/PurchaseTest.class'
+ext.allTests='com/browserstack/examples/tests/**/*.class'
+
+ext.configure = {taskName,threadProperty,configFile,includeTest->
+    def task = project.tasks.findByPath(taskName)
+    task.useJUnitPlatform()
+    task.testLogging.setDisplayGranularity(-1)
+    task.testLogging.setShowCauses(true)
+    task.testLogging.setShowExceptions(true)
+    task.testLogging.setShowStackTraces(true)
+    task.testLogging.setShowStandardStreams(true)
+    task.outputs.upToDateWhen({false})
+    task.systemProperties = threadProperty
+    task.systemProperties 'capabilities.config': configFile
+    task.include includeTest
+    task.finalizedBy 'allure'
+}
+
+task 'on-prem'(type: Test){
+    configure('on-prem',sequential,'capabilities-on-prem.yml',singleTest)
+}
+
+task 'on-prem-suite'(type: Test){
+    configure('on-prem-suite',sequential,'capabilities-on-prem-suite.yml',allTests)
+}
+
+task 'docker'(type: Test){
+    configure('docker',sequential,'capabilities-docker.yml',singleTest)
+}
+
+task 'docker-parallel'(type: Test){
+    configure('docker-parallel',parallel,'capabilities-docker-parallel.yml',allTests)
+}
+
+task 'bstack-single'(type: Test){
+    configure('bstack-single',sequential,'capabilities-single.yml',singleTest)
+}
+
+task 'bstack-local'(type: Test){
+    configure('bstack-local',sequential,'capabilities-local.yml',singleTest)
+}
+
+task 'bstack-local-parallel'(type: Test){
+    configure('bstack-local-parallel',parallel,'capabilities-local-parallel.yml',allTests)
+}
+
+task 'bstack-local-parallel-browsers'(type: Test){
+    configure('bstack-local-parallel-browsers',parallel,'capabilities-local-parallel-browsers.yml',allTests)
+}
+
+task 'bstack-parallel'(type: Test){
+    configure('bstack-parallel',parallel,'capabilities-parallel.yml',allTests)
+}
+
+task 'bstack-parallel-browsers'(type: Test){
+    configure('bstack-parallel-browsers',parallel,'capabilities-parallel-browsers.yml',allTests)
+}
+
+task 'allure'(type: Exec) {
+    commandLine './allure-generate.sh'
+}
