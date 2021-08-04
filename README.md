@@ -2,9 +2,9 @@
 
  # :label: [Introduction](https://github.com/browserstack/browserstack-examples-junit5#introduction) 
 
-Welcome to BrowserStack JUnit 5 Examples, a sample UI testing framework empowered with Selenium and JUnit 5. Along with the framework the repository also contains a collection of sample test scripts written for BrowserStack Demo Application.
+Welcome to BrowserStack JUnit 5 Examples, a sample UI testing framework empowered with **Selenium** and **JUnit 5**. Along with the framework the repository also contains a collection of sample test scripts written for **BrowserStack Demo Application**.
 
-This repository includes a number of sample configuration files to run these on tests on various platforms including on-premise browsers, browsers running on a remote selenium grid such as BrowserStack Automate or in a Docker container. The framework and test scripts are configured to run with both Gradle and Maven. Starter gradle.build and pom.xml files are also included in the project.
+This repository includes a number of **sample configuration files** to run these on tests on various platforms including **on-premise browsers**, browsers running on a remote selenium grid such as **BrowserStack Automate** or in a **Docker container**. The framework and test scripts are configured to run with both **Gradle** and **Maven**. Starter **gradle.build** and **pom.xml** files are also included in the project.
 
 <h1></h1>
 
