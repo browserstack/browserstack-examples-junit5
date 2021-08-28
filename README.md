@@ -1,10 +1,17 @@
-<h1 align="center">:zap: BrowserStack Examples JUnit 5 :zap:</h1>
+
+<h1 align="center">   :zap: <img src="https://avatars.githubusercontent.com/u/1119453?s=200&v=4" width="60" height="60" > BrowserStack Examples JUnit 5  <img src="https://camo.githubusercontent.com/abbaedce4b226ea68b0fd43521472b0b146d5ed57956116f69752f43e7ddd7d8/68747470733a2f2f6a756e69742e6f72672f6a756e6974352f6173736574732f696d672f6a756e6974352d6c6f676f2e706e67" width="60" height="60" >
+ :zap:</h1>
+ 
+ # :bookmark: [Overview](https://github.com/browserstack/browserstack-examples-junit5#overview)
+ 
+ ### :label: [Introduction](https://github.com/browserstack/browserstack-examples-junit5#introduction) 
+ ### :wrench:  [Repository Configuration](https://github.com/browserstack/browserstack-examples-junit5#repositoryconfiguration)
 
  # :label: [Introduction](https://github.com/browserstack/browserstack-examples-junit5#introduction) 
 
-Welcome to BrowserStack JUnit 5 Examples, a sample UI testing framework empowered with **Selenium** and **JUnit 5**. Along with the framework the repository also contains a collection of sample test scripts written for **BrowserStack Demo Application**.
+Welcome to BrowserStack JUnit 5 Examples, a sample UI testing framework empowered with **[Selenium](https://www.selenium.dev/)** and **[JUnit 5](https://junit.org/junit5/)**. Along with the framework the repository also contains a collection of sample test scripts written for **[BrowserStack Demo Application](https://bstackdemo.com/)**.
 
-This repository includes a number of **sample configuration files** to run these on tests on various platforms including **on-premise browsers**, browsers running on a remote selenium grid such as **BrowserStack Automate** or in a **Docker container**. The framework and test scripts are configured to run with both **Gradle** and **Maven**. Starter **gradle.build** and **pom.xml** files are also included in the project.
+This repository includes a number of **[sample configuration files](/src/test/resources)** to run these on tests on various platforms including **on-premise browsers**, browsers running on a remote selenium grid such as **[BrowserStack Automate](https://www.browserstack.com/automate)** or in a **[Docker container](https://github.com/SeleniumHQ/docker-selenium)**. The framework and test scripts are configured to run with both **[Gradle](https://gradle.org/)** and **[Maven](https://maven.apache.org/)**. Starter **[gradle.build](/build.gradle)** and **[pom.xml](/pom.xml)** files are also included in the project.
 
 <h1></h1>
 
@@ -14,8 +21,8 @@ This repository includes a number of **sample configuration files** to run these
 
 | Module   | Test Case                          | Description |
   | ---   | ---                                   | --- |
-| E2E      | End to End Scenario                | This test scenario verifies successful product purchase lifecycle end-to-end. It demonstrates the [Page Object Model design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium) and is also the default test executed in all the single test run profiles. |
-| Login    | Login with given username          | This test verifies the login workflow with different types of valid login users. |
+| [E2E](/src/test/java/com/browserstack/examples/tests/e2e)      | [PurchaseTest](/src/test/java/com/browserstack/examples/tests/e2e/PurchaseTest.java)                | This test scenario verifies successful product purchase lifecycle end-to-end. It demonstrates the [Page Object Model design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium) and is also the default test executed in all the single test run profiles. |
+| [Login](/src/test/java/com/browserstack/examples/tests/login)    | [RedirectionTest](/src/test/java/com/browserstack/examples/tests/login/RedirectionTest.java)         | This test verifies that the user needs to login to view the favourites marked by him or her. |
 | Login    | Login as Locked User               | This test verifies the login workflow error for a locked user. |
 | Offers   | Offers for Mumbai location     | This test mocks the GPS location for Mumbai and verifies that the product offers applicable for the Mumbai location are shown.   |
 | Product  | Apply Apple Vendor Filter          | This test verifies that 9 Apple products are only shown if the Apple vendor filter option is applied. |
