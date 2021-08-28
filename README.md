@@ -1,11 +1,6 @@
 
 <h1 align="center">   :zap: <img src="https://avatars.githubusercontent.com/u/1119453?s=200&v=4" width="60" height="60" > BrowserStack Examples JUnit 5  <img src="https://camo.githubusercontent.com/abbaedce4b226ea68b0fd43521472b0b146d5ed57956116f69752f43e7ddd7d8/68747470733a2f2f6a756e69742e6f72672f6a756e6974352f6173736574732f696d672f6a756e6974352d6c6f676f2e706e67" width="60" height="60" >
  :zap:</h1>
- 
- # :bookmark: [Overview](https://github.com/browserstack/browserstack-examples-junit5#overview)
- 
- ### :label: [Introduction](https://github.com/browserstack/browserstack-examples-junit5#introduction) 
- ### :wrench:  [Repository Configuration](https://github.com/browserstack/browserstack-examples-junit5#repositoryconfiguration)
 
  # :label: [Introduction](https://github.com/browserstack/browserstack-examples-junit5#introduction) 
 
